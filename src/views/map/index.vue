@@ -1,0 +1,219 @@
+<template>
+  <div class="index-container">
+    <arc-gis-map
+      ref="mapRef"
+      :map-id="mapId"
+      :fixed-header="fixedHeader"
+      :map-operate-panel="mapOperatePanel"
+      @map-pointer-move="onMapPointerMove"
+      @map-scale-change="onMapScaleChange"
+      @map-camera-change="onMapCameraChange"
+    ></arc-gis-map>
+    <res-panel
+      v-if="mapResPanel"
+      :fold-map-res-panel="foldMapResPanel"
+      :fixed-header="fixedHeader"
+      :map-bottom-coord="mapBottomCoord"
+      @click-fold="onFoldMapResPanel"
+    />
+    <switch-map
+      v-if="switchMap"
+      :map-res-panel="mapResPanel"
+      :fold-map-res-panel="foldMapResPanel"
+      :map-bottom-coord="mapBottomCoord"
+    />
+    <!-- <utils-panel v-if="mapUtilsPanel" /> -->
+    <operate-panel
+      v-if="mapOperatePanel"
+      :map-bottom-coord="mapBottomCoord"
+      @change-map-view-type="changeMapViewType"
+    />
+    <span
+      v-if="user.avatar && !fixedHeader"
+      :class="[
+        'user-avatar',
+        mapOperatePanel ? 'has-operate-panel' : '',
+        mapBottomCoord ? 'has-bottom-coord' : '',
+      ]"
+      @click="setAccountSetting(true)"
+    >
+      <img :src="user.avatar" />
+    </span>
+    <bottom-coord
+      v-if="mapBottomCoord"
+      :companyName="companyName"
+      @map-set-view-scale="onMapSetView"
+    />
+    <account-setting :visible="accountSettingVisible" @close="setAccountSetting(false)" />
+  </div>
+</template>
+
+<script>
+import { computed, reactive, ref, provide } from "@vue/runtime-core";
+import { useStore } from "vuex";
+// 组件
+import ArcGisMap from "./map.vue";
+import ResPanel from "components/map/ResPanel/index.vue";
+import SwitchMap from "components/map/SwitchMap/index.vue";
+// import UtilsPanel from "components/map/UtilsPanel/index.vue";
+import OperatePanel from "components/map/OperatePanel/index.vue";
+import BottomCoord from "components/map/BottomCoord/index.vue";
+import AccountSetting from "components/user/AccountSetting/index.vue";
+
+export default {
+  name: "Home",
+
+  components: {
+    ArcGisMap,
+    ResPanel,
+    SwitchMap,
+    // UtilsPanel,
+    OperatePanel,
+    BottomCoord,
+    AccountSetting,
+  },
+
+  setup() {
+    const store = useStore();
+
+    // 当前地图视图为2D或者3D
+    const mapViewType = ref("3D");
+    // 摄像机信息
+    const cameraInfo = ref({
+      tilt: 17,
+      heading: 90,
+    });
+    // 坐标信息
+    const coordInfo = reactive({
+      // 会展中心坐标
+      lon: 108.3745642577004,
+      lat: 22.81230870129559,
+      scale: 150000,
+      locate: "",
+    });
+
+    // 顶级组件通过provide传递给子孙组件
+    provide("getMapViewType", mapViewType);
+    provide("getCameraInfo", cameraInfo);
+    provide("getCoordInfo", coordInfo);
+
+    const user = computed(() => store.getters.user);
+    const fixedHeader = computed(() => store.getters.fixedHeader);
+    const mapResPanel = computed(() => store.getters.mapResPanel);
+    const switchMap = computed(() => store.getters.switchMap);
+    const mapUtilsPanel = computed(() => store.getters.mapUtilsPanel);
+    const mapOperatePanel = computed(() => store.getters.mapOperatePanel);
+    const mapBottomCoord = computed(() => store.getters.mapBottomCoord);
+    const companyName = computed(() => store.getters.companyName);
+
+    // 是否显示账户设置
+    const accountSettingVisible = ref(false);
+
+    // 地图容器ID
+    const mapId = ref("mainMap");
+
+    // 地图实例
+    const mapRef = ref();
+    // 是否折叠地图资源面板
+    const foldMapResPanel = ref(false);
+
+    // 显示账户设置
+    const setAccountSetting = (val) => {
+      accountSettingVisible.value = val;
+    };
+
+    // 监听地图鼠标移动
+    const onMapPointerMove = ({ lon, lat }) => {
+      coordInfo.lon = lon;
+      coordInfo.lat = lat;
+    };
+
+    // 监听地图视图比例改变
+    const onMapScaleChange = ({ scale }) => {
+      coordInfo.scale = scale;
+    };
+
+    // 监听通过底部信息设置地图比例
+    const onMapSetView = ({ scale }) => {
+      coordInfo.scale = scale;
+      // 调用子组件方法
+      mapRef.value.onSetScale(scale);
+    };
+
+    // 折叠地图资源面板
+    const onFoldMapResPanel = (val) => {
+      foldMapResPanel.value = val;
+    };
+
+    // 监听地图摄像机视角改变
+    const onMapCameraChange = ({ tilt, heading }) => {
+      cameraInfo.value = { tilt, heading };
+    };
+
+    // 改变地图视图类型
+    const changeMapViewType = (type) => {
+      mapViewType.value = type;
+    };
+
+    return {
+      mapId,
+      user,
+      fixedHeader,
+      mapResPanel,
+      switchMap,
+      mapUtilsPanel,
+      mapOperatePanel,
+      mapBottomCoord,
+      foldMapResPanel,
+      companyName,
+      accountSettingVisible,
+      coordInfo,
+      mapRef,
+      setAccountSetting,
+      onMapPointerMove,
+      onMapScaleChange,
+      onMapSetView,
+      onFoldMapResPanel,
+      onMapCameraChange,
+      changeMapViewType,
+    };
+  },
+};
+</script>
+<style lang="scss" scoped>
+.index-container {
+  position: relative;
+}
+
+.user-avatar {
+  position: absolute;
+  cursor: pointer;
+  z-index: 99;
+  right: 6px;
+  bottom: 10px;
+  display: inline-block;
+  width: 48px;
+  height: 48px;
+  border-radius: 24px;
+  border: 1px solid #fff;
+  overflow: hidden;
+  box-shadow: $map-box-shadow;
+
+  &.has-operate-panel {
+    bottom: 245px;
+
+    &.has-bottom-coord {
+      bottom: 255px;
+    }
+  }
+
+  &.has-bottom-coord {
+    bottom: 35px;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

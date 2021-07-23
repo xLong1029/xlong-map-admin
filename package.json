@@ -1,0 +1,29 @@
+{
+  "name": "xlong-map-element-plus",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:release": "vite build --mode release",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@arcgis/core": "^4.19.3",
+    "element-plus": "^1.0.2-beta.51",
+    "js-cookie": "^2.2.1",
+    "sass-resources-loader": "^2.2.3",
+    "vue": "^3.1.2",
+    "vue-router": "^4.0.4",
+    "vuedraggable": "^4.0.3",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.1",
+    "@vitejs/plugin-vue": "^1.2.5",
+    "@vue/compiler-sfc": "^3.0.5",
+    "sass": "^1.35.1",
+    "sass-loader": "^8.0.2",
+    "vite": "^2.4.3",
+    "vite-plugin-style-import": "^1.0.1"
+  }
+}

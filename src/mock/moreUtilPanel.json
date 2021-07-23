@@ -1,0 +1,221 @@
+{
+  "general": [
+    {
+      "component": "GraphicAnalysis",
+      "classStyles": "iconfont icon-fenxi",
+      "utilName": "分析",
+      "utilActive": false,
+      "eventSuffix": null,
+      "panelID": null,
+      "enable2D": true,
+      "enable3D": true
+    },
+    {
+      "component": "ScreenShotPanel",
+      "classStyles": "iconfont icon-dayin",
+      "utilName": "打印",
+      "utilActive": false,
+      "eventSuffix": "ScreenShot",
+      "panelID": null,
+      "enable2D": true,
+      "enable3D": true
+    },
+    {
+      "component": "LocatePanel",
+      "classStyles": "iconfont icon-dingwei1",
+      "utilName": "定位",
+      "utilActive": false,
+      "eventSuffix": "Locate",
+      "panelID": "locatePanel",
+      "enable2D": true,
+      "enable3D": true
+    },
+    {
+      "component": "CollectPanel",
+      "classStyles": "iconfont icon-shoucang",
+      "utilName": "收藏",
+      "utilActive": false,
+      "eventSuffix": "Collect",
+      "panelID": null,
+      "enable2D": true,
+      "enable3D": true
+    }
+  ],
+  "list": [
+    {
+      "title": "图层操作",
+      "children": [
+        {
+          "component": "UploadLayerPanel",
+          "classStyles": "iconfont icon-liangsuan",
+          "utilName": "上传图层",
+          "utilActive": false,
+          "eventSuffix": "UploadLayer",
+          "panelID": "uploadLayer",
+          "enable2D": true,
+          "enable3D": true
+        },
+        {
+          "component": "SwipePanel",
+          "classStyles": "iconfont icon-juanlian",
+          "utilName": "卷帘",
+          "utilActive": false,
+          "eventSuffix": "Swipe",
+          "panelID": "swipePanel",
+          "enable2D": true,
+          "enable3D": true
+        },
+        {
+          "component": "SplitScreen",
+          "classStyles": "iconfont icon-fenping",
+          "utilName": "分屏",
+          "utilActive": false,
+          "eventSuffix": null,
+          "panelID": null,
+          "enable2D": true,
+          "enable3D": true
+        },
+        {
+          "component": "MaskPanel",
+          "classStyles": "iconfont icon-yanmo",
+          "utilName": "掩膜",
+          "utilActive": false,
+          "eventSuffix": "Mask",
+          "panelID": "maskPanel",
+          "enable2D": true,
+          "enable3D": true
+        },
+        {
+          "component": "FilterPanel",
+          "classStyles": "iconfont icon-yaosuguolv",
+          "utilName": "筛选过滤",
+          "utilActive": false,
+          "eventSuffix": "Filter",
+          "panelID": "filterPanel",
+          "enable2D": true,
+          "enable3D": true
+        }
+      ]
+    },
+    {
+      "title": "三维工具",
+      "children": [
+        {
+          "component": "LineOfSightPanel",
+          "classStyles": "iconfont icon-shixian",
+          "utilName": "视线",
+          "utilActive": false,
+          "eventSuffix": "LineOfSight",
+          "panelID": "lineOfSightPanel",
+          "enable2D": false,
+          "enable3D": true
+        },
+        {
+          "component": "ViewshedPanel",
+          "classStyles": "iconfont icon-shiyu",
+          "utilName": "视域",
+          "utilActive": false,
+          "eventSuffix": "Viewshed",
+          "panelID": "viewshedPanel",
+          "enable2D": false,
+          "enable3D": true
+        },
+        {
+          "component": "SlicePanel",
+          "classStyles": "iconfont icon-poumian",
+          "utilName": "剖面",
+          "utilActive": false,
+          "eventSuffix": "Slice",
+          "panelID": "slicePanel",
+          "enable2D": false,
+          "enable3D": true
+        },
+        {
+          "component": "ElevationProfilePanel",
+          "classStyles": "iconfont icon-tianjixian",
+          "utilName": "剖面高度",
+          "utilActive": false,
+          "eventSuffix": "ElevationProfile",
+          "panelID": "elevationProfilePanel",
+          "enable2D": false,
+          "enable3D": true
+        },
+        {
+          "component": "PerspectivePanel",
+          "classStyles": "iconfont icon-toushi",
+          "utilName": "透视",
+          "utilActive": false,
+          "eventSuffix": "Perspective",
+          "panelID": "perspectivePanel",
+          "enable2D": false,
+          "enable3D": true
+        }
+      ]
+    },
+    {
+      "title": "场景效果",
+      "children": [
+        {
+          "component": "TimeAxis",
+          "classStyles": "iconfont icon-shijianzhou",
+          "utilName": "时间轴",
+          "utilActive": false,
+          "eventSuffix": null,
+          "panelID": null,
+          "enable2D": false,
+          "enable3D": false
+        },
+        {
+          "component": "Panorama",
+          "classStyles": "iconfont icon-quanjingzhaopian",
+          "utilName": "全景照片",
+          "utilActive": false,
+          "eventSuffix": null,
+          "panelID": null,
+          "enable2D": false,
+          "enable3D": false
+        },
+        {
+          "component": "FlyPanel",
+          "classStyles": "iconfont icon-feihang",
+          "utilName": "飞行",
+          "utilActive": false,
+          "eventSuffix": "Fly",
+          "panelID": "flyPanel",
+          "enable2D": false,
+          "enable3D": false
+        },
+        {
+          "component": "DayLightPanel",
+          "classStyles": "iconfont icon-rizhao1",
+          "utilName": "日照",
+          "utilActive": false,
+          "eventSuffix": "DayLight",
+          "panelID": "dayLightPanel",
+          "enable2D": false,
+          "enable3D": false
+        },
+        {
+          "component": "WaterPanel",
+          "classStyles": "iconfont icon-shuimian",
+          "utilName": "水面",
+          "utilActive": false,
+          "eventSuffix": "Water",
+          "panelID": "waterPanel",
+          "enable2D": false,
+          "enable3D": false
+        },
+        {
+          "component": "SnowPanel",
+          "classStyles": "iconfont icon-yuxuefengshuang",
+          "utilName": "风霜雨雪",
+          "utilActive": false,
+          "eventSuffix": "Snow",
+          "panelID": "snowPanel",
+          "enable2D": false,
+          "enable3D": false
+        }
+      ]
+    }
+  ]
+}

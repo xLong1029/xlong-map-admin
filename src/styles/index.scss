@@ -1,0 +1,363 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+// 覆盖element-plus样式
+@import './element-plus.scss';
+// 覆盖esri样式
+@import './esri.scss';
+
+body {
+  margin: 0;
+  background: #f4f5f7;
+  color: #000000;
+  height: 100%;
+  font-size: 14px;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+textarea {
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+ul,
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+// label {
+//   font-weight: 700;
+// }
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
+
+.bold {
+  font-weight: bold !important;
+}
+
+.blue {
+  color: $blue;
+}
+
+.green {
+  color: $green;
+}
+
+.red {
+  color: $red;
+}
+
+$num: 5,
+10,
+15,
+20,
+25,
+30,
+35,
+40,
+45,
+50,
+55,
+60,
+65,
+70,
+75,
+80,
+85,
+90,
+95,
+100;
+
+@each $n in $num {
+  .pl-#{$n} {
+    padding-left: $n + px !important;
+  }
+
+  .pr-#{$n} {
+    padding-right: $n + px !important;
+  }
+
+  .pt-#{$n} {
+    padding-top: $n + px !important;
+  }
+
+  .pb-#{$n} {
+    padding-bottom: $n + px !important;
+  }
+
+  .ml-#{$n} {
+    margin-left: $n + px !important;
+  }
+
+  .mr-#{$n} {
+    margin-right: $n + px !important;
+  }
+
+  .mt-#{$n} {
+    margin-top: $n + px !important;
+  }
+
+  .mb-#{$n} {
+    margin-bottom: $n + px !important;
+  }
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+$display: flex,
+block,
+inline;
+
+@each $d in $display {
+  .#{$d} {
+    display: $d;
+  }
+}
+
+$fontSzie: 12,
+14,
+16,
+18,
+20,
+22,
+24,
+26,
+28,
+30;
+
+@each $f in $fontSzie {
+  .font-#{$f} {
+    font-size: $f + px !important;
+  }
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.inlineBlock {
+  display: block;
+}
+
+.clearfix {
+  &:after {
+    @include clearfix;
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+  }
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+aside {
+  background: #eef1f6;
+  padding: 8px 24px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  display: block;
+  line-height: 32px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: #2c3e50;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  a {
+    color: #337ab7;
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(32, 160, 255);
+    }
+  }
+}
+
+//main-container全局样式
+.app-container {
+  padding: 15px;
+}
+
+.sub-navbar {
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  width: 100%;
+  text-align: right;
+  padding-right: 20px;
+  transition: 600ms ease position;
+  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+
+  .subtitle {
+    font-size: 20px;
+    color: #fff;
+  }
+
+  &.draft {
+    background: #d0d0d0;
+  }
+
+  &.deleted {
+    background: #d0d0d0;
+  }
+}
+
+.link-type,
+.link-type:focus {
+  color: #337ab7;
+  cursor: pointer;
+
+  &:hover {
+    color: rgb(32, 160, 255);
+  }
+}
+
+.filter-container {
+  padding-bottom: 10px;
+
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+  }
+}
+
+//refine vue-multiselect plugin
+.multiselect {
+  line-height: 16px;
+}
+
+.multiselect--active {
+  z-index: 1000 !important;
+}
+
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px #eee;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  // background:rgba(255,0,0,0.4);
+}
+
+// 满屏页面
+.overspread-page {
+  min-height: calc(100vh - 417px);
+}
+
+// 满屏卡片
+.overspread-card {
+  min-height: calc(100vh - 457px);
+  margin: 20px 0;
+}
+
+// 宽度100%
+.width-100 {
+  width: 100% !important;
+}
+
+// 标签
+.tag {
+  &-yellow {
+    &.el-tag--dark {
+      background: #f0ad4e;
+      border-color: #f0ad4e;
+    }
+  }
+
+  &-blue {
+    &.el-tag {
+      color: #409eff;
+      border: 1px solid #d9ecff;
+      background-color: #ecf5ff;
+    }
+
+    &.el-tag--dark {
+      background: #409eff;
+      border-color: #409eff;
+      color: #fff;
+    }
+  }
+}
+
+// pad和手机
+@media screen and (max-width: 980px) {
+  // 满屏页面
+  .overspread-page {
+    min-height: calc(100vh - 599px);
+  }
+
+  .overspread-card {
+    min-height: calc(100vh - 639px);
+  }
+}

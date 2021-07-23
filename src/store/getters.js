@@ -1,0 +1,26 @@
+const getters = {
+  // app
+  pageLoading: (state) => state.app.pageLoading,
+  sysLoading: (state) => state.app.sysLoading,
+  sysTitle:(state) => state.app.sysTitle,
+  currentEnv: (state) => state.app.currentEnv,
+  companyName: (state) => state.app.companyName,
+  // user
+  token: (state) => state.user.token,
+  user: (state) => state.user.user,
+  roles: (state) => state.user.user.roles,
+  // settings
+  theme:(state) => state.settings.theme,
+  showSettings:(state) => state.settings.showSettings,
+  fixedHeader:(state) => state.settings.fixedHeader,
+  mapResPanel:(state) => state.settings.mapResPanel,
+  mapUtilsPanel:(state) => state.settings.mapUtilsPanel,
+  mapOperatePanel:(state) => state.settings.mapOperatePanel,
+  switchMap:(state) => state.settings.switchMap,
+  mapBottomCoord:(state) => state.settings.mapBottomCoord,
+  // map
+  foldMapResPanel:(state) => state.map.foldMapResPanel,
+  mapEvent:(state) => state.map.mapEvent
+};
+
+export default getters;
