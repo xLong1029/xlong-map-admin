@@ -1,4 +1,5 @@
 import {
+  ElConfigProvider,
   ElEmpty,
   ElTree,
   ElCollapseItem,
@@ -27,12 +28,8 @@ import {
 import "element-plus/packages/theme-chalk/src/index.scss";
 import "element-plus/packages/theme-chalk/src/base.scss";
 
-// 语言包，Element Plus默认英文
-import lang from "element-plus/lib/locale/lang/zh-cn";
-import "dayjs/locale/zh-cn";
-import { locale } from 'element-plus';
-
 const components = [
+  ElConfigProvider,
   ElEmpty,
   ElTree,
   ElCollapseItem,
@@ -58,9 +55,6 @@ const components = [
 const plugins = [ElLoading, ElMessage, ElMessageBox, ElNotification];
 
 export default (app) => {
-  // 设置语言
-  locale(lang);
-
   // 注册组件
   if (components.length) {
     components.forEach((component) => {

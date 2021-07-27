@@ -86,8 +86,8 @@ export default {
     // 坐标信息
     const coordInfo = reactive({
       // 会展中心坐标
-      lon: 108.3745642577004,
-      lat: 22.81230870129559,
+      lon: 108.37586419698286,
+      lat: 22.81221937964247,
       scale: 150000,
       locate: "",
     });

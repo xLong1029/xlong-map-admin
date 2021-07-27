@@ -17,7 +17,6 @@ import Map from "@arcgis/core/Map";
 import SceneView from "@arcgis/core/views/SceneView";
 import MapView from "@arcgis/core/views/MapView";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
-import Camera from "@arcgis/core/Camera";
 // 地图事件
 import map from "common/map/index.js";
 
@@ -187,22 +186,10 @@ export default {
      */
     const initCamera = (arcGisMapView) => {
       arcGisMapView.when(function () {
-        const camera = new Camera({
-          fov: 55,
-          heading: cameraInfo.value.heading,
-          tilt: cameraInfo.value.tilt,
-          position: {
-            longitude: coordInfo.lon,
-            latitude: coordInfo.lat,
-            z: 614,
-            spatialReference: { wkid: 102100 },
-          },
-        });
-
         arcGisMapView
           .goTo(
             {
-              center: [108.37611, 22.81231],
+              center: [coordInfo.lon, coordInfo.lat],
               tilt: cameraInfo.value.tilt,
               heading: cameraInfo.value.heading,
               zoom: 18.7,
@@ -210,8 +197,6 @@ export default {
             { duration: 5000 }
           )
           .then(function () {
-            arcGisMapView.camera = camera;
-
             // 摄像机移动结束改变罗盘位置
             emit("map-camera-change", {
               tilt: arcGisMapView.camera.tilt,
@@ -224,8 +209,8 @@ export default {
             arcGisMapView.watch("camera", (camera) => {
               let tilt = camera.tilt;
               let heading = camera.heading;
-              // let position = camera.position;
-              // console.log(tilt, heading, position);
+              let position = camera.position;
+              console.log(tilt, heading, position);
 
               emit("map-camera-change", {
                 tilt,

@@ -1,11 +1,14 @@
 <template>
-  <div id="app" v-loading="sysLoading" element-loading-text="系统初始化，请稍后...">
-    <router-view />
-  </div>
+  <el-config-provider :locale="locale">
+    <div id="app" v-loading="sysLoading" element-loading-text="系统初始化，请稍后...">
+      <router-view />
+    </div>
+  </el-config-provider>
 </template>
 
 <script>
 import { computed, onMounted } from "@vue/runtime-core";
+import zhCn from 'element-plus/lib/locale/lang/zh-cn';
 import { logInfo, getLocalS } from "utils";
 import common from "common";
 
@@ -16,6 +19,8 @@ export default {
     // 通过计算属性获取store的值
     const currentEnv = computed(() => store.getters.currentEnv);
     const sysLoading = computed(() => store.getters.sysLoading);
+
+    const locale = zhCn;
 
     console.log(`current environment is ${currentEnv.value}`);
 
@@ -45,6 +50,7 @@ export default {
 
     return {
       sysLoading,
+      locale,
     };
   },
 };

@@ -67,7 +67,7 @@ export default {
         return false;
       }
 
-      angle.value = angle.value > 180 ? 360 : 0;
+      angle.value = Math.abs(angle.value) > 180 ? 360 : 0;
 
       setCompassStyles(angle.value);
       dispatchMapEvent("onRotate", { angle: 0 });
