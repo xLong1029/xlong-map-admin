@@ -57,8 +57,8 @@ export default {
     const onTransform = () => {
       const viewType = mapViewType.value === "3D" ? "2D" : "3D";
       console.log(`点击了2/3D切换按钮，当前视图是${mapViewType.value}视图`);
-      
-      emit("changeMapViewType", viewType);
+
+      emit("change-map-view-type", viewType);
       ElMessage.success(`您已成功切换${viewType}视图`);
     };
 

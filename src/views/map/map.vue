@@ -24,11 +24,6 @@ export default {
   name: "Map",
 
   props: {
-    // 是否显示系统固定头部
-    fixedHeader: {
-      type: Boolean,
-      default: true,
-    },
     // 是否显示操作栏目
     mapOperatePanel: {
       type: Boolean,
@@ -50,6 +45,9 @@ export default {
     const cameraInfo = inject("getCameraInfo");
     // 坐标信息
     const coordInfo = inject("getCoordInfo");
+    // 是否显示系统固定头部
+    const fixedHeader = inject("getFixedHeader");
+    
     // 地图事件传递
     const mapEvent = computed(() => store.getters.mapEvent);
 
@@ -253,6 +251,7 @@ export default {
     };
 
     return {
+      fixedHeader,
       onSetScale,
     };
   },

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/runtime-core";
+import { ref, inject } from "@vue/runtime-core";
 // 组件
 import List from "./List/index.vue";
 import MyFavorites from "./MyFavorites/index.vue";
@@ -41,11 +41,6 @@ export default {
     foldMapResPanel: {
       type: Boolean,
       default: false,
-    },
-    // 是否显示系统固定头部
-    fixedHeader: {
-      type: Boolean,
-      default: true,
     },
     // 是否显示地图底部信息
     mapBottomCoord: {
@@ -61,6 +56,9 @@ export default {
   },
 
   setup(props, { emit }) {
+    // 是否显示系统固定头部
+    const fixedHeader = inject("getFixedHeader");
+
     // 当前激活Tab的name
     const activeName = ref("list");
 
@@ -88,6 +86,7 @@ export default {
     };
 
     return {
+      fixedHeader,
       activeName,
       tabs,
       setContentVisible,

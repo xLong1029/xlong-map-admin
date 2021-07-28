@@ -3,7 +3,6 @@
     <arc-gis-map
       ref="mapRef"
       :map-id="mapId"
-      :fixed-header="fixedHeader"
       :map-operate-panel="mapOperatePanel"
       @map-pointer-move="onMapPointerMove"
       @map-scale-change="onMapScaleChange"
@@ -12,7 +11,6 @@
     <res-panel
       v-if="mapResPanel"
       :fold-map-res-panel="foldMapResPanel"
-      :fixed-header="fixedHeader"
       :map-bottom-coord="mapBottomCoord"
       @click-fold="onFoldMapResPanel"
     />
@@ -22,7 +20,7 @@
       :fold-map-res-panel="foldMapResPanel"
       :map-bottom-coord="mapBottomCoord"
     />
-    <!-- <utils-panel v-if="mapUtilsPanel" /> -->
+    <utils-panel v-if="mapUtilsPanel" />
     <operate-panel
       v-if="mapOperatePanel"
       :map-bottom-coord="mapBottomCoord"
@@ -55,7 +53,7 @@ import { useStore } from "vuex";
 import ArcGisMap from "./map.vue";
 import ResPanel from "components/map/ResPanel/index.vue";
 import SwitchMap from "components/map/SwitchMap/index.vue";
-// import UtilsPanel from "components/map/UtilsPanel/index.vue";
+import UtilsPanel from "components/map/UtilsPanel/index.vue";
 import OperatePanel from "components/map/OperatePanel/index.vue";
 import BottomCoord from "components/map/BottomCoord/index.vue";
 import AccountSetting from "components/user/AccountSetting/index.vue";
@@ -67,7 +65,7 @@ export default {
     ArcGisMap,
     ResPanel,
     SwitchMap,
-    // UtilsPanel,
+    UtilsPanel,
     OperatePanel,
     BottomCoord,
     AccountSetting,
@@ -92,11 +90,6 @@ export default {
       locate: "",
     });
 
-    // 顶级组件通过provide传递给子孙组件
-    provide("getMapViewType", mapViewType);
-    provide("getCameraInfo", cameraInfo);
-    provide("getCoordInfo", coordInfo);
-
     const user = computed(() => store.getters.user);
     const fixedHeader = computed(() => store.getters.fixedHeader);
     const mapResPanel = computed(() => store.getters.mapResPanel);
@@ -105,6 +98,12 @@ export default {
     const mapOperatePanel = computed(() => store.getters.mapOperatePanel);
     const mapBottomCoord = computed(() => store.getters.mapBottomCoord);
     const companyName = computed(() => store.getters.companyName);
+
+    // 顶级组件通过provide传递给子孙组件
+    provide("getMapViewType", mapViewType);
+    provide("getCameraInfo", cameraInfo);
+    provide("getCoordInfo", coordInfo);
+    provide("getFixedHeader", fixedHeader);
 
     // 是否显示账户设置
     const accountSettingVisible = ref(false);
@@ -199,7 +198,7 @@ export default {
   box-shadow: $map-box-shadow;
 
   &.has-operate-panel {
-    bottom: 250px;
+    bottom: 235px;
 
     &.has-bottom-coord {
       bottom: 260px;
@@ -207,7 +206,7 @@ export default {
   }
 
   &.has-bottom-coord {
-    bottom: 40px;
+    bottom: 35px;
   }
 
   img {

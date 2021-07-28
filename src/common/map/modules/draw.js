@@ -12,7 +12,7 @@ export default {
    * @param {*} data 传递数据
    * @param {*} mapViewType 当前视图类型是2D或3D
    */
-  onDraw: (view, data, mapViewType) => {
+  onOpenDraw: (view, data, mapViewType) => {
     removeWidget(view, widget);
 
     if (!data || !data.panelID) {

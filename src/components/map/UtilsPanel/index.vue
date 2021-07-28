@@ -34,7 +34,7 @@
           </template>
 
           <div class="util-list-item" @click="onClearScreen()">
-            <i class="util-list-item__icon iconfont icon-qingping"></i>
+            <i class="util-list-item__icon iconfont icon-clear"></i>
             <span class="util-list-item__name">清屏</span>
           </div>
         </div>
@@ -58,69 +58,70 @@
       </template>
 
       <!-- 更多工具 -->
-      <more-utils
+      <!-- <more-utils
         v-if="moreUtils.visible"
         :map-view-type="mapViewType"
         :highlight-panels="highlightPanels"
         @click-util="onClickMoreUtils"
         @click-custom="setCustomUtilDialogVisible(true)"
-      />
+      /> -->
 
       <!-- 自定义工具栏 -->
-      <custom-util-dialog
+      <!-- <custom-util-dialog
         :visible="customUtilDialog.visible"
         @close="setCustomUtilDialogVisible(false)"
         @save="onSaveCustomUtils"
-      />
+      /> -->
     </div>
   </div>
 </template>
 
 <script>
 import { ref, reactive } from "@vue/reactivity";
+import { onMounted, inject } from "@vue/runtime-core";
 import { nextTick } from "vue";
 import { useStore } from "vuex";
-import MoreUtils from "./MoreUtils/index.vue";
-import CustomUtilDialog from "./MoreUtils/CustomUtilDialog.vue";
+// import MoreUtils from "./MoreUtils/index.vue";
+// import CustomUtilDialog from "./MoreUtils/CustomUtilDialog.vue";
 import {
   DrawPanel,
   MeasurePanel,
-  SlicePanel,
-  DayLightPanel,
-  ElevationProfilePanel,
-  LineOfSightPanel,
-  ScreenShotPanel,
-  LocatePanel,
+  // SlicePanel,
+  // DayLightPanel,
+  // ElevationProfilePanel,
+  // LineOfSightPanel,
+  // ScreenShotPanel,
+  // LocatePanel,
 } from "./Utils/index.js";
-import { onMounted, inject } from "@vue/runtime-core";
+import common from "common";
 import { getLocalS } from "utils";
 import moreUtilPanel from "mock/moreUtilPanel.json";
 
 export default {
   name: "UtilsPanel",
 
-  components: {
-    MoreUtils,
-    CustomUtilDialog,
+ components: {
+    // MoreUtils,
+    // CustomUtilDialog,
     MeasurePanel,
     DrawPanel,
-    MeasurePanel,
-    SlicePanel,
-    DayLightPanel,
-    ElevationProfilePanel,
-    LineOfSightPanel,
-    ScreenShotPanel,
-    LocatePanel,
+    // MeasurePanel,
+    // SlicePanel,
+    // DayLightPanel,
+    // ElevationProfilePanel,
+    // LineOfSightPanel,
+    // ScreenShotPanel,
+    // LocatePanel,
   },
 
   setup(props, { emit }) {
-    const store = useStore();
+    const { dispatchMapEvent } = common();
 
     // 固定常用工具
     const commonUtils = ref([
       {
         component: "MeasurePanel",
-        classStyles: "iconfont icon-liangsuan",
+        classStyles: "iconfont icon-juliceliang",
         utilName: "量算",
         utilActive: false,
         eventSuffix: "Measure",
@@ -285,30 +286,6 @@ export default {
       }
 
       return classStyles;
-    };
-
-    /**
-     * 地图事件派遣
-     *
-     * @param {*} events 事件名或者一个包含事件对象的事件数组
-     * @param {*} data 传递数据
-     */
-    const dispatchMapEvent = (events, data) => {
-      const type = typeof events;
-
-      // 以对象方式单传一个方法
-      if (type === "string") {
-        store.dispatch("map/changeMapEvent", [
-          {
-            event: events,
-            data,
-          },
-        ]);
-      }
-      // 以数组方式传递多个方法
-      else if (type === "object") {
-        store.dispatch("map/changeMapEvent", events);
-      }
     };
 
     /**

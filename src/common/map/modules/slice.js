@@ -12,7 +12,7 @@
    * @param {*} view 视图
    * @param {*} data 传递数据
    */
-  onSlice: (view, data) => {
+  onOpenSlice: (view, data) => {
     removeWidget(view, widget);
 
     if (!data || !data.panelID) {

@@ -11,7 +11,7 @@
    * @param {*} view 视图
    * @param {*} data 传递数据
    */
-  onDayLight: (view, data) => {
+  onOpenDayLight: (view, data) => {
     removeWidget(view, widget);
 
     if (!data || !data.panelID) {
