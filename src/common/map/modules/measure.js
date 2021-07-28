@@ -1,7 +1,6 @@
-/**
+/*
  * 地图量算工具相关事件
  */
-
 import DistanceMeasurement2D from "@arcgis/core/widgets/DistanceMeasurement2D";
 import AreaMeasurement2D from "@arcgis/core/widgets/AreaMeasurement2D";
 import DirectLineMeasurement3D from "@arcgis/core/widgets/DirectLineMeasurement3D";

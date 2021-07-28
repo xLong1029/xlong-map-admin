@@ -1,7 +1,6 @@
-/**
+/*
  * 地图日照分析工具相关事件
  */
-
  import Daylight from "@arcgis/core/widgets/Daylight";
  import { removeWidget } from "utils/map";
  let widget = null;

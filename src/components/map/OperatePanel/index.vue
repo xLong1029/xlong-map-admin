@@ -55,9 +55,9 @@ export default {
 
     // 2/3D转换
     const onTransform = () => {
-      console.log("点击了2/3D切换按钮");
-
       const viewType = mapViewType.value === "3D" ? "2D" : "3D";
+      console.log(`点击了2/3D切换按钮，当前视图是${mapViewType.value}视图`);
+      
       emit("changeMapViewType", viewType);
       ElMessage.success(`您已成功切换${viewType}视图`);
     };
@@ -112,7 +112,7 @@ export default {
       margin-left: 8px;
       background: #fff;
       border-radius: $map-border-radius;
-      box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+      box-shadow: $map-box-shadow;
     }
 
     &-transform,

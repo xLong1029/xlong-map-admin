@@ -189,26 +189,25 @@ export default {
   position: absolute;
   cursor: pointer;
   z-index: 99;
-  right: 6px;
+  right: 8px;
   bottom: 10px;
   display: inline-block;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 24px;
-  border: 1px solid #fff;
   overflow: hidden;
   box-shadow: $map-box-shadow;
 
   &.has-operate-panel {
-    bottom: 245px;
+    bottom: 250px;
 
     &.has-bottom-coord {
-      bottom: 255px;
+      bottom: 260px;
     }
   }
 
   &.has-bottom-coord {
-    bottom: 35px;
+    bottom: 40px;
   }
 
   img {

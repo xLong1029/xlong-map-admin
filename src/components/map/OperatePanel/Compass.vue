@@ -112,7 +112,7 @@ export default {
 .compass-container {
   background: url("./../../../assets/images/compass-bg.png") no-repeat;
   background-size: 100% 100%;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: $map-box-shadow;
   width: 52px;
   height: 52px;
   border-radius: 24px;

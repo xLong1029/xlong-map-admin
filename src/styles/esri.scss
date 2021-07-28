@@ -1,4 +1,4 @@
-// cover some element-ui styles
+// cover some esri styles
 .esri-distance-measurement-2d,
 .esri-area-measurement-2d,
 .esri-direct-line-measurement-3d,
@@ -27,17 +27,17 @@
   border-color: $primary-color;
   border-radius: $map-border-radius;
 
-  &:hover{
+  &:hover {
     background: $primary-color;
     border-color: $primary-color;
   }
 
-  &:focus{
-      outline: none;
+  &:focus {
+    outline: none;
   }
-  &--secondary{
-      background: #fff;
-      color:$primary-color;
+  &--secondary {
+    background: #fff;
+    color: $primary-color;
   }
 }
 
@@ -71,66 +71,64 @@
     border-bottom: none;
   }
 
-  &__menu{
-      &-item{
-        box-shadow: none;
+  &__menu {
+    &-item {
+      box-shadow: none;
     }
-    &-content{
-        min-height: auto;
+    &-content {
+      min-height: auto;
     }
   }
 
-  &__action-toggle--on{
-    .esri-sketch__item-action-icon{
-        background: $primary-color;
-        box-shadow: none;
+  &__action-toggle--on {
+    .esri-sketch__item-action-icon {
+      background: $primary-color;
+      box-shadow: none;
     }
   }
 }
 
+.esri-slice {
+  &__container {
+    padding: 0;
+  }
 
-.esri-slice{
-    &__container{
-        padding: 0;
-    }
+  &__settings,
+  &__actions,
+  &__hint {
+    padding: 0;
+  }
 
-    &__settings,
-    &__actions,
-    &__hint {
-      padding: 0;
+  &__settings {
+    li {
+      background: #eeee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-right: 10px;
+      padding-bottom: 0;
+      margin-bottom: 10px;
+      border-radius: $map-border-radius;
     }
+  }
 
-    &__settings{
-        li{
-            background: #eeee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-right: 10px;
-            padding-bottom: 0;
-            margin-bottom: 10px;
-            border-radius: $map-border-radius;
-        }
-    }
-
-    &__cross{
-        top: 0;
-    }
+  &__cross {
+    top: 0;
+  }
 }
 
-.esri-select{
-  &:focus{
+.esri-select {
+  &:focus {
     outline: none;
   }
 }
 
-
-.esri-elevation-profile{
+.esri-elevation-profile {
   padding: 0;
 
-  &-legend-item{
-    &__collapse-toggle__icon{
-      &.esri-icon-down{
+  &-legend-item {
+    &__collapse-toggle__icon {
+      &.esri-icon-down {
         color: #fff;
       }
     }

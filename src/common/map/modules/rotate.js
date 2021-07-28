@@ -1,4 +1,4 @@
-/**
+/*
  * 地图旋转事件
  */
 export default {

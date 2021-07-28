@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    :title="title"
-    :modelValue="visible"
-    @close="onClose()"
-    :width="550"
-  >
+  <el-dialog :title="title" :modelValue="visible" @close="onClose()" :width="550">
     <el-form :model="form" :rules="rules" ref="formRef" label-width="90px">
       <el-form-item label="账户" prop=""
         ><span>{{ isNull(user.username) }}</span>
@@ -71,12 +66,14 @@
 
 <script>
 import { computed, reactive, ref } from "@vue/reactivity";
+import { onMounted } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
+// 表单
+import formJs from "common/form.js";
 // 过滤器
 import filter from "common/filter";
 // 通用模块
 import common from "common";
-import { onMounted } from "@vue/runtime-core";
 // 校验
 import { validPassword } from "utils/validate";
 
@@ -94,7 +91,7 @@ export default {
   },
   setup(props, { emit }) {
     const { store, showDevMessage } = common();
-
+    const { validForm } = formJs();
     const { isNull } = filter();
 
     // 用户信息
@@ -114,9 +111,7 @@ export default {
     // 表单规则
     const rules = reactive({
       nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
-      realname: [
-        { required: true, message: "请输入真实姓名", trigger: "blur" },
-      ],
+      realname: [{ required: true, message: "请输入真实姓名", trigger: "blur" }],
     });
 
     const submitLoading = ref(false);
@@ -132,43 +127,41 @@ export default {
     });
 
     // 保存修改
-    const onSubmit = () => {
-      formRef.value.validate(async (valid) => {
-        if (valid) {
-          try {
-            if (form.oldPassword) {
-              if (!form.newPassword) {
-                ElMessage.warning("请输入新密码");
-                return false;
-              } else if (!validPassword(form.newPassword)) {
-                ElMessage.warning("密码格式为6-16位字母或数组的组合");
-                return false;
-              } else if (!form.comfirmPassword) {
-                ElMessage.warning("请输入确认密码");
-                return false;
-              } else if (form.newPassword !== form.comfirmPassword) {
-                ElMessage.error("确认密码和新密码不一致");
-                return false;
-              }
+    const onSubmit = async () => {
+      const valid = await validForm(formRef.value, "信息填写有误，请检查");
+
+      if (valid) {
+        try {
+          if (form.oldPassword) {
+            if (!form.newPassword) {
+              ElMessage.warning("请输入新密码");
+              return false;
+            } else if (!validPassword(form.newPassword)) {
+              ElMessage.warning("密码格式为6-16位字母或数组的组合");
+              return false;
+            } else if (!form.comfirmPassword) {
+              ElMessage.warning("请输入确认密码");
+              return false;
+            } else if (form.newPassword !== form.comfirmPassword) {
+              ElMessage.error("确认密码和新密码不一致");
+              return false;
             }
-
-            submitLoading.value = true;
-
-            /* Demo-start */
-            setTimeout(() => {
-              showDevMessage();
-              submitLoading.value = false;
-            }, 500);
-            /* Demo-end */
-          } catch (err) {
-            ElMessage.error("用户名或者密码不正确");
-
-            submitLoading.value = false;
           }
-        } else {
-          ElMessage.error("信息填写有误，请检查");
+
+          submitLoading.value = true;
+
+          /* Demo-start */
+          setTimeout(() => {
+            showDevMessage();
+            submitLoading.value = false;
+          }, 500);
+          /* Demo-end */
+        } catch (err) {
+          ElMessage.error("用户名或者密码不正确");
+
+          submitLoading.value = false;
         }
-      });
+      }
     };
 
     const onClose = () => {

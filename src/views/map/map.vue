@@ -209,8 +209,8 @@ export default {
             arcGisMapView.watch("camera", (camera) => {
               let tilt = camera.tilt;
               let heading = camera.heading;
-              let position = camera.position;
-              console.log(tilt, heading, position);
+              // let position = camera.position;
+              // console.log(tilt, heading, position);
 
               emit("map-camera-change", {
                 tilt,

@@ -1,7 +1,7 @@
-/**
+/*
  * 地图放大缩小相关事件
  */
- import Zoom from "@arcgis/core/widgets/Zoom";
+import Zoom from "@arcgis/core/widgets/Zoom";
 
 export default {
   /**
@@ -12,12 +12,12 @@ export default {
     console.log("点击了放大按钮");
 
     let zoom = new Zoom({
-			viewModel: {  
-				view: view
-			}
-		})
+      viewModel: {
+        view: view,
+      },
+    });
 
-		zoom.viewModel.zoomIn()
+    zoom.viewModel.zoomIn();
   },
 
   /**
@@ -28,11 +28,11 @@ export default {
     console.log("点击了缩小按钮");
 
     let zoom = new Zoom({
-			viewModel: {  
-				view: view
-			}
-		})
+      viewModel: {
+        view: view,
+      },
+    });
 
-		zoom.viewModel.zoomOut()
-  }
+    zoom.viewModel.zoomOut();
+  },
 };

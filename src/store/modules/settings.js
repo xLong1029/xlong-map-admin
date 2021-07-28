@@ -1,4 +1,3 @@
-import ElementVariables from "@/styles/element-variables.scss";
 import defaultSettings from "@/settings";
 import { getLocalS, setLocalS } from "@/utils";
 
@@ -13,27 +12,25 @@ const {
   mapUtilsPanel,
   mapOperatePanel,
   switchMap,
-  mapBottomCoord
+  mapBottomCoord,
 } = settings;
 
+
 const state = {
-  // Element Plus主题
-  theme: ElementVariables.theme,
+  // 直接读取getLocalS的值会监听不到变化导致主题色无法改变
+  theme: defaultSettings.theme,
   showSettings,
   fixedHeader,
   mapResPanel,
   mapUtilsPanel,
   mapOperatePanel,
   switchMap,
-  mapBottomCoord
+  mapBottomCoord,
 };
 
 const mutations = {
   RESET_SETTING: (state) => {
     let setting = { ...defaultSettings };
-    
-    setting.theme = ElementVariables.theme;
-
     for (let i in setting) {
       // eslint-disable-next-line no-prototype-builtins
       if (state.hasOwnProperty(i)) {

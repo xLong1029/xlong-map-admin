@@ -1,3 +1,9 @@
+/*
+ * 模块 : 系统通用操作
+ * 作者 : 罗永梅（381612175@qq.com）
+ * 日期 : 2020-06-01
+ * 版本 : version 1.0
+ */
 import { computed } from "@vue/runtime-core";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";

@@ -5,12 +5,7 @@
         <img :src="logo" class="logo" /><span class="title">{{ title }}</span>
       </div>
       <div class="login__content">
-        <el-form
-          :model="form"
-          :rules="rules"
-          ref="loginFormRef"
-          label-width="0"
-        >
+        <el-form :model="form" :rules="rules" ref="formRef" label-width="0">
           <el-form-item prop="username">
             <el-input
               class="login__input"
@@ -51,7 +46,13 @@
         >
       </div>
     </div>
-    <div class="copyright">Copyright © {{ year }} <a class="link" target="blank" href="https://github.com/xLong1029/xlong-map-vue3">{{ companyName }}</a> All Rights Reserved.</div>
+    <div class="copyright">
+      Copyright © {{ year }}
+      <a class="link" target="blank" href="https://github.com/xLong1029/xlong-map-vue3">{{
+        companyName
+      }}</a>
+      All Rights Reserved.
+    </div>
   </div>
 </template>
 
@@ -60,6 +61,8 @@ import { ElMessage } from "element-plus";
 import Cookies from "js-cookie";
 // 通用模块
 import common from "common";
+// 表单
+import formJs from "common/form.js";
 // 工具
 import { encrypt, decrypt } from "utils";
 import { reactive, ref, computed, onMounted, watch } from "@vue/runtime-core";
@@ -71,6 +74,7 @@ export default {
 
   setup() {
     const { showDevMessage, store, toPage } = common();
+    const { validForm } = formJs();
 
     // 标题
     const title = computed(() => store.getters.sysTitle);
@@ -85,7 +89,7 @@ export default {
     const companyName = computed(() => store.getters.companyName);
 
     // 表单
-    const loginFormRef = ref();
+    const formRef = ref();
 
     const form = reactive({
       username: "",
@@ -120,45 +124,40 @@ export default {
     });
 
     // 登录
-    const onSubmit = () => {
-      loginFormRef.value.validate(async (valid) => {
-        if (valid) {
-          try {
-            submitLoading.value = true;
-            const userInfo = await store.dispatch("user/login", form);
-            if (remeberPwd.value) {
-              // 本地存储用户名和密码
-              // 本地存储用户名和密码
-              Cookies.set("username", form.username, {
-                expires: 7,
-              });
-              Cookies.set("password", encrypt(form.password), {
-                expires: 7,
-              });
-            }
+    const onSubmit = async () => {
+      const valid = await validForm(formRef.value, "信息填写有误，请检查");
 
-            // 获取可通过的路由
-            await store.dispatch("permission/generateRoutes", userInfo.roles);
-
-            // 更新用户信息
-            store.commit("user/SET_USER", userInfo);
-
-            ElMessage.success(
-              `尊敬的${userInfo.nickname}，欢迎使用${title.value}`
-            );
-            submitLoading.value = false;
-
-            toPage("/map");
-          } catch (err) {
-            ElMessage.error("用户名或者密码不正确");
-
-            submitLoading.value = false;
+      if (valid) {
+        try {
+          submitLoading.value = true;
+          const userInfo = await store.dispatch("user/login", form);
+          if (remeberPwd.value) {
+            // 本地存储用户名和密码
+            // 本地存储用户名和密码
+            Cookies.set("username", form.username, {
+              expires: 7,
+            });
+            Cookies.set("password", encrypt(form.password), {
+              expires: 7,
+            });
           }
+
+          // 获取可通过的路由
+          await store.dispatch("permission/generateRoutes", userInfo.roles);
+
+          // 更新用户信息
+          store.commit("user/SET_USER", userInfo);
+
+          ElMessage.success(`尊敬的${userInfo.nickname}，欢迎使用${title.value}`);
+          submitLoading.value = false;
+
+          toPage("/map");
+        } catch (err) {
+          ElMessage.error("用户名或者密码不正确");
+
+          submitLoading.value = false;
         }
-        else{
-          ElMessage.error("信息填写有误，请检查");
-        }
-      });
+      }
     };
 
     // 忘记密码/重置密码
@@ -173,7 +172,7 @@ export default {
       submitLoading,
       year,
       companyName,
-      loginFormRef,
+      formRef,
       form,
       rules,
       onSubmit,
@@ -239,7 +238,7 @@ export default {
   text-align: center;
   bottom: 24px;
 
-  .link{
+  .link {
     color: $primary-color;
   }
 }

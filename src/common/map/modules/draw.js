@@ -1,7 +1,6 @@
-/**
+/*
  * 地图绘制工具相关事件
  */
-
 import Sketch from "@arcgis/core/widgets/Sketch";
 import { removeWidget } from "utils/map";
 let widget = null;

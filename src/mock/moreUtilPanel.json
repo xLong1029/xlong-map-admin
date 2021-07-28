@@ -1,19 +1,9 @@
 {
   "general": [
     {
-      "component": "GraphicAnalysis",
-      "classStyles": "iconfont icon-fenxi",
-      "utilName": "分析",
-      "utilActive": false,
-      "eventSuffix": null,
-      "panelID": null,
-      "enable2D": true,
-      "enable3D": true
-    },
-    {
       "component": "ScreenShotPanel",
       "classStyles": "iconfont icon-dayin",
-      "utilName": "打印",
+      "utilName": "截图",
       "utilActive": false,
       "eventSuffix": "ScreenShot",
       "panelID": null,
@@ -27,16 +17,6 @@
       "utilActive": false,
       "eventSuffix": "Locate",
       "panelID": "locatePanel",
-      "enable2D": true,
-      "enable3D": true
-    },
-    {
-      "component": "CollectPanel",
-      "classStyles": "iconfont icon-shoucang",
-      "utilName": "收藏",
-      "utilActive": false,
-      "eventSuffix": "Collect",
-      "panelID": null,
       "enable2D": true,
       "enable3D": true
     }
@@ -139,16 +119,6 @@
           "panelID": "elevationProfilePanel",
           "enable2D": false,
           "enable3D": true
-        },
-        {
-          "component": "PerspectivePanel",
-          "classStyles": "iconfont icon-toushi",
-          "utilName": "透视",
-          "utilActive": false,
-          "eventSuffix": "Perspective",
-          "panelID": "perspectivePanel",
-          "enable2D": false,
-          "enable3D": true
         }
       ]
     },
@@ -156,62 +126,12 @@
       "title": "场景效果",
       "children": [
         {
-          "component": "TimeAxis",
-          "classStyles": "iconfont icon-shijianzhou",
-          "utilName": "时间轴",
-          "utilActive": false,
-          "eventSuffix": null,
-          "panelID": null,
-          "enable2D": false,
-          "enable3D": false
-        },
-        {
-          "component": "Panorama",
-          "classStyles": "iconfont icon-quanjingzhaopian",
-          "utilName": "全景照片",
-          "utilActive": false,
-          "eventSuffix": null,
-          "panelID": null,
-          "enable2D": false,
-          "enable3D": false
-        },
-        {
-          "component": "FlyPanel",
-          "classStyles": "iconfont icon-feihang",
-          "utilName": "飞行",
-          "utilActive": false,
-          "eventSuffix": "Fly",
-          "panelID": "flyPanel",
-          "enable2D": false,
-          "enable3D": false
-        },
-        {
           "component": "DayLightPanel",
           "classStyles": "iconfont icon-rizhao1",
           "utilName": "日照",
           "utilActive": false,
           "eventSuffix": "DayLight",
           "panelID": "dayLightPanel",
-          "enable2D": false,
-          "enable3D": false
-        },
-        {
-          "component": "WaterPanel",
-          "classStyles": "iconfont icon-shuimian",
-          "utilName": "水面",
-          "utilActive": false,
-          "eventSuffix": "Water",
-          "panelID": "waterPanel",
-          "enable2D": false,
-          "enable3D": false
-        },
-        {
-          "component": "SnowPanel",
-          "classStyles": "iconfont icon-yuxuefengshuang",
-          "utilName": "风霜雨雪",
-          "utilActive": false,
-          "eventSuffix": "Snow",
-          "panelID": "snowPanel",
           "enable2D": false,
           "enable3D": false
         }
