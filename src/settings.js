@@ -39,7 +39,7 @@ export default {
    * @type {boolean} true | false
    * @description 是否显示地图资源面板
    */
-  mapResPanel: false,
+  mapResPanel: true,
 
   /**
    * @type {boolean} true | false

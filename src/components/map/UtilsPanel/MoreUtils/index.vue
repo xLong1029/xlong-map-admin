@@ -16,7 +16,7 @@
     </div>
 
     <!-- 其他工具列表 -->
-    <div v-for="(item, index) in UtilList" :key="'other-utils' + index">
+    <div v-for="(item, index) in utilList" :key="'other-utils' + index">
       <div class="more-util-list__title">{{ item.title }}</div>
       <ul class="more-util-list">
         <li
@@ -63,7 +63,7 @@ export default {
     const { isUtilDisabled, isUtilActive } = utilsPanel();
 
     const generalUtils = reactive([...moreUtilPanel.general]);
-    const UtilList = reactive([...moreUtilPanel.list]);
+    const utilList = reactive([...moreUtilPanel.list]);
 
     /**
      * 工具点击事件
@@ -103,7 +103,7 @@ export default {
 
     return {
       generalUtils,
-      UtilList,
+      utilList,
       onClickUtil,
       setClassStyles,
       onCustomUtil,

@@ -98,8 +98,8 @@ export default {
 .map-res-panel {
   position: absolute;
   z-index: 99;
-  top: 10px;
-  left: 10px;
+  top: 15px;
+  left: 15px;
   background: #fff;
   border-radius: $map-border-radius;
   width: 400px;
@@ -138,17 +138,18 @@ export default {
   }
 
   &__content {
-    height: calc(100vh - 60px);
+    height: calc(100vh - 70px);
+
     &.show-header {
-      height: calc(100vh - #{$header-height} - 60px);
+      height: calc(100vh - #{$header-height} - 70px);
 
       &.has-bottom-coord {
-        height: calc(100vh - #{$header-height} - #{$bottom-height} - 60px);
+        height: calc(100vh - #{$header-height} - #{$bottom-height} - 70px);
       }
     }
 
     &.has-bottom-coord {
-      height: calc(100vh - #{$bottom-height} - 60px);
+      height: calc(100vh - #{$bottom-height} - 70px);
     }
 
     :deep(.el-tabs__nav-scroll) {

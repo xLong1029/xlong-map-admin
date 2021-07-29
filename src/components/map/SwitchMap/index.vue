@@ -89,22 +89,22 @@ export default {
 <style lang="scss" scoped>
 .switch-map {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
+  bottom: 15px;
+  left: 15px;
   background: #fff;
   border-radius: $map-border-radius;
   box-shadow: $map-box-shadow;
 
   &.has-map-res-panel {
-    left: 420px;
+    left: 430px;
 
     &.layer-fold {
-      left: 10px;
+      left: 15px;
     }
   }
 
   &.has-bottom-coord {
-    bottom: calc(#{$bottom-height} + 10px);
+    bottom: calc(#{$bottom-height} + 15px);
   }
 
   &__title {

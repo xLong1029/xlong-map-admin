@@ -78,7 +78,8 @@ import common from "common";
 import { validPassword } from "utils/validate";
 
 export default {
-  name: "mapResPanel",
+  name: "AccountSetting",
+
   props: {
     visible: {
       type: Boolean,
@@ -89,6 +90,7 @@ export default {
       default: "账户设置",
     },
   },
+
   setup(props, { emit }) {
     const { store, showDevMessage } = common();
     const { validForm } = formJs();

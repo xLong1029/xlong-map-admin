@@ -23,7 +23,7 @@ import {
   ElMessageBox,
   ElNotification,
 } from "element-plus";
-// import "element-plus/packages/theme-chalk/src/index.scss";
+import "element-plus/packages/theme-chalk/src/index.scss";
 import "element-plus/packages/theme-chalk/src/base.scss";
 
 const components = [

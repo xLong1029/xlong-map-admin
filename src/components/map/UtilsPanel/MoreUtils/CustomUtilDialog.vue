@@ -29,7 +29,7 @@
     </div>
 
     <!-- 其他工具列表 -->
-    <div v-for="(item, index) in UtilList" :key="'other-utils' + index">
+    <div v-for="(item, index) in utilList" :key="'other-utils' + index">
       <div class="more-util-list__title">{{ item.title }}</div>
       <draggable
         class="more-util-list"
@@ -120,7 +120,7 @@ export default {
 
   setup(props, { emit }) {
     const generalUtils = reactive([...moreUtilPanel.general]);
-    const UtilList = reactive([...moreUtilPanel.list]);
+    const utilList = reactive([...moreUtilPanel.list]);
 
     // 自定义常用工具
     const customUtils = ref([]);
@@ -185,7 +185,7 @@ export default {
 
     return {
       generalUtils,
-      UtilList,
+      utilList,
       customUtils,
       onClose,
       onChangeCustomUtil,

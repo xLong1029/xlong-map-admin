@@ -6,7 +6,7 @@
       <span class="title">{{ title }}</span>
     </div>
     <div v-if="user && user.realname" class="header-content-right">
-      <el-popover placement="bottom" :width="250" trigger="hover">
+      <!-- <el-popover placement="bottom" :width="250" trigger="hover">
         <template #reference>
           <div class="user-info">
             <span v-if="user.avatar" class="user-avatar">
@@ -18,7 +18,7 @@
         <div class="user-info-container">
           <div class="user-info-title">
             <span>用户信息</span>
-            <a class="url-btn fr" @click="setAccountSetting(true)">
+            <a class="url-btn fr" @click="setAccountSettingVisible(true)">
               账户设置
               <i class="el-icon-arrow-right"></i>
             </a>
@@ -37,14 +37,25 @@
             </li>
           </ul>
         </div>
-      </el-popover>
+      </el-popover> -->
+      <account-info-popover @on-account-setting="setAccountSettingVisible(true)">
+        <div class="user-info">
+          <span v-if="user.avatar" class="user-avatar">
+            <img :src="user.avatar" />
+          </span>
+          <span>{{ isNull(user.realname) }}</span>
+        </div>
+      </account-info-popover>
       <el-popconfirm title="确认退出系统吗？" @confirm="logout()">
         <template #reference>
           <span class="header-content-right-item link">注销</span>
         </template>
       </el-popconfirm>
     </div>
-    <account-setting :visible="accountSettingVisible" @close="setAccountSetting(false)"/>
+    <account-setting
+      :visible="accountSettingVisible"
+      @close="setAccountSettingVisible(false)"
+    />
   </div>
 </template>
 
@@ -59,12 +70,15 @@ import common from "common";
 import AccountSetting from "components/user/AccountSetting/index.vue";
 // logo图片
 import logo from "assets/images/logo.png";
+// 组件
+import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
 
 export default {
   name: "AppHeader",
 
   components: {
-    AccountSetting
+    AccountInfoPopover,
+    AccountSetting,
   },
 
   setup() {
@@ -95,9 +109,9 @@ export default {
     };
 
     // 显示账户设置
-    const setAccountSetting = (val) => {
+    const setAccountSettingVisible = (val) => {
       accountSettingVisible.value = val;
-    }
+    };
 
     return {
       logo,
@@ -106,7 +120,7 @@ export default {
       isNull,
       accountSettingVisible,
       logout,
-      setAccountSetting
+      setAccountSettingVisible,
     };
   },
 };
@@ -153,28 +167,6 @@ export default {
   cursor: pointer;
   display: flex;
   align-items: center;
-
-  &-title {
-    padding-top: 5px;
-    padding-bottom: 10px;
-    border-bottom: $border;
-
-    .url-btn {
-      &:hover {
-        color: $primary-color;
-      }
-    }
-  }
-
-  &-list {
-    &-item {
-      margin: 10px 0;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-  }
 }
 
 .user-avatar {

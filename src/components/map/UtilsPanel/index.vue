@@ -1,5 +1,5 @@
 <template>
-  <div class="utils-panel">
+  <div class="utils-panel" :class="fixedHeader ? 'has-header' : ''">
     <div class="utils-panel-wrapper">
       <!-- 常用工具列表 -->
       <div class="util-list-wrapper">
@@ -37,9 +37,17 @@
             <i class="util-list-item__icon iconfont icon-clear"></i>
             <span class="util-list-item__name">清屏</span>
           </div>
-        </div>
 
-        <div class="more" @click="onClickMore">更多</div>
+          <div class="util-list-item" @click="onClickMore()">
+            <i class="util-list-item__icon iconfont icon-gongjuxiang"></i>
+            <span class="util-list-item__name">工具箱</span>
+          </div>
+
+          <div class="util-list-item" @click="onClickSetting()">
+            <i class="util-list-item__icon iconfont icon-setting"></i>
+            <span class="util-list-item__name">设置</span>
+          </div>
+        </div>
       </div>
 
       <!-- 工具面板 -->
@@ -80,7 +88,7 @@
 import { ref, reactive } from "@vue/reactivity";
 import { onMounted, inject } from "@vue/runtime-core";
 import { nextTick } from "vue";
-import { useStore } from "vuex";
+// 组件
 // import MoreUtils from "./MoreUtils/index.vue";
 // import CustomUtilDialog from "./MoreUtils/CustomUtilDialog.vue";
 import {
@@ -93,14 +101,17 @@ import {
   // ScreenShotPanel,
   // LocatePanel,
 } from "./Utils/index.js";
+// 通用模块
 import common from "common";
+// 工具
 import { getLocalS } from "utils";
+// json数据
 import moreUtilPanel from "mock/moreUtilPanel.json";
 
 export default {
   name: "UtilsPanel",
 
- components: {
+  components: {
     // MoreUtils,
     // CustomUtilDialog,
     MeasurePanel,
@@ -117,15 +128,22 @@ export default {
   setup(props, { emit }) {
     const { dispatchMapEvent } = common();
 
+    // 获取顶级组件传递的值：当前地图视图是2D或者3D
+    const mapViewType = inject("getMapViewType");
+    // 获取顶级组件传递的值：是否显示固定头部
+    const fixedHeader = inject("getFixedHeader");
+
     // 固定常用工具
     const commonUtils = ref([
       {
         component: "MeasurePanel",
-        classStyles: "iconfont icon-juliceliang",
+        classStyles: "iconfont icon-celianggongju",
         utilName: "量算",
         utilActive: false,
         eventSuffix: "Measure",
         panelID: null,
+        enable2D: true,
+        enable3D: true,
       },
       {
         component: "DrawPanel",
@@ -134,6 +152,8 @@ export default {
         utilActive: false,
         eventSuffix: "Draw",
         panelID: "drawPanel",
+        enable2D: true,
+        enable3D: true,
       },
     ]);
 
@@ -162,9 +182,6 @@ export default {
 
     // 高亮面板
     const highlightPanels = ref([]);
-
-    // 获取顶级组件传递的值：当前地图视图是2D或者3D
-    const mapViewType = inject("getMapViewType");
 
     // 自定义常用工具
     const customUtils = ref([]);
@@ -402,7 +419,11 @@ export default {
       handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
     };
 
+    // 设置
+    const onClickSetting = () => {};
+
     return {
+      fixedHeader,
       mapViewType,
       panelList,
       commonUtils,
@@ -410,17 +431,16 @@ export default {
       moreUtils,
       customUtilDialog,
       highlightPanels,
+      setPanelVisble,
+      setCustomUtilDialogVisible,
+      setClassStyles,
       onClosePanel,
       onClearScreen,
       onClickMore,
-      setPanelVisble,
       onClickUtil,
       onClickMoreUtils,
-      setCustomUtilDialogVisible,
       onSaveCustomUtils,
-      isHighlightPanel,
-      handleHighlightPanels,
-      setClassStyles,
+      onClickSetting,
     };
   },
 };
@@ -428,8 +448,12 @@ export default {
 <style lang="scss" scoped>
 .utils-panel {
   position: absolute;
-  top: 10px;
-  right: 15px;
+  top: 15px;
+  right: 70px;
+
+  &.has-header {
+    right: 15px;
+  }
 
   &-wrapper {
     position: relative;
@@ -451,24 +475,28 @@ export default {
 }
 
 .util-list {
-  padding: 6px;
+  padding: 5px 0;
+  display: flex;
 
   &-wrapper {
     background: #fff;
     padding: 2px;
     border-radius: $map-border-radius;
     box-shadow: $map-box-shadow;
-    width: 44px;
+    height: 38px;
+    overflow: hidden;
   }
 
   &-item {
     cursor: pointer;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    margin-bottom: 5px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #eee;
+    padding: 2px 10px;
+    border-right: 1px dashed #eee;
+
+    &:hover {
+      color: $primary-color;
+    }
 
     &.is-active {
       color: $primary-color;
@@ -476,11 +504,7 @@ export default {
 
     &.is-disabled {
       cursor: not-allowed;
-
-      .util-list-item__icon,
-      .util-list-item__name {
-        color: #c7c7c7;
-      }
+      color: #c7c7c7;
     }
 
     &:last-child {
@@ -489,11 +513,11 @@ export default {
     }
 
     &__icon {
-      font-size: 24px;
+      font-size: 18px;
+      margin-right: 3px;
     }
 
     &__name {
-      margin-top: 2px;
       font-size: 12px;
       text-align: center;
     }

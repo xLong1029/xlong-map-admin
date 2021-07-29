@@ -92,11 +92,11 @@ export default {
 <style lang="scss" scoped>
 .operate-panel {
   position: absolute;
-  bottom: 10px;
+  bottom: 15px;
   right: 8px;
 
   &.has-bottom-coord {
-    bottom: calc(10px + #{$bottom-height});
+    bottom: calc(15px + #{$bottom-height});
   }
 
   .iconfont {

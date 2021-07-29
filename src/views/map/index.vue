@@ -26,23 +26,25 @@
       :map-bottom-coord="mapBottomCoord"
       @change-map-view-type="changeMapViewType"
     />
-    <span
+
+    <account-info-popover
       v-if="user.avatar && !fixedHeader"
-      :class="[
-        'user-avatar',
-        mapOperatePanel ? 'has-operate-panel' : '',
-        mapBottomCoord ? 'has-bottom-coord' : '',
-      ]"
-      @click="setAccountSetting(true)"
+      @on-account-setting="setAccountSettingVisible(true)"
     >
-      <img :src="user.avatar" />
-    </span>
+      <span
+        v-if="user.avatar && !fixedHeader"
+        class="user-avatar"
+        @click="setAccountSettingVisible(true)"
+      >
+        <img :src="user.avatar" />
+      </span>
+    </account-info-popover>
     <bottom-coord
       v-if="mapBottomCoord"
       :companyName="companyName"
       @map-set-view-scale="onMapSetView"
     />
-    <account-setting :visible="accountSettingVisible" @close="setAccountSetting(false)" />
+    <account-setting :visible="accountSettingVisible" @close="setAccountSettingVisible(false)" />
   </div>
 </template>
 
@@ -57,6 +59,7 @@ import UtilsPanel from "components/map/UtilsPanel/index.vue";
 import OperatePanel from "components/map/OperatePanel/index.vue";
 import BottomCoord from "components/map/BottomCoord/index.vue";
 import AccountSetting from "components/user/AccountSetting/index.vue";
+import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
 
 export default {
   name: "Home",
@@ -69,6 +72,7 @@ export default {
     OperatePanel,
     BottomCoord,
     AccountSetting,
+    AccountInfoPopover,
   },
 
   setup() {
@@ -117,7 +121,7 @@ export default {
     const foldMapResPanel = ref(false);
 
     // 显示账户设置
-    const setAccountSetting = (val) => {
+    const setAccountSettingVisible = (val) => {
       accountSettingVisible.value = val;
     };
 
@@ -168,7 +172,7 @@ export default {
       accountSettingVisible,
       coordInfo,
       mapRef,
-      setAccountSetting,
+      setAccountSettingVisible,
       onMapPointerMove,
       onMapScaleChange,
       onMapSetView,
@@ -188,26 +192,14 @@ export default {
   position: absolute;
   cursor: pointer;
   z-index: 99;
-  right: 8px;
-  bottom: 10px;
+  right: 10px;
+  top: 10px;
   display: inline-block;
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   border-radius: 24px;
   overflow: hidden;
   box-shadow: $map-box-shadow;
-
-  &.has-operate-panel {
-    bottom: 235px;
-
-    &.has-bottom-coord {
-      bottom: 260px;
-    }
-  }
-
-  &.has-bottom-coord {
-    bottom: 35px;
-  }
 
   img {
     width: 100%;
