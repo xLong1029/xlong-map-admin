@@ -4,14 +4,7 @@
       <slot></slot>
     </template>
     <div class="user-info-container">
-      <div class="user-info-title">
-        <span>用户信息</span>
-        <a class="url-btn fr" @click="onAccountSetting(true)">
-          账户设置
-          <i class="el-icon-arrow-right"></i>
-        </a>
-      </div>
-      <ul class="user-info-list mt-10">
+      <ul class="user-info-list">
         <li class="user-info-list-item">账号：{{ isNull(user.username) }}</li>
         <li class="user-info-list-item">昵称：{{ user.nickname }}</li>
         <li class="user-info-list-item">真实姓名：{{ isNull(user.realname) }}</li>
@@ -20,15 +13,27 @@
           <el-tag v-if="user.roles.indexOf('admin') >= 0">管理员</el-tag>
         </li>
       </ul>
+      <div class="user-info-operate">
+        <span class="btn" @click="onAccountSetting(true)">
+          <i class="el-icon-user"></i>
+          账户设置
+        </span>
+        <span class="btn" @click="onLogout">
+          <i class="el-icon-switch-button"></i>
+          退出登录
+        </span>
+      </div>
     </div>
   </el-popover>
 </template>
 
 <script>
 import { computed } from "@vue/reactivity";
+import { ElMessage } from "element-plus";
+// 通用模块
+import common from "common";
 // 过滤器
 import filter from "common/filter";
-import { useStore } from "vuex";
 
 export default {
   name: "AccountInfoPopover",
@@ -36,7 +41,7 @@ export default {
   emits: ["on-account-setting"],
 
   setup(props, { emit }) {
-    const store = useStore();
+    const { store, toPage } = common();
 
     const { isNull } = filter();
 
@@ -47,34 +52,49 @@ export default {
       emit("on-account-setting", val);
     };
 
+    // 注销
+    const onLogout = async () => {
+      // TODO:需要用户确认退出
+      try {
+        await store.dispatch("user/logout");
+        await store.dispatch("permission/generateRoutes", null);
+        ElMessage.success(`您已退出${title.value}`);
+        toPage("/login");
+      } catch (err) {
+        console.log(err);
+        toPage("/login");
+      }
+    };
+
     return {
       user,
       isNull,
       onAccountSetting,
+      onLogout,
     };
   },
 };
 </script>
 <style lang="scss" scoped>
 .user-info {
-  &-title {
-    padding-top: 5px;
-    padding-bottom: 10px;
-    border-bottom: $border;
-
-    .url-btn {
-      &:hover {
-        color: $primary-color;
-      }
+  &-list {
+    &-item {
+      width: 50%;
+      margin-bottom: 10px;
     }
   }
 
-  &-list {
-    &-item {
-      margin: 10px 0;
+  &-operate {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: $border;
 
-      &:last-child {
-        margin-bottom: 0;
+    .btn {
+      cursor: pointer;
+
+      &:hover {
+        color: $primary-color;
       }
     }
   }
