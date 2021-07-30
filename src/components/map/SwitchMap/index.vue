@@ -104,14 +104,6 @@ export default {
   &.has-bottom-coord {
     bottom: calc(#{$bottom-height} + 15px);
   }
-
-  // &__title {
-  //   padding: 15px;
-  // }
-
-  // &__content {
-  //   padding: 0 5px 15px 5px;
-  // }
 }
 
 .maps-list {

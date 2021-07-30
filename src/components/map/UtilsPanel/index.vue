@@ -43,10 +43,10 @@
             <span class="util-list-item__name">工具箱</span>
           </div>
 
-          <div class="util-list-item" @click="onClickSetting()">
+          <!-- <div class="util-list-item" @click="onClickSetting()">
             <i class="util-list-item__icon iconfont icon-setting"></i>
-            <span class="util-list-item__name">设置</span>
-          </div>
+            <span class="util-list-item__name">自定义</span>
+          </div> -->
         </div>
       </div>
 
@@ -66,13 +66,13 @@
       </template>
 
       <!-- 更多工具 -->
-      <!-- <more-utils
+      <more-utils
         v-if="moreUtils.visible"
         :map-view-type="mapViewType"
         :highlight-panels="highlightPanels"
         @click-util="onClickMoreUtils"
         @click-custom="setCustomUtilDialogVisible(true)"
-      /> -->
+      />
 
       <!-- 自定义工具栏 -->
       <!-- <custom-util-dialog
@@ -89,7 +89,7 @@ import { ref, reactive } from "@vue/reactivity";
 import { onMounted, inject } from "@vue/runtime-core";
 import { nextTick } from "vue";
 // 组件
-// import MoreUtils from "./MoreUtils/index.vue";
+import MoreUtils from "./MoreUtils/index.vue";
 // import CustomUtilDialog from "./MoreUtils/CustomUtilDialog.vue";
 import {
   DrawPanel,
@@ -103,16 +103,15 @@ import {
 } from "./Utils/index.js";
 // 通用模块
 import common from "common";
+import utilsPanel from "common/utilsPanel.js";
 // 工具
 import { getLocalS } from "utils";
-// json数据
-import moreUtilPanel from "mock/moreUtilPanel.json";
 
 export default {
   name: "UtilsPanel",
 
   components: {
-    // MoreUtils,
+    MoreUtils,
     // CustomUtilDialog,
     MeasurePanel,
     DrawPanel,
@@ -127,6 +126,7 @@ export default {
 
   setup(props, { emit }) {
     const { dispatchMapEvent } = common();
+    const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
 
     // 获取顶级组件传递的值：当前地图视图是2D或者3D
     const mapViewType = inject("getMapViewType");
@@ -331,34 +331,6 @@ export default {
       } else if (!utilActive && index >= 0) {
         highlightPanels.value.splice(index, 1);
       }
-    };
-
-    /**
-     * 判断工具是否禁止
-     * @param {*} enable2D 2D模式下是否可用
-     * @param {*} enable3D 2D模式下是否可用
-     * @param {*} mapViewType 当前地图视图为2D或3D
-     * @returns ture/false
-     */
-    const isUtilDisabled = (enable2D, enable3D, mapViewType) => {
-      if (
-        (enable2D && mapViewType === "3D" && !enable3D) ||
-        (enable3D && mapViewType === "2D" && !enable2D)
-      ) {
-        return true;
-      }
-      return false;
-    };
-
-    /**
-     * 当前面板是否高亮
-     * @param {*} hPanels 当前实例的高亮面板对象
-     * @param {*} component 当前面板对应的组件
-     * @returns ture/false
-     */
-    const isUtilActive = (hPanels, component) => {
-      const index = hPanels.findIndex((e) => e.component === component);
-      return index >= 0;
     };
 
     // 当前面板是否高亮

@@ -12,7 +12,8 @@
           <span>昵称：</span><span>{{ user.nickname }}</span>
         </li>
         <li class="user-info-list-item">
-          <span>角色：</span><el-tag v-if="user.roles.indexOf('admin') >= 0" size="small">管理员</el-tag>
+          <span>角色：</span
+          ><el-tag v-if="user.roles.indexOf('admin') >= 0" size="small">管理员</el-tag>
         </li>
       </ul>
       <div class="user-info-operate">
@@ -32,6 +33,7 @@
 <script>
 import { computed } from "@vue/reactivity";
 import { ElMessage } from "element-plus";
+import { ElMessageBox } from "element-plus";
 // 通用模块
 import common from "common";
 // 过滤器
@@ -54,18 +56,23 @@ export default {
       emit("on-account-setting", val);
     };
 
-    // 注销
-    const onLogout = async () => {
-      // TODO:需要用户确认退出
-      try {
-        await store.dispatch("user/logout");
-        await store.dispatch("permission/generateRoutes", null);
-        ElMessage.success(`您已退出${title.value}`);
-        toPage("/login");
-      } catch (err) {
-        console.log(err);
-        toPage("/login");
-      }
+    // 退出登录
+    const onLogout = () => {
+      ElMessageBox.confirm("确认登录吗？", "温馨提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(async () => {
+        try {
+          await store.dispatch("user/logout");
+          await store.dispatch("permission/generateRoutes", null);
+          ElMessage.success(`您已退出${title.value}`);
+          toPage("/login");
+        } catch (err) {
+          console.log(err);
+          toPage("/login");
+        }
+      });
     };
 
     return {

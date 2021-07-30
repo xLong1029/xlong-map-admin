@@ -30,18 +30,12 @@
         </li>
       </ul>
     </div>
-
-    <!-- 自定义工具栏 -->
-    <div class="custiom-utils-container" @click="onCustomUtil">
-      <i class="el-icon-plus mr-5"></i><span>自定义工具栏</span>
-    </div>
   </div>
 </template>
 
 <script>
-import moreUtilPanel from "mock/moreUtilPanel.json";
 import { reactive } from "@vue/reactivity";
-import utilsPanel from "common/utilsPanel";
+import utilsPanel from "common/utilsPanel.js";
 
 export default {
   name: "moreUtil",
@@ -60,7 +54,7 @@ export default {
   },
 
   setup(props, { emit }) {
-    const { isUtilDisabled, isUtilActive } = utilsPanel();
+    const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
 
     const generalUtils = reactive([...moreUtilPanel.general]);
     const utilList = reactive([...moreUtilPanel.list]);
@@ -113,20 +107,4 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~@/styles/more-utils.scss";
-
-.custiom-utils-container {
-  border: 1px dashed #ddd;
-  background: #f5f5f5;
-  border-radius: $map-border-radius;
-  text-align: center;
-  padding: 3px;
-  font-size: 12px;
-  color: #666;
-  cursor: pointer;
-
-  &:hover {
-    border-color: $primary-color;
-    color: $primary-color;
-  }
-}
 </style>
