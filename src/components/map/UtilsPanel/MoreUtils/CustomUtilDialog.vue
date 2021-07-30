@@ -38,7 +38,7 @@
 
     <!-- 拖拽区域 -->
     <div class="setting-conatiner">
-      <div class="darg-container" @click="onCustomUtil">
+      <div class="drag-container" @click="onCustomUtil">
         <div v-if="!customUtils.length" class="mt-10">
           <i class="el-icon-plus"></i>
           <span class="block mt-10">拖动工具到此处</span>
@@ -237,7 +237,7 @@ export default {
   justify-content: center;
 }
 
-.darg-container {
+.drag-container {
   width: 100%;
   position: relative;
   border: 1px dashed #ddd;
