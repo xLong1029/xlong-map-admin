@@ -8,7 +8,7 @@
       <div>
         <button
           class="action-button esri-icon-media"
-          :class="activeButton === 'screenShot' ? 'is-active' : ''"
+          :class="{ 'is-active': activeButton === 'screenShot' }"
           id="screenShotButton"
           type="button"
           title="截图"

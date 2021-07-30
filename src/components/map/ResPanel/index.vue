@@ -6,11 +6,8 @@
     </div>
     <div
       v-if="!foldMapResPanel"
-      :class="[
-        'map-res-panel__content',
-        fixedHeader ? 'show-header' : '',
-        mapBottomCoord ? 'has-bottom-coord' : '',
-      ]"
+      class="map-res-panel__content"
+      :class="{ 'show-header': fixedHeader, 'has-bottom-coord': mapBottomCoord }"
     >
       <el-tabs v-model="activeName">
         <el-tab-pane

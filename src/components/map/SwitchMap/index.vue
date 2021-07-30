@@ -7,18 +7,18 @@
       mapBottomCoord ? 'has-bottom-coord' : '',
     ]"
   >
-      <ul class="maps-list">
-        <li
-          class="maps-list-item"
-          :class="activeMap === index ? 'active' : ''"
-          v-for="(item, index) in maps"
-          :key="'map' + index"
-          @click="onChangeMap(item, index)"
-        >
-          <img class="maps-list-item__img" :src="item.img" />
-          <span class="maps-list-item__name">{{ item.name }}</span>
-        </li>
-      </ul>
+    <ul class="maps-list">
+      <li
+        class="maps-list-item"
+        :class="{ active: activeMap === index }"
+        v-for="(item, index) in maps"
+        :key="'map' + index"
+        @click="onChangeMap(item, index)"
+      >
+        <img class="maps-list-item__img" :src="item.img" />
+        <span class="maps-list-item__name">{{ item.name }}</span>
+      </li>
+    </ul>
   </div>
 </template>
 

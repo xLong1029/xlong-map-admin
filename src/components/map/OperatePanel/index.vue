@@ -11,12 +11,12 @@
     <div class="map-zoom">
       <i
         class="iconfont icon-fangda"
-        :class="coordInfo.scale <= 1500 ? 'is-disabled' : ''"
+        :class="{ 'is-disabled': coordInfo.scale <= 1500 }"
         @click="onZoomIn()"
       ></i>
       <i
         class="iconfont icon-suoxiao"
-        :class="coordInfo.scale >= 33000000 ? 'is-disabled' : ''"
+        :class="{ 'is-disabled': coordInfo.scale >= 33000000 }"
         @click="onZoomOut()"
       ></i>
     </div>

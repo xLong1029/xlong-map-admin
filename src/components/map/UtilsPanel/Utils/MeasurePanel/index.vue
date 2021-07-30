@@ -8,7 +8,7 @@
       <div>
         <button
           class="action-button esri-icon-measure-line"
-          :class="activeButton === 'distance' ? 'is-active' : ''"
+          :class="{ 'is-active': ctiveButton === 'distance' }"
           id="distanceButton"
           type="button"
           title="测量两点之间的距离"
@@ -20,7 +20,7 @@
         ></button>
         <button
           class="action-button esri-icon-measure-area"
-          :class="activeButton === 'area' ? 'is-active' : ''"
+          :class="{ 'is-active': ctiveButton === 'area' }"
           id="areaButton"
           type="button"
           title="计算面积"
@@ -57,7 +57,7 @@ export default {
     mapViewType: {
       type: String,
       default: "3D",
-    }
+    },
   },
 
   setup(props, content) {

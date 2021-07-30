@@ -3,19 +3,19 @@
     <span
       ref="compassRef"
       class="pointer"
-      :class="mapViewType === '2D' ? 'is-disabled' : ''"
+      :class="{ 'is-disabled': mapViewType === '2D'}"
       title="恢复正北方向"
       @click="onReset"
     ></span>
     <span
       class="arrow-left"
-      :class="mapViewType === '2D' ? 'is-disabled' : ''"
+      :class="{ 'is-disabled': mapViewType === '2D'}"
       title="逆时针转动45°"
       @click="onRotate(-1)"
     ></span>
     <span
       class="arrow-right"
-      :class="mapViewType === '2D' ? 'is-disabled' : ''"
+      :class="{ 'is-disabled': mapViewType === '2D'}"
       title="顺时针转动45°"
       @click="onRotate(1)"
     ></span>

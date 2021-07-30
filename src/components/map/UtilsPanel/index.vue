@@ -1,5 +1,5 @@
 <template>
-  <div class="utils-panel" :class="fixedHeader ? 'has-header' : ''">
+  <div class="utils-panel" :class="{ 'show-header': fixedHeader }">
     <div class="utils-panel-wrapper">
       <!-- 常用工具列表 -->
       <div class="util-list-wrapper">
@@ -183,8 +183,7 @@ export default {
       // 从缓存获取自定义工具
       if (getLocalS("customUtils")) {
         customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
-      }
-      else{
+      } else {
         customUtils.value = [...commonUtils.value];
       }
 
@@ -380,7 +379,7 @@ export default {
   top: 15px;
   right: 70px;
 
-  &.has-header {
+  &.show-header {
     right: 15px;
   }
 

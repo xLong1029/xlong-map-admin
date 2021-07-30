@@ -3,9 +3,9 @@
     <div v-if="fixedHeader" class="header-container fixed">
       <app-header />
     </div>
-    <div :class="['main-container', fixedHeader ? 'show-header' : '']">
+    <div class="main-container" :class="{ 'show-header': fixedHeader }">
       <app-main />
-      
+
       <right-panel v-if="showSettings">
         <app-settings />
       </right-panel>
@@ -36,7 +36,7 @@ export default {
 
     return {
       showSettings,
-      fixedHeader
+      fixedHeader,
     };
   },
 };
