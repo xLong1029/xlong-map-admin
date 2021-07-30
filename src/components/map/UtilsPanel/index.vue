@@ -4,22 +4,6 @@
       <!-- 常用工具列表 -->
       <div class="util-list-wrapper">
         <div class="util-list">
-          <!-- 固定常用工具 -->
-          <template v-if="commonUtils.length">
-            <div
-              v-for="(item, index) in commonUtils"
-              :key="'common-util' + index"
-              :class="[
-                'util-list-item',
-                commonUtils[index].utilActive ? 'is-active' : '',
-              ]"
-              @click="onClickUtil(item, item.eventSuffix, item.panelID)"
-            >
-              <i class="util-list-item__icon" :class="item.classStyles"></i>
-              <span class="util-list-item__name">{{ item.utilName }}</span>
-            </div>
-          </template>
-
           <!-- 自定义常用工具 -->
           <template v-if="customUtils.length">
             <div
@@ -38,15 +22,18 @@
             <span class="util-list-item__name">清屏</span>
           </div>
 
-          <div class="util-list-item" @click="onClickMore()">
-            <i class="util-list-item__icon iconfont icon-gongjuxiang"></i>
-            <span class="util-list-item__name">工具箱</span>
-          </div>
-
-          <!-- <div class="util-list-item" @click="onClickSetting()">
-            <i class="util-list-item__icon iconfont icon-setting"></i>
-            <span class="util-list-item__name">自定义</span>
-          </div> -->
+          <!-- 工具箱 -->
+          <more-utils
+            :map-view-type="mapViewType"
+            :highlight-panels="highlightPanels"
+            @click-util="onClickUtilBoxUtils"
+            @click-custom="setCustomUtilDialogVisible(true)"
+          >
+            <div class="util-list-item">
+              <i class="util-list-item__icon iconfont icon-gongjuxiang"></i>
+              <span class="util-list-item__name">工具箱</span>
+            </div>
+          </more-utils>
         </div>
       </div>
 
@@ -65,21 +52,12 @@
         </template>
       </template>
 
-      <!-- 更多工具 -->
-      <more-utils
-        v-if="moreUtils.visible"
-        :map-view-type="mapViewType"
-        :highlight-panels="highlightPanels"
-        @click-util="onClickMoreUtils"
-        @click-custom="setCustomUtilDialogVisible(true)"
-      />
-
-      <!-- 自定义工具栏 -->
-      <!-- <custom-util-dialog
+      <!-- 自定义常用工具栏 -->
+      <custom-util-dialog
         :visible="customUtilDialog.visible"
         @close="setCustomUtilDialogVisible(false)"
         @save="onSaveCustomUtils"
-      /> -->
+      />
     </div>
   </div>
 </template>
@@ -90,7 +68,7 @@ import { onMounted, inject } from "@vue/runtime-core";
 import { nextTick } from "vue";
 // 组件
 import MoreUtils from "./MoreUtils/index.vue";
-// import CustomUtilDialog from "./MoreUtils/CustomUtilDialog.vue";
+import CustomUtilDialog from "./MoreUtils/CustomUtilDialog.vue";
 import {
   DrawPanel,
   MeasurePanel,
@@ -112,7 +90,7 @@ export default {
 
   components: {
     MoreUtils,
-    // CustomUtilDialog,
+    CustomUtilDialog,
     MeasurePanel,
     DrawPanel,
     // MeasurePanel,
@@ -186,11 +164,6 @@ export default {
     // 自定义常用工具
     const customUtils = ref([]);
 
-    // 更多面板
-    const moreUtils = reactive({
-      visible: false,
-    });
-
     // 自定义工具弹窗
     const customUtilDialog = reactive({
       visible: false,
@@ -198,10 +171,6 @@ export default {
 
     onMounted(() => {
       let list = [];
-
-      moreUtilPanel.general.forEach((e) => {
-        list.push(e);
-      });
 
       moreUtilPanel.list.forEach((e) => {
         if (e.children && e.children.length) {
@@ -214,6 +183,9 @@ export default {
       // 从缓存获取自定义工具
       if (getLocalS("customUtils")) {
         customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
+      }
+      else{
+        customUtils.value = [...commonUtils.value];
       }
 
       panelList.value = [...commonUtils.value, ...list];
@@ -235,9 +207,6 @@ export default {
       if (isUtilDisabled(enable2D, enable3D, mapViewType.value)) {
         return false;
       }
-
-      // 关闭更多面板
-      moreUtils.visible = false;
 
       const { component } = panel;
 
@@ -262,24 +231,14 @@ export default {
       handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
     };
 
-    // 点击更多面板里的工具
-    const onClickMoreUtils = ({ panel, eventSuffix, panelID }) => {
+    // 点击工具箱里的工具
+    const onClickUtilBoxUtils = ({ panel, eventSuffix, panelID }) => {
       onClickUtil(panel, eventSuffix, panelID);
-    };
-
-    // 点击更多
-    const onClickMore = () => {
-      moreUtils.visible = !moreUtils.visible;
     };
 
     // 自定义工具栏可见性
     const setCustomUtilDialogVisible = (val) => {
       customUtilDialog.visible = val;
-
-      // 关闭更多面板
-      if (val) {
-        moreUtils.visible = false;
-      }
     };
 
     // 保存自定义工具
@@ -400,7 +359,6 @@ export default {
       panelList,
       commonUtils,
       customUtils,
-      moreUtils,
       customUtilDialog,
       highlightPanels,
       setPanelVisble,
@@ -408,9 +366,8 @@ export default {
       setClassStyles,
       onClosePanel,
       onClearScreen,
-      onClickMore,
       onClickUtil,
-      onClickMoreUtils,
+      onClickUtilBoxUtils,
       onSaveCustomUtils,
       onClickSetting,
     };
@@ -430,32 +387,16 @@ export default {
   &-wrapper {
     position: relative;
   }
-
-  .more,
-  .settings {
-    cursor: pointer;
-    background: #535353;
-    padding: 2px;
-    font-size: 12px;
-    color: #fff;
-    text-align: center;
-    -webkit-text-size-adjust: none;
-    -webkit-transform: scale(0.8);
-    margin-bottom: 4px;
-    text-align: center;
-  }
 }
 
 .util-list {
-  padding: 5px 0;
   display: flex;
 
   &-wrapper {
     background: #fff;
-    padding: 2px;
     border-radius: $map-border-radius;
     box-shadow: $map-box-shadow;
-    height: 38px;
+    height: 40px;
     overflow: hidden;
   }
 
@@ -463,8 +404,22 @@ export default {
     cursor: pointer;
     display: flex;
     align-items: center;
-    padding: 2px 10px;
-    border-right: 1px dashed #eee;
+    padding: 10px;
+    position: relative;
+
+    &:last-child {
+      &::after {
+        border-right: none;
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      height: 45%;
+      border-right: 1px dashed #dbdee2;
+    }
 
     &:hover {
       color: $primary-color;
@@ -477,11 +432,6 @@ export default {
     &.is-disabled {
       cursor: not-allowed;
       color: #c7c7c7;
-    }
-
-    &:last-child {
-      border-bottom: 0;
-      padding-bottom: 0;
     }
 
     &__icon {

@@ -1,46 +1,57 @@
 <template>
-  <div class="more-utils-container">
-    <!-- 常用工具 -->
-    <div class="general-utils-container">
-      <ul class="more-util-list">
-        <li
-          v-for="(item, index) in generalUtils"
-          :key="'general-utils-item' + index"
-          :class="setClassStyles(item)"
-          @click="onClickUtil(item, item.eventSuffix, item.panelID)"
-        >
-          <div class="more-util-list-item__icon"><i :class="item.classStyles"></i></div>
-          <div class="more-util-list-item__name">{{ item.utilName }}</div>
-        </li>
-      </ul>
+  <el-popover
+    :placement="placement"
+    :width="255"
+    :trigger="trigger"
+    v-model:visible="visible"
+    popper-class="more-utils-container"
+  >
+    <template #reference>
+      <slot></slot>
+    </template>
+    <div class="more-utils__title">
+      <span class="title">工具箱</span>
+      <span class="settings pointer" @click="onCustomUtil"
+        ><i class="util-list-item__icon iconfont icon-setting mr-5"></i>自定义工具栏</span
+      >
     </div>
-
-    <!-- 其他工具列表 -->
-    <div v-for="(item, index) in utilList" :key="'other-utils' + index">
-      <div class="more-util-list__title">{{ item.title }}</div>
-      <ul class="more-util-list">
-        <li
-          v-for="(child, index) in item.children"
-          :key="'other-utils-item' + index"
-          :class="setClassStyles(child)"
-          @click="onClickUtil(child, child.eventSuffix, child.panelID)"
-        >
-          <div class="more-util-list-item__icon"><i :class="child.classStyles"></i></div>
-          <div class="more-util-list-item__name">{{ child.utilName }}</div>
-        </li>
-      </ul>
+    <div class="more-utils__content">
+      <div v-for="(item, index) in utilList" :key="'other-utils' + index">
+        <div class="more-util-list__title">{{ item.title }}</div>
+        <ul class="more-util-list">
+          <li
+            v-for="(child, index) in item.children"
+            :key="'other-utils-item' + index"
+            :class="setClassStyles(child)"
+            @click="onClickUtil(child, child.eventSuffix, child.panelID)"
+          >
+            <div class="more-util-list-item__icon">
+              <i :class="child.classStyles"></i>
+            </div>
+            <div class="more-util-list-item__name">{{ child.utilName }}</div>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
+  </el-popover>
 </template>
 
 <script>
-import { reactive } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
 import utilsPanel from "common/utilsPanel.js";
 
 export default {
   name: "moreUtil",
 
   props: {
+    placement: {
+      type: String,
+      default: "bottom",
+    },
+    trigger: {
+      type: String,
+      default: "click",
+    },
     // 当前地图视图为2D或者3D
     mapViewType: {
       type: String,
@@ -53,11 +64,14 @@ export default {
     },
   },
 
+  emits: ["click-util", "click-custom"],
+
   setup(props, { emit }) {
     const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
 
-    const generalUtils = reactive([...moreUtilPanel.general]);
     const utilList = reactive([...moreUtilPanel.list]);
+
+    const visible = ref(false);
 
     /**
      * 工具点击事件
@@ -66,6 +80,8 @@ export default {
      * @param panelID 工具应添加容器的ID
      */
     const onClickUtil = (panel, eventSuffix, panelID) => {
+      visible.value = false;
+
       const { enable2D, enable3D } = panel;
 
       if (isUtilDisabled(enable2D, enable3D, props.mapViewType)) {
@@ -90,14 +106,16 @@ export default {
       return classStyles;
     };
 
-    // 自定义工具
+    // 自定义工具栏
     const onCustomUtil = () => {
+      visible.value = false;
+
       emit("click-custom", true);
     };
 
     return {
-      generalUtils,
       utilList,
+      visible,
       onClickUtil,
       setClassStyles,
       onCustomUtil,

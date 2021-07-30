@@ -123,7 +123,7 @@ export default {
     const mapRef = ref();
 
     // 是否折叠地图资源面板
-    const foldMapResPanel = ref(false);
+    const foldMapResPanel = ref(true);
 
     // 显示账户设置
     const setAccountSettingVisible = (val) => {

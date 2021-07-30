@@ -1,6 +1,6 @@
 <template>
   <div v-drag class="util-panel screen-shot-panel">
-    <div class="util-panel__header">
+    <div class="util-panel__header drag-move">
       <span>{{ panel.utilName }}工具</span>
       <i class="iconfont icon-guanbi" @click="onClose"></i>
     </div>

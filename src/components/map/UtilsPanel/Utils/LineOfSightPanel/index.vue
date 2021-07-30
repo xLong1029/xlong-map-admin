@@ -1,6 +1,6 @@
 <template>
   <div v-drag class="util-panel line-of-sight-panel">
-    <div class="util-panel__header">
+    <div class="util-panel__header drag-move">
       <span>{{ panel.utilName }}分析工具</span>
       <i class="iconfont icon-guanbi" title="关闭窗口" @click="onClose"></i>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div v-drag class="util-panel measure-panel">
-    <div class="util-panel__header">
+    <div class="util-panel__header drag-move">
       <span>{{ mapViewType }}{{ panel.utilName }}工具</span>
       <i class="iconfont icon-guanbi" title="关闭窗口" @click="onClose"></i>
     </div>

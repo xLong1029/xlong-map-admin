@@ -1,6 +1,6 @@
 export default {
   mounted: function(el) {
-    const elHeader = el.querySelector('.util-panel__header');
+    const elHeader = el.querySelector('.drag-move');
     elHeader.style.cursor = 'move';
 
     elHeader.onmousedown = function(e) {

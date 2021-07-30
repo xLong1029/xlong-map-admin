@@ -1,11 +1,11 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2659669 */
-  src: url('iconfont.eot?t=1627549540276'); /* IE9 */
-  src: url('iconfont.eot?t=1627549540276#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('iconfont.woff2?t=1627549540276') format('woff2'),
-       url('iconfont.woff?t=1627549540276') format('woff'),
-       url('iconfont.ttf?t=1627549540276') format('truetype'),
-       url('iconfont.svg?t=1627549540276#iconfont') format('svg');
+  src: url('iconfont.eot?t=1627617022949'); /* IE9 */
+  src: url('iconfont.eot?t=1627617022949#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('iconfont.woff2?t=1627617022949') format('woff2'),
+       url('iconfont.woff?t=1627617022949') format('woff'),
+       url('iconfont.ttf?t=1627617022949') format('truetype'),
+       url('iconfont.svg?t=1627617022949#iconfont') format('svg');
 }
 
 .iconfont {
@@ -14,6 +14,38 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-poumian:before {
+  content: "\e636";
+}
+
+.icon-poumianfenxi1:before {
+  content: "\ee08";
+}
+
+.icon-shixian:before {
+  content: "\e63b";
+}
+
+.icon-elevation-rise:before {
+  content: "\e711";
+}
+
+.icon-split:before {
+  content: "\e8b0";
+}
+
+.icon-swipe:before {
+  content: "\e6a0";
+}
+
+.icon-locate:before {
+  content: "\e611";
+}
+
+.icon-jietu:before {
+  content: "\e654";
 }
 
 .icon-gongjuxiang:before {
@@ -74,10 +106,6 @@
 
 .icon-zoom-inbeifen:before {
   content: "\e62e";
-}
-
-.icon-map:before {
-  content: "\e60b";
 }
 
 .icon-poumianfenxi:before {

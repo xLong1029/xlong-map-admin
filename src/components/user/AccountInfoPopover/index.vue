@@ -1,5 +1,5 @@
 <template>
-  <el-popover placement="bottom" :width="220" trigger="hover">
+  <el-popover :placement="placement" :width="220" :trigger="trigger">
     <template #reference>
       <slot></slot>
     </template>
@@ -41,6 +41,17 @@ import filter from "common/filter";
 
 export default {
   name: "AccountInfoPopover",
+
+  props: {
+    placement: {
+      type: String,
+      default: "bottom",
+    },
+    trigger: {
+      type: String,
+      default: "hover",
+    },
+  },
 
   emits: ["on-account-setting"],
 

@@ -1,77 +1,45 @@
 {
-  "general": [
-    {
-      "component": "ScreenShotPanel",
-      "classStyles": "iconfont icon-dayin",
-      "utilName": "截图",
-      "utilActive": false,
-      "eventSuffix": "ScreenShot",
-      "panelID": null,
-      "enable2D": true,
-      "enable3D": true
-    },
-    {
-      "component": "LocatePanel",
-      "classStyles": "iconfont icon-dingwei1",
-      "utilName": "定位",
-      "utilActive": false,
-      "eventSuffix": "Locate",
-      "panelID": "locatePanel",
-      "enable2D": true,
-      "enable3D": true
-    }
-  ],
   "list": [
     {
-      "title": "图层操作",
+      "title": "常用工具",
       "children": [
         {
-          "component": "UploadLayerPanel",
-          "classStyles": "iconfont icon-liangsuan",
-          "utilName": "上传图层",
+          "component": "MeasurePanel",
+          "classStyles": "iconfont icon-celianggongju",
+          "utilName": "量算",
           "utilActive": false,
-          "eventSuffix": "UploadLayer",
-          "panelID": "uploadLayer",
-          "enable2D": true,
-          "enable3D": true
-        },
-        {
-          "component": "SwipePanel",
-          "classStyles": "iconfont icon-juanlian",
-          "utilName": "卷帘",
-          "utilActive": false,
-          "eventSuffix": "Swipe",
-          "panelID": "swipePanel",
-          "enable2D": true,
-          "enable3D": true
-        },
-        {
-          "component": "SplitScreen",
-          "classStyles": "iconfont icon-fenping",
-          "utilName": "分屏",
-          "utilActive": false,
-          "eventSuffix": null,
+          "eventSuffix": "Measure",
           "panelID": null,
           "enable2D": true,
           "enable3D": true
         },
         {
-          "component": "MaskPanel",
-          "classStyles": "iconfont icon-yanmo",
-          "utilName": "掩膜",
+          "component": "DrawPanel",
+          "classStyles": "iconfont icon-huizhi",
+          "utilName": "绘制",
           "utilActive": false,
-          "eventSuffix": "Mask",
-          "panelID": "maskPanel",
+          "eventSuffix": "Draw",
+          "panelID": "drawPanel",
           "enable2D": true,
           "enable3D": true
         },
         {
-          "component": "FilterPanel",
-          "classStyles": "iconfont icon-yaosuguolv",
-          "utilName": "筛选过滤",
+          "component": "ScreenShotPanel",
+          "classStyles": "iconfont icon-jietu",
+          "utilName": "截图",
           "utilActive": false,
-          "eventSuffix": "Filter",
-          "panelID": "filterPanel",
+          "eventSuffix": "ScreenShot",
+          "panelID": null,
+          "enable2D": true,
+          "enable3D": true
+        },
+        {
+          "component": "LocatePanel",
+          "classStyles": "iconfont icon-locate",
+          "utilName": "定位",
+          "utilActive": false,
+          "eventSuffix": "Locate",
+          "panelID": "locatePanel",
           "enable2D": true,
           "enable3D": true
         }
@@ -83,7 +51,7 @@
         {
           "component": "LineOfSightPanel",
           "classStyles": "iconfont icon-shixian",
-          "utilName": "视线",
+          "utilName": "视线分析",
           "utilActive": false,
           "eventSuffix": "LineOfSight",
           "panelID": "lineOfSightPanel",
@@ -91,19 +59,9 @@
           "enable3D": true
         },
         {
-          "component": "ViewshedPanel",
-          "classStyles": "iconfont icon-shiyu",
-          "utilName": "视域",
-          "utilActive": false,
-          "eventSuffix": "Viewshed",
-          "panelID": "viewshedPanel",
-          "enable2D": false,
-          "enable3D": true
-        },
-        {
           "component": "SlicePanel",
-          "classStyles": "iconfont icon-poumian",
-          "utilName": "剖面",
+          "classStyles": "iconfont icon-poumianfenxi",
+          "utilName": "剖切",
           "utilActive": false,
           "eventSuffix": "Slice",
           "panelID": "slicePanel",
@@ -112,8 +70,8 @@
         },
         {
           "component": "ElevationProfilePanel",
-          "classStyles": "iconfont icon-tianjixian",
-          "utilName": "剖面高度",
+          "classStyles": "iconfont icon-poumianfenxi1",
+          "utilName": "剖面分析",
           "utilActive": false,
           "eventSuffix": "ElevationProfile",
           "panelID": "elevationProfilePanel",
@@ -123,17 +81,37 @@
       ]
     },
     {
-      "title": "场景效果",
+      "title": "其他",
       "children": [
         {
           "component": "DayLightPanel",
-          "classStyles": "iconfont icon-rizhao1",
+          "classStyles": "iconfont icon-rizhao",
           "utilName": "日照",
           "utilActive": false,
           "eventSuffix": "DayLight",
           "panelID": "dayLightPanel",
           "enable2D": false,
           "enable3D": false
+        },
+        {
+          "component": "SwipePanel",
+          "classStyles": "iconfont icon-swipe",
+          "utilName": "卷帘",
+          "utilActive": false,
+          "eventSuffix": "Swipe",
+          "panelID": "swipePanel",
+          "enable2D": true,
+          "enable3D": true
+        },
+        {
+          "component": "SplitScreen",
+          "classStyles": "iconfont icon-split",
+          "utilName": "分屏",
+          "utilActive": false,
+          "eventSuffix": null,
+          "panelID": null,
+          "enable2D": true,
+          "enable3D": true
         }
       ]
     }

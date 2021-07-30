@@ -3,33 +3,11 @@
     title="自定义工具栏"
     :modelValue="visible"
     @close="onClose()"
-    :width="345"
+    :width="355"
     custom-class="custom-dialog-container"
   >
-    <!-- 常用工具 -->
-    <div class="general-utils-container">
-      <draggable
-        class="more-util-list"
-        :list="generalUtils"
-        :group="{ name: 'util', pull: 'clone', put: false }"
-        :sort="false"
-        :clone="onAddCustomUtil"
-        @change="onChangeCustomUtil"
-        item-key="component"
-      >
-        <template #item="{ element }">
-          <li class="more-util-list-item">
-            <div class="more-util-list-item__icon">
-              <i :class="element.classStyles"></i>
-            </div>
-            <div class="more-util-list-item__name">{{ element.utilName }}</div>
-          </li>
-        </template>
-      </draggable>
-    </div>
-
-    <!-- 其他工具列表 -->
-    <div v-for="(item, index) in utilList" :key="'other-utils' + index">
+    <!-- 工具列表 -->
+    <div v-for="(item, index) in utilList" :key="'util-list' + index">
       <div class="more-util-list__title">{{ item.title }}</div>
       <draggable
         class="more-util-list"
@@ -51,13 +29,20 @@
       </draggable>
     </div>
 
+    <el-alert
+      class="mt-10"
+      title="您可以将常用的工具拖入虚线框内并进行拖动排序"
+      type="success"
+      :closable="false"
+    ></el-alert>
+
     <!-- 拖拽区域 -->
     <div class="setting-conatiner">
       <div class="darg-container" @click="onCustomUtil">
-        <p v-if="!customUtils.length">
-          将您常用的工具拖入虚线框内,<br />
-          工具将在首页显示
-        </p>
+        <div v-if="!customUtils.length" class="mt-10">
+          <i class="el-icon-plus"></i>
+          <span class="block mt-10">拖动工具到此处</span>
+        </div>
 
         <draggable
           class="custom-utils-container more-util-list"
@@ -78,16 +63,10 @@
         </draggable>
       </div>
       <div class="button-container">
-        <el-button
-          size="mini"
-          class="mb-5"
-          @click="onClearCustomUtils"
-          :disabled="!customUtils.length"
+        <el-button @click="onClearCustomUtils" :disabled="!customUtils.length"
           >清空</el-button
         >
-        <el-button type="primary" size="mini" class="ml-0" @click="onSaveCustomUtils"
-          >保存</el-button
-        >
+        <el-button type="primary" @click="onSaveCustomUtils">保存</el-button>
       </div>
     </div>
   </el-dialog>
@@ -109,6 +88,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    customNum: {
+      type: Number,
+      default: 5,
+    },
   },
 
   components: {
@@ -119,16 +102,42 @@ export default {
   emits: ["close", "save"],
 
   setup(props, { emit }) {
-    const generalUtils = reactive([...moreUtilPanel.general]);
     const utilList = reactive([...moreUtilPanel.list]);
 
     // 自定义常用工具
     const customUtils = ref([]);
 
+    // 固定常用工具
+    const commonUtils = ref([
+      {
+        component: "MeasurePanel",
+        classStyles: "iconfont icon-celianggongju",
+        utilName: "量算",
+        utilActive: false,
+        eventSuffix: "Measure",
+        panelID: null,
+        enable2D: true,
+        enable3D: true,
+      },
+      {
+        component: "DrawPanel",
+        classStyles: "iconfont icon-huizhi",
+        utilName: "绘制",
+        utilActive: false,
+        eventSuffix: "Draw",
+        panelID: "drawPanel",
+        enable2D: true,
+        enable3D: true,
+      },
+    ]);
+
     onMounted(() => {
       // 从缓存获取自定义工具
       if (getLocalS("customUtils")) {
         customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
+      }
+      else{
+        customUtils.value = [...commonUtils.value];
       }
     });
 
@@ -145,8 +154,8 @@ export default {
     const onAddCustomUtil = (item) => {
       // console.log(customUtils, item);
 
-      if (customUtils.value.length >= 3) {
-        ElMessage.warning("只能自定义3个工具");
+      if (customUtils.value.length >= props.customNum) {
+        ElMessage.warning(`只能自定义${props.customNum}个工具`);
       } else {
         if (customUtils.value.indexOf(item) < 0) {
           return item;
@@ -164,7 +173,7 @@ export default {
 
     // 清空自定义工具
     const onClearCustomUtils = () => {
-      ElMessageBox.confirm("确定清空所有自定义工具吗？", "温馨提示", {
+      ElMessageBox.confirm("确定清空所有自定义工具栏吗？", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -184,7 +193,6 @@ export default {
     };
 
     return {
-      generalUtils,
       utilList,
       customUtils,
       onClose,
@@ -202,34 +210,31 @@ export default {
 .more-util-list-item {
   cursor: move;
 
-  // &:nth-child(5n + 1) {
-  //   margin-left: 8px;
-  // }
+  &:nth-child(4n + 1) {
+    margin-left: 8px;
+  }
 
-  // &:nth-child(5n) {
-  //   margin-right: 8px;
-  // }
+  &:nth-child(4n) {
+    margin-right: 8px;
+  }
 
-  // &:nth-child(6n + 1) {
-  //   margin-left: 0;
-  // }
+  &:nth-child(5n + 1) {
+    margin-left: 0;
+  }
 
-  // &:nth-child(6n) {
-  //   margin-right: 0;
-  // }
+  &:nth-child(5n) {
+    margin-right: 0;
+  }
 }
 
 .setting-conatiner {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  margin-top: 10px;
 }
 
 .button-container {
+  margin-top: 20px;
   display: flex;
-  flex-direction: column;
-  margin-left: 20px;
+  justify-content: center;
 }
 
 .darg-container {
@@ -241,7 +246,13 @@ export default {
   padding: 3px;
   font-size: 12px;
   color: $primary-color;
-  height: 64px;
+  min-height: 100px;
+
+  .el-icon-plus {
+    font-size: 40px;
+    display: inline-block;
+    color: #c0c4cc;
+  }
 }
 
 .custom-utils-container {
@@ -249,8 +260,9 @@ export default {
   top: 0;
   left: -2px;
   width: 100%;
-  height: 100%;
-  padding: 0 10px;
+  // height: 100%;
+  min-height: 100px;
+  padding: 10px 10px;
 
   .more-util-list-item {
     cursor: pointer;
@@ -261,14 +273,18 @@ export default {
     right: -5px;
     top: -5px;
     color: $pink;
-    border: 1px solid #fff;
+    font-size: 14px;
   }
 }
 </style>
 <style lang="scss">
 .custom-dialog-container {
   .el-dialog__body {
-    padding: 10px 20px 20px 20px;
+    padding: 0 20px 20px 20px;
+  }
+
+  .el-alert {
+    padding: 8px 5px;
   }
 }
 </style>

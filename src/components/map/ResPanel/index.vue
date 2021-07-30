@@ -118,7 +118,7 @@ export default {
   }
 
   &__title {
-    background: #e1e4e6;
+    background: #ececec;
     padding: 0 10px;
     height: 40px;
     line-height: 40px;
