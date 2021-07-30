@@ -2,16 +2,20 @@
   <div class="bottom-coord">
     <div>
       <span class="coordinate"
-        ><span v-if="coordInfo.lon">经度；{{ coordInfo.lon }} , </span>
-        <span v-if="coordInfo.lat">纬度：{{ coordInfo.lat }}</span>
+        ><span v-if="coordInfo.lon">经度；{{ coordInfo.lon }}</span>
+        <span v-if="coordInfo.lat"> , 纬度：{{ coordInfo.lat }}</span>
         <span v-if="coordInfo.scale"
           >&nbsp;&nbsp;|&nbsp;&nbsp;比例尺 1:{{ coordInfo.scale }}</span
         >
+        <span v-if="coordInfo.tilt"
+          >&nbsp;&nbsp;|&nbsp;&nbsp;视角倾斜：{{ coordInfo.tilt }}°</span
+        >
+        <span v-if="coordInfo.heading"> , 罗盘方位：{{ coordInfo.heading }}°</span>
         <span v-if="coordInfo.locate"
           >&nbsp;&nbsp;|&nbsp;&nbsp;当前鼠标坐落：{{ coordInfo.locate }}</span
         >
       </span>
-      <span class="scale-hint" @click="setScale(150000)">以最佳比例1:150000显示</span>
+      <span class="scale-hint" @click="setScale(1500)">以最佳比例1:1500显示</span>
     </div>
     <div class="copyright">
       <a class="link" target="blank" href="https://github.com/xLong1029/xlong-map-vue3">{{

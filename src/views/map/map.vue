@@ -47,7 +47,7 @@ export default {
     const coordInfo = inject("getCoordInfo");
     // 是否显示系统固定头部
     const fixedHeader = inject("getFixedHeader");
-    
+
     // 地图事件传递
     const mapEvent = computed(() => store.getters.mapEvent);
 
@@ -181,41 +181,44 @@ export default {
      * 初始化摄像机
      *
      * @param {*} arcGisMapView 视图对象
+     * @param {*} animation 是否显示进场动画
+     * @param {*} duration 动画持续时间
      */
-    const initCamera = (arcGisMapView) => {
+    const initCamera = (arcGisMapView, animation = true, duration = 5000) => {
+      let gotoInfo = {
+        center: [coordInfo.lon, coordInfo.lat],
+        tilt: cameraInfo.value.tilt,
+        heading: cameraInfo.value.heading,
+        zoom: 18,
+      };
+
+      if (!animation) {
+        gotoInfo.tilt = 0;
+        gotoInfo.heading = 0;
+        gotoInfo.zoom = 11;
+        duration = 0;
+      }
+
       arcGisMapView.when(function () {
-        arcGisMapView
-          .goTo(
-            {
-              center: [coordInfo.lon, coordInfo.lat],
-              tilt: cameraInfo.value.tilt,
-              heading: cameraInfo.value.heading,
-              zoom: 18.7,
-            },
-            { duration: 5000 }
-          )
-          .then(function () {
-            // 摄像机移动结束改变罗盘位置
-            emit("map-camera-change", {
-              tilt: arcGisMapView.camera.tilt,
-              heading: arcGisMapView.camera.heading,
-            });
-            // 设置当前比例
-            changeMapViewScale(Math.round(arcGisMapView.scale));
+        arcGisMapView.goTo({ ...gotoInfo }, { duration }).then(() => {
+          // 摄像机移动结束设置当前比例
+          changeMapViewScale(Math.round(arcGisMapView.scale));
+        });
 
-            // 监听摄像机
-            arcGisMapView.watch("camera", (camera) => {
-              let tilt = camera.tilt;
-              let heading = camera.heading;
-              // let position = camera.position;
-              // console.log(tilt, heading, position);
+        // 监听摄像机
+        arcGisMapView.watch("camera", (camera) => {
+          let tilt = camera.tilt;
+          let heading = camera.heading;
+          // let position = camera.position;
+          // console.log(tilt, heading, position);
 
-              emit("map-camera-change", {
-                tilt,
-                heading,
-              });
-            });
+          emit("map-camera-change", {
+            tilt,
+            heading,
           });
+
+          changeCoordInfoTiltHeading(tilt, heading);
+        });
       });
     };
 
@@ -234,6 +237,13 @@ export default {
         }
       });
 
+      arcGisMapView.on("drag", (e) => {
+        if (mapViewType.value == "3D") {
+          const { tilt, heading } = arcGisMapView.camera;
+          changeCoordInfoTiltHeading(tilt, heading);
+        }
+      });
+
       // 鼠标滚轮事件
       arcGisMapView.on("mouse-wheel", () => {
         changeMapViewScale(Math.round(arcGisMapView.scale));
@@ -243,6 +253,14 @@ export default {
     // 修改地图视图比例
     const changeMapViewScale = (scale) => {
       emit("map-scale-change", { scale });
+    };
+
+    // 修改地图视图比例
+    const changeCoordInfoTiltHeading = (tilt, heading) => {
+      emit("map-drag", {
+        tilt: mapViewType.value === "2D" ? "0.00" : parseFloat(tilt).toFixed(2),
+        heading: mapViewType.value === "2D" ? "0.00" : parseFloat(heading).toFixed(2),
+      });
     };
 
     // 设置地图视图比例-父组件调用

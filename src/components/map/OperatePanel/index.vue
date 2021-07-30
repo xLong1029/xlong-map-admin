@@ -1,15 +1,12 @@
 <template>
   <div :class="['operate-panel', mapBottomCoord ? 'has-bottom-coord' : '']">
     <compass />
-    <div class="map-transform">
-      <i
-        class="iconfont"
-        :class="mapViewType === '2D' ? 'icon-a-2-3d' : 'icon-a-3-2d'"
-        @click="onTransform()"
-      ></i>
+    <div class="map-transform" @click="onTransform()">
+      <span class="text">切换</span>
+      <span>{{ mapViewType === "2D" ? "3D" : "2D" }}</span>
     </div>
     <div class="map-locate">
-      <i class="iconfont icon-zoom-inbeifen" @click="onLocate"></i>
+      <i class="iconfont icon-zoom-inbeifen" @click="onLocate()"></i>
     </div>
     <div class="map-zoom">
       <i
@@ -78,7 +75,7 @@ export default {
 
     // 缩小
     const onZoomOut = () => {
-      if (coordInfo.scale >= 33000000) {
+      if (coordInfo.scale >= 30000000) {
         return false;
       }
 
@@ -113,6 +110,14 @@ export default {
       background: #fff;
       border-radius: $map-border-radius;
       box-shadow: $map-box-shadow;
+    }
+
+    &-transform {
+      font-weight: bold;
+
+      .text {
+        font-size: 12px;
+      }
     }
 
     &-transform,

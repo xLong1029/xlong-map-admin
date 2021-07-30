@@ -4,6 +4,7 @@
       ref="mapRef"
       :map-id="mapId"
       :map-operate-panel="mapOperatePanel"
+      @map-drag="onMapDrag"
       @map-pointer-move="onMapPointerMove"
       @map-scale-change="onMapScaleChange"
       @map-camera-change="onMapCameraChange"
@@ -31,11 +32,7 @@
       v-if="user.avatar && !fixedHeader"
       @on-account-setting="setAccountSettingVisible(true)"
     >
-      <span
-        v-if="user.avatar && !fixedHeader"
-        class="user-avatar"
-        @click="setAccountSettingVisible(true)"
-      >
+      <span v-if="user.avatar && !fixedHeader" class="user-avatar">
         <img :src="user.avatar" />
       </span>
     </account-info-popover>
@@ -44,7 +41,10 @@
       :companyName="companyName"
       @map-set-view-scale="onMapSetView"
     />
-    <account-setting :visible="accountSettingVisible" @close="setAccountSettingVisible(false)" />
+    <account-setting
+      :visible="accountSettingVisible"
+      @close="setAccountSettingVisible(false)"
+    />
   </div>
 </template>
 
@@ -80,16 +80,20 @@ export default {
 
     // 当前地图视图为2D或者3D
     const mapViewType = ref("3D");
+
     // 摄像机信息
     const cameraInfo = ref({
       tilt: 17,
       heading: 90,
     });
+
     // 坐标信息
     const coordInfo = reactive({
       // 会展中心坐标
       lon: 108.37586419698286,
       lat: 22.81221937964247,
+      tilt: 0,
+      heading: 0,
       scale: 150000,
       locate: "",
     });
@@ -117,12 +121,19 @@ export default {
 
     // 地图实例
     const mapRef = ref();
+
     // 是否折叠地图资源面板
     const foldMapResPanel = ref(false);
 
     // 显示账户设置
     const setAccountSettingVisible = (val) => {
       accountSettingVisible.value = val;
+    };
+
+    // 监听地图鼠标拖动
+    const onMapDrag = ({ tilt, heading }) => {
+      coordInfo.tilt = tilt;
+      coordInfo.heading = heading;
     };
 
     // 监听地图鼠标移动
@@ -173,6 +184,7 @@ export default {
       coordInfo,
       mapRef,
       setAccountSettingVisible,
+      onMapDrag,
       onMapPointerMove,
       onMapScaleChange,
       onMapSetView,

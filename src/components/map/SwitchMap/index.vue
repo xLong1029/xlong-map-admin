@@ -7,8 +7,6 @@
       mapBottomCoord ? 'has-bottom-coord' : '',
     ]"
   >
-    <div class="switch-map__title">切换底图</div>
-    <div class="switch-map__content">
       <ul class="maps-list">
         <li
           class="maps-list-item"
@@ -21,7 +19,6 @@
           <span class="maps-list-item__name">{{ item.name }}</span>
         </li>
       </ul>
-    </div>
   </div>
 </template>
 
@@ -94,6 +91,7 @@ export default {
   background: #fff;
   border-radius: $map-border-radius;
   box-shadow: $map-box-shadow;
+  padding: 10px 0;
 
   &.has-map-res-panel {
     left: 430px;
@@ -107,13 +105,13 @@ export default {
     bottom: calc(#{$bottom-height} + 15px);
   }
 
-  &__title {
-    padding: 15px;
-  }
+  // &__title {
+  //   padding: 15px;
+  // }
 
-  &__content {
-    padding: 0 5px 15px 5px;
-  }
+  // &__content {
+  //   padding: 0 5px 15px 5px;
+  // }
 }
 
 .maps-list {

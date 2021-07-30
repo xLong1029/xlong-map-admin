@@ -1,5 +1,11 @@
 <template>
-  <el-dialog :title="title" :modelValue="visible" @close="onClose()" :width="550">
+  <el-dialog
+    :title="title"
+    :modelValue="visible"
+    @close="onClose()"
+    :width="550"
+    custom-class="account-setting-dialog"
+  >
     <el-form :model="form" :rules="rules" ref="formRef" label-width="90px">
       <el-form-item label="账户" prop=""
         ><span>{{ isNull(user.username) }}</span>
@@ -183,4 +189,10 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss">
+.account-setting-dialog {
+  .el-dialog__body{
+    padding: 10px 20px;
+  }
+}
+</style>

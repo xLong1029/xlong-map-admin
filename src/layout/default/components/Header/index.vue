@@ -41,7 +41,6 @@ export default {
   },
 
   setup() {
-    
     const store = useStore();
 
     const { isNull } = filter();

@@ -1,16 +1,18 @@
 <template>
-  <el-popover placement="bottom" :width="250" trigger="hover">
+  <el-popover placement="bottom" :width="220" trigger="hover">
     <template #reference>
       <slot></slot>
     </template>
     <div class="user-info-container">
       <ul class="user-info-list">
-        <li class="user-info-list-item">账号：{{ isNull(user.username) }}</li>
-        <li class="user-info-list-item">昵称：{{ user.nickname }}</li>
-        <li class="user-info-list-item">真实姓名：{{ isNull(user.realname) }}</li>
         <li class="user-info-list-item">
-          角色：
-          <el-tag v-if="user.roles.indexOf('admin') >= 0">管理员</el-tag>
+          <span>账号：</span><span>{{ isNull(user.username) }}</span>
+        </li>
+        <li class="user-info-list-item">
+          <span>昵称：</span><span>{{ user.nickname }}</span>
+        </li>
+        <li class="user-info-list-item">
+          <span>角色：</span><el-tag v-if="user.roles.indexOf('admin') >= 0" size="small">管理员</el-tag>
         </li>
       </ul>
       <div class="user-info-operate">
