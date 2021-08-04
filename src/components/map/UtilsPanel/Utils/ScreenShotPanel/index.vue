@@ -4,34 +4,33 @@
       <span>{{ panel.utilName }}工具</span>
       <i class="iconfont icon-guanbi" @click="onClose"></i>
     </div>
-    <div :id="panelID" class="util-panel__content screen-shot-panel__content">
-      <div>
-        <button
-          class="action-button esri-icon-media"
-          :class="{ 'is-active': activeButton === 'screenShot' }"
-          id="screenShotButton"
-          type="button"
-          title="截图"
-          @click="onScreenShot('onScreenShot')"
-        ></button>
-      </div>
+    <div class="util-panel__content screen-shot-panel__content">
+      <p v-if="startScreenshot" style="margin: 5px 0">通过单击场景以建立您的截图</p>
+      <button
+        v-else
+        class="esri-button esri-button--primary"
+        type="button"
+        @click="onStartScreenshot"
+      >
+        开始截图
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
 import common from "common";
+import { inject } from "@vue/runtime-core";
 
 export default {
-  name: "ScreenShotPanel",
+  name: "ScreenshotPanel",
 
   props: {
     // 面板
     panel: {
       type: Object,
       default: () => ({
-        utilName: "打印",
+        utilName: "截图",
       }),
     },
     // 当前面板索引在panelList中的索引
@@ -48,10 +47,11 @@ export default {
   setup(props, content) {
     const { dispatchMapEvent } = common();
 
-    // 当前激活按钮
-    const activeButton = ref(null);
+    // 获取顶级组件传递的值：是否开启截图
+    const startScreenshot = inject("getStartScreenshot");
+
     // 当前面板ID
-    const panelID = "ScreenShotPanel";
+    const panelID = "ScreenshotPanel";
 
     // 关闭面板
     const onClose = () => {
@@ -64,25 +64,16 @@ export default {
       });
     };
 
-    // 设置当前激活按钮
-    const setActiveButton = (val) => {
-      activeButton.value = activeButton.value === val ? null : val;
+    // 开启截图
+    const onStartScreenshot = () => {
+      startScreenshot.value = true;
+      dispatchMapEvent("onScreenShot");
     };
 
-    // 截图工具s
-
-    const onScreenShot = (eventName) => {
-      setActiveButton("screenShot");
-      dispatchMapEvent(eventName, {
-        panelID,
-        activeButton: activeButton.value,
-      });
-    };
     return {
-      panelID,
-      activeButton,
+      startScreenshot,
+      onStartScreenshot,
       onClose,
-      onScreenShot,
     };
   },
 };
@@ -90,7 +81,7 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/util-panel.scss";
 .screen-shot-panel {
-  width: 260px;
+  width: 205px;
 
   &__content {
     padding: 10px;

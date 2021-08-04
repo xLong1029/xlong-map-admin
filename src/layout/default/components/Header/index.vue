@@ -10,7 +10,7 @@
           <span v-if="user.avatar" class="user-avatar">
             <img :src="user.avatar" />
           </span>
-          <span>{{ isNull(user.realname) }}</span>
+          <span>{{ isNull(user.nickname) }}</span>
         </div>
       </account-info-popover>
     </div>

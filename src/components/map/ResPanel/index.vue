@@ -28,7 +28,6 @@ import { ref, inject } from "@vue/runtime-core";
 // 组件
 import List from "./List/index.vue";
 import MyFavorites from "./MyFavorites/index.vue";
-import RecentlyViewed from "./RecentlyViewed/index.vue";
 
 export default {
   name: "ResPanel",
@@ -48,8 +47,7 @@ export default {
 
   components: {
     List,
-    MyFavorites,
-    RecentlyViewed,
+    MyFavorites
   },
 
   setup(props, { emit }) {
@@ -69,11 +67,6 @@ export default {
         name: "myFavorites",
         label: "我的收藏",
         component: "MyFavorites",
-      },
-      {
-        name: "recentlyViewed",
-        label: "最近浏览",
-        component: "RecentlyViewed",
       },
     ]);
 

@@ -12,7 +12,7 @@
           >&nbsp;&nbsp;|&nbsp;&nbsp;当前鼠标坐落：{{ coordInfo.locate }}</span
         >
         <span v-if="coordInfo.scale"
-          >&nbsp;&nbsp;|&nbsp;&nbsp;比例尺 1:{{ coordInfo.scale }}</span
+          >&nbsp;&nbsp;|&nbsp;&nbsp;当前比例 1:{{ coordInfo.scale }}</span
         >
       </span>
       <span class="scale-hint" @click="setScale(1500)">以最佳比例1:1500显示</span>

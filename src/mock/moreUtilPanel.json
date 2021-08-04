@@ -24,7 +24,7 @@
           "enable3D": true
         },
         {
-          "component": "ScreenShotPanel",
+          "component": "ScreenshotPanel",
           "classStyles": "iconfont icon-jietu",
           "utilName": "截图",
           "utilActive": false,
@@ -51,7 +51,7 @@
         {
           "component": "LineOfSightPanel",
           "classStyles": "iconfont icon-shixian",
-          "utilName": "视线分析",
+          "utilName": "视线",
           "utilActive": false,
           "eventSuffix": "LineOfSight",
           "panelID": "lineOfSightPanel",
@@ -71,18 +71,13 @@
         {
           "component": "ElevationProfilePanel",
           "classStyles": "iconfont icon-poumianfenxi1",
-          "utilName": "剖面分析",
+          "utilName": "高程剖面",
           "utilActive": false,
           "eventSuffix": "ElevationProfile",
           "panelID": "elevationProfilePanel",
           "enable2D": false,
           "enable3D": true
-        }
-      ]
-    },
-    {
-      "title": "其他",
-      "children": [
+        },
         {
           "component": "DayLightPanel",
           "classStyles": "iconfont icon-rizhao",
@@ -92,7 +87,12 @@
           "panelID": "dayLightPanel",
           "enable2D": false,
           "enable3D": false
-        },
+        }
+      ]
+    },
+    {
+      "title": "其他",
+      "children": [
         {
           "component": "SwipePanel",
           "classStyles": "iconfont icon-swipe",

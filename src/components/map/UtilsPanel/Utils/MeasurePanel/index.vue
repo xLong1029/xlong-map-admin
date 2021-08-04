@@ -8,7 +8,7 @@
       <div>
         <button
           class="action-button esri-icon-measure-line"
-          :class="{ 'is-active': ctiveButton === 'distance' }"
+          :class="{ 'is-active': activeButton === 'distance' }"
           id="distanceButton"
           type="button"
           title="测量两点之间的距离"
@@ -20,7 +20,7 @@
         ></button>
         <button
           class="action-button esri-icon-measure-area"
-          :class="{ 'is-active': ctiveButton === 'area' }"
+          :class="{ 'is-active': activeButton === 'area' }"
           id="areaButton"
           type="button"
           title="计算面积"
@@ -131,6 +131,7 @@ export default {
 #measureDistance3D,
 #measureArea3D {
   margin-top: 10px;
+  padding-top: 10px;
   border-top: 1px solid #eee;
 }
 </style>

@@ -72,12 +72,12 @@ import CustomUtilDialog from "./MoreUtils/CustomUtilDialog.vue";
 import {
   DrawPanel,
   MeasurePanel,
-  // SlicePanel,
-  // DayLightPanel,
-  // ElevationProfilePanel,
-  // LineOfSightPanel,
-  // ScreenShotPanel,
-  // LocatePanel,
+  SlicePanel,
+  DayLightPanel,
+  ElevationProfilePanel,
+  LineOfSightPanel,
+  ScreenshotPanel,
+  LocatePanel,
 } from "./Utils/index.js";
 // 通用模块
 import common from "common";
@@ -93,13 +93,13 @@ export default {
     CustomUtilDialog,
     MeasurePanel,
     DrawPanel,
-    // MeasurePanel,
-    // SlicePanel,
-    // DayLightPanel,
-    // ElevationProfilePanel,
-    // LineOfSightPanel,
-    // ScreenShotPanel,
-    // LocatePanel,
+    MeasurePanel,
+    SlicePanel,
+    DayLightPanel,
+    ElevationProfilePanel,
+    LineOfSightPanel,
+    ScreenshotPanel,
+    LocatePanel,
   },
 
   setup(props, { emit }) {

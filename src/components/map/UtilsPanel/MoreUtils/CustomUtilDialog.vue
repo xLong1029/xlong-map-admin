@@ -3,7 +3,7 @@
     title="自定义工具栏"
     :modelValue="visible"
     @close="onClose()"
-    :width="355"
+    :width="370"
     custom-class="custom-dialog-container"
   >
     <!-- 工具列表 -->
@@ -173,7 +173,7 @@ export default {
 
     // 清空自定义工具
     const onClearCustomUtils = () => {
-      ElMessageBox.confirm("确定清空所有自定义工具栏吗？", "温馨提示", {
+      ElMessageBox.confirm("确定清空所有自定义工具吗？", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -258,7 +258,7 @@ export default {
 .custom-utils-container {
   position: absolute;
   top: 0;
-  left: -2px;
+  left: 2px;
   width: 100%;
   // height: 100%;
   min-height: 100px;

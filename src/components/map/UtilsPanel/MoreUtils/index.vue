@@ -1,7 +1,7 @@
 <template>
   <el-popover
     :placement="placement"
-    :width="255"
+    :width="268"
     :trigger="trigger"
     v-model:visible="visible"
     popper-class="more-utils-container"
@@ -125,4 +125,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "~@/styles/more-utils.scss";
+</style>
+<style>
+.more-utils-container{
+  padding-bottom: 5px !important;
+}
 </style>

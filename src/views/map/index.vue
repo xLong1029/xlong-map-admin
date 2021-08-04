@@ -8,6 +8,7 @@
       @map-pointer-move="onMapPointerMove"
       @map-scale-change="onMapScaleChange"
       @map-camera-change="onMapCameraChange"
+      @close-screenshot="onCloseScreenshot"
     ></arc-gis-map>
     <res-panel
       v-if="mapResPanel"
@@ -98,6 +99,9 @@ export default {
       locate: "",
     });
 
+    // 开启截图
+    const startScreenshot = ref(false);
+
     const user = computed(() => store.getters.user);
     const fixedHeader = computed(() => store.getters.fixedHeader);
     const mapResPanel = computed(() => store.getters.mapResPanel);
@@ -112,6 +116,7 @@ export default {
     provide("getCameraInfo", cameraInfo);
     provide("getCoordInfo", coordInfo);
     provide("getFixedHeader", fixedHeader);
+    provide("getStartScreenshot", startScreenshot);
 
     // 是否显示账户设置
     const accountSettingVisible = ref(false);
@@ -169,6 +174,11 @@ export default {
       mapViewType.value = type;
     };
 
+    // 关闭截图
+    const onCloseScreenshot = () => {
+      startScreenshot.value = false;
+    }
+
     return {
       mapId,
       user,
@@ -191,6 +201,7 @@ export default {
       onFoldMapResPanel,
       onMapCameraChange,
       changeMapViewType,
+      onCloseScreenshot
     };
   },
 };

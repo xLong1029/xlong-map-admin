@@ -57,10 +57,10 @@ export default {
 <style lang="scss" scoped>
 @import "~@/styles/util-panel.scss";
 .draw-panel {
-  width: 430px;
+  width: 365px;
 
   &__content {
-    padding: 5px 5px 5px 10px;
+    padding: 5px 10px;
   }
 }
 </style>

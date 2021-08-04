@@ -11,12 +11,12 @@
     <div class="map-zoom">
       <i
         class="iconfont icon-fangda"
-        :class="{ 'is-disabled': coordInfo.scale <= 1500 }"
+        :class="{ 'is-disabled': coordInfo.scale <= minScale }"
         @click="onZoomIn()"
       ></i>
       <i
         class="iconfont icon-suoxiao"
-        :class="{ 'is-disabled': coordInfo.scale >= 33000000 }"
+        :class="{ 'is-disabled': coordInfo.scale >= maxScale }"
         @click="onZoomOut()"
       ></i>
     </div>
@@ -50,6 +50,9 @@ export default {
     // 坐标信息
     const coordInfo = inject("getCoordInfo");
 
+    const maxScale = 30000;
+    const minScale = 1500;
+
     // 2/3D转换
     const onTransform = () => {
       const viewType = mapViewType.value === "3D" ? "2D" : "3D";
@@ -66,7 +69,7 @@ export default {
 
     // 放大
     const onZoomIn = () => {
-      if (coordInfo.scale <= 1500) {
+      if (coordInfo.scale <= minScale) {
         return false;
       }
 
@@ -75,14 +78,23 @@ export default {
 
     // 缩小
     const onZoomOut = () => {
-      if (coordInfo.scale >= 30000000) {
+      if (coordInfo.scale >= maxScale) {
         return false;
       }
 
       dispatchMapEvent("onZoomOut", null);
     };
 
-    return { mapViewType, coordInfo, onTransform, onLocate, onZoomIn, onZoomOut };
+    return {
+      mapViewType,
+      coordInfo,
+      minScale,
+      maxScale,
+      onTransform,
+      onLocate,
+      onZoomIn,
+      onZoomOut,
+    };
   },
 };
 </script>

@@ -2,11 +2,9 @@
   <div class="map-container">
     <div
       :id="mapId"
-      :class="[
-        fixedHeader ? 'show-header' : '',
-        mapOperatePanel ? 'has-operate-panel' : '',
-      ]"
+      :class="{ 'show-header': fixedHeader  }"
     ></div>
+    <screenshot @close="onCloseScreenshot" />
   </div>
 </template>
 
@@ -17,6 +15,8 @@ import Map from "@arcgis/core/Map";
 import SceneView from "@arcgis/core/views/SceneView";
 import MapView from "@arcgis/core/views/MapView";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+// 组件
+import Screenshot from "components/map/Screenshot/index.vue";
 // 地图事件
 import map from "common/map/index.js";
 
@@ -24,17 +24,14 @@ export default {
   name: "Map",
 
   props: {
-    // 是否显示操作栏目
-    mapOperatePanel: {
-      type: Boolean,
-      default: true,
-    },
     // 地图容器id
     mapId: {
       type: String,
       default: "mainMap",
     },
   },
+
+  components: { Screenshot },
 
   setup(props, { emit }) {
     const store = useStore();
@@ -86,6 +83,8 @@ export default {
             // 切换底图
             if (event === "onSwitchMap") {
               arcGisMap = initMap(data.basemap);
+
+              console.log(data.basemap);
               createView(
                 {
                   map: arcGisMap,
@@ -209,8 +208,8 @@ export default {
         arcGisMapView.watch("camera", (camera) => {
           let tilt = camera.tilt;
           let heading = camera.heading;
-          let position = camera.position;
-          console.log(tilt, heading, position);
+          // let position = camera.position;
+          // console.log(tilt, heading, position);
 
           emit("map-camera-change", {
             tilt,
@@ -268,9 +267,16 @@ export default {
       arcGisMapView.scale = scale;
     };
 
+    // 关闭截图功能
+    const onCloseScreenshot = () => {
+      arcGisMapView.container.classList.remove("screenshotCursor");
+      emit("close-screenshot");
+    };
+
     return {
       fixedHeader,
       onSetScale,
+      onCloseScreenshot
     };
   },
 };
@@ -288,6 +294,7 @@ export default {
     height: calc(100vh - #{$header-height});
   }
 }
+
 </style>
 <style lang="scss">
 /* 去掉地图聚焦边框 */
