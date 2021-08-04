@@ -83,8 +83,8 @@ export default {
 
     // 摄像机信息
     const cameraInfo = ref({
-      tilt: 17,
-      heading: 90,
+      tilt: 33.42,
+      heading: 67.26,
     });
 
     // 坐标信息
