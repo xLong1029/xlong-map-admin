@@ -631,3 +631,23 @@ export function getPageTitle(pageTitle) {
   }
   return `${title}`;
 }
+
+/**
+ * 根据指定字段获取缓存数据（数组类型）的索引
+ * @param {*} data 数据
+ * @param {*} key 字段
+ * @param {*} value 判断值
+ * @returns index
+ */
+ export const getCacheArrayIndex = (data, key = "id", value) => {
+  return data.findIndex((e) => e[key] === value);
+};
+
+/**
+ * 获取缓存数据(数组类型)
+ * @param {*} itemName 名称
+ * @returns array 返回数组
+ */
+export const getCacheArray = (itemName) => {
+  return getLocalS(itemName) ? JSON.parse(getLocalS(itemName)) : [];
+};
