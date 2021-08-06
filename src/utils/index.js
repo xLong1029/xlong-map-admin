@@ -633,13 +633,13 @@ export function getPageTitle(pageTitle) {
 }
 
 /**
- * 根据指定字段获取缓存数据（数组类型）的索引
+ * 根据指定字段获取数组数据的索引
  * @param {*} data 数据
  * @param {*} key 字段
  * @param {*} value 判断值
  * @returns index
  */
- export const getCacheArrayIndex = (data, key = "id", value) => {
+ export const findDataIndex = (data, key = "id", value) => {
   return data.findIndex((e) => e[key] === value);
 };
 
