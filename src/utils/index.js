@@ -634,12 +634,12 @@ export function getPageTitle(pageTitle) {
 
 /**
  * 根据指定字段获取数组数据的索引
- * @param {*} data 数据
- * @param {*} key 字段
  * @param {*} value 判断值
+ * @param {*} data 数据
+ * @param {*} key 字段名
  * @returns index
  */
- export const findDataIndex = (data, key = "id", value) => {
+ export const findDataIndex = (data, value, key = "id") => {
   return data.findIndex((e) => e[key] === value);
 };
 
