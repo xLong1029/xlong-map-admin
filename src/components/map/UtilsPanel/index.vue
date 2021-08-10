@@ -103,7 +103,7 @@ export default {
   },
 
   setup(props, { emit }) {
-    const { dispatchMapEvent } = common();
+    const { dispatchMapEvent, showDevMessage } = common();
     const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
 
     // 获取顶级组件传递的值：当前地图视图是2D或者3D
@@ -209,23 +209,19 @@ export default {
 
       const { component } = panel;
 
-      const index = panelList.value.findIndex((e) => e.component === component);
-      setPanelVisble(panel, index, !panelList.value[index].utilActive);
-
-      // 图形分析、分屏、时间轴
-      if (
-        component === "GraphicAnalysis" ||
-        component === "SplitScreen" ||
-        component === "TimeAxis" ||
-        component === "Panorama"
-      ) {
-        emit("open-full-screen-window", {
-          visible: panelList.value[index].utilActive,
-          panel,
-          index,
-        });
+      // 分屏
+      if (component === "SplitScreen" || component === "Swipe") {
+        // emit("open-full-screen-window", {
+        //   visible: panelList.value[index].utilActive,
+        //   panel,
+        //   index,
+        // });
+        showDevMessage();
         return;
       }
+
+      const index = panelList.value.findIndex((e) => e.component === component);
+      setPanelVisble(panel, index, !panelList.value[index].utilActive);
 
       handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
     };

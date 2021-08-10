@@ -6,7 +6,6 @@
         <label class="text">在图片中添加文字: </label>
         <el-input
           id="screenshotInput"
-          autofocus
           v-model="text"
           style="width: 335px"
           placeholder="请输入文字"

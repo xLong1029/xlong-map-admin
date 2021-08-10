@@ -101,7 +101,7 @@
           "eventSuffix": "Swipe",
           "panelID": "swipePanel",
           "enable2D": true,
-          "enable3D": true
+          "enable3D": false
         },
         {
           "component": "SplitScreen",

@@ -1,5 +1,6 @@
 import Api from "api/user/index.js";
 import { resetRouter } from "router";
+import { strToArr } from "utils";
 import { getToken, removeToken, setToken } from "utils/auth";
 
 const defaultUser = {
@@ -7,9 +8,8 @@ const defaultUser = {
   avatar: "",
   gender: "",
   username: "",
-  realname: "",
-  nickname: "",
-  companyId: "",
+  realName: "",
+  nickName: "",
   roles: [],
 };
 
@@ -40,19 +40,43 @@ const actions = {
   getInfo({ commit }) {
     return new Promise((resolve, reject) => {
       const token = getToken();
+
       Api.GetUser(token)
         .then((res) => {
           const { code, data } = res;
-          if (code == 200) {            
-            commit("SET_USER", data);
-            resolve(data);
-          } else {
+
+          // 登录成功
+          if (code == 200) {
+            const {
+              realName,
+              username,
+              nickName,
+              gender,
+              objectId,
+              userFace,
+              role,
+            } = data;
+
+            const info = {
+              avatar: null,
+              roles: role ? strToArr(role, ",") : null,
+              realName,
+              username,
+              nickName,
+              gender,
+              userId: objectId,
+            };
+
+            commit("SET_USER", info);
+            resolve(info);
+          }
+          // 登录失败
+          else {
             clearAccount(commit);
-            resolve(false);
+            reject(res);
           }
         })
         .catch((err) => {
-          console.log(err);
           clearAccount(commit);
           reject(err);
         });
@@ -62,6 +86,7 @@ const actions = {
   // 登出
   logout({ commit }) {
     return new Promise((resolve) => {
+      Api.Logout();
       clearAccount(commit);
       resolve();
     });

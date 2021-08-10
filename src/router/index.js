@@ -18,25 +18,32 @@ export const constantRoutes = [
   {
     path: "/",
     component: LayoutDefault,
-    redirect: "/map",
+    redirect: "/home",
     children: [
       {
-        path: "/map",
+        path: "home",
+        component: () => import("@/views/home/index.vue"),
+        name: "Home",
+        meta: { title: "首页", icon: "el-icon-s-home" },
+      },
+      {
+        path: "map",
         name: "Map",
         component: () => import("@/views/map/index.vue"),
+        meta: { title: "GIS地图示例", icon: "el-icon-s-home" },
       },
-    ]
-  }
+    ],
+  },
 ];
 
 /**
  * 动态路由
  */
 export const asyncRoutes = [];
-const routesModules = import.meta.globEager('./modules/*.js');
-Object.keys(routesModules).forEach(modulePath => {
-  asyncRoutes.push(...routesModules[modulePath].default)
-})
+const routesModules = import.meta.globEager("./modules/*.js");
+Object.keys(routesModules).forEach((modulePath) => {
+  asyncRoutes.push(...routesModules[modulePath].default);
+});
 
 /**
  * 初始化路由
@@ -45,7 +52,7 @@ export const initRouter = () =>
   createRouter({
     history: createWebHashHistory(),
     scrollBehavior: () => ({ y: 0 }),
-    routes: [...constantRoutes]
+    routes: [...constantRoutes],
   });
 
 let router = initRouter();

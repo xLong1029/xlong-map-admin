@@ -9,9 +9,8 @@
           <el-form-item prop="username">
             <el-input
               class="login__input"
-              placeholder="请输入用户名(示例：admin)"
+              placeholder="请输入用户名"
               prefix-icon="el-icon-user"
-              clearable
               v-model="form.username"
               @keyup.enter="onSubmit()"
             >
@@ -20,13 +19,19 @@
           <el-form-item prop="password">
             <el-input
               class="login__input"
-              placeholder="请输入密码(示例：nnland)"
+              placeholder="请输入密码"
               prefix-icon="el-icon-key"
-              type="password"
-              clearable
+              :type="pwdVisible ? 'text' : 'password'"
               v-model="form.password"
               @keyup.enter="onSubmit()"
             >
+              <template #suffix>
+                <i
+                  @click="onSwitchPwdVisible"
+                  class="iconfont mr-5 pointer"
+                  :class="pwdVisible ? 'icon-kejian' : 'icon-bukejian'"
+                ></i>
+              </template>
             </el-input>
           </el-form-item>
         </el-form>
@@ -82,8 +87,6 @@ export default {
     // 记住密码
     const remeberPwd = ref(false);
 
-    const submitLoading = ref(false);
-
     // copyright内容
     const year = "2021";
     const companyName = computed(() => store.getters.companyName);
@@ -95,6 +98,11 @@ export default {
       username: "",
       password: "",
     });
+
+    const submitLoading = ref(false);
+
+    // 密码可见性
+    const pwdVisible = ref(false);
 
     // 表单规则
     const rules = reactive({
@@ -133,7 +141,6 @@ export default {
           const userInfo = await store.dispatch("user/login", form);
           if (remeberPwd.value) {
             // 本地存储用户名和密码
-            // 本地存储用户名和密码
             Cookies.set("username", form.username, {
               expires: 7,
             });
@@ -148,7 +155,7 @@ export default {
           // 更新用户信息
           store.commit("user/SET_USER", userInfo);
 
-          ElMessage.success(`尊敬的${userInfo.nickname}，欢迎使用${title.value}`);
+          ElMessage.success(`尊敬的${userInfo.nickName}，欢迎使用${title.value}`);
           submitLoading.value = false;
 
           toPage("/map");
@@ -165,6 +172,11 @@ export default {
       showDevMessage();
     };
 
+    // 切换密码可见性
+    const onSwitchPwdVisible = () => {
+      pwdVisible.value = !pwdVisible.value;
+    };
+
     return {
       logo,
       title,
@@ -175,8 +187,10 @@ export default {
       formRef,
       form,
       rules,
+      pwdVisible,
       onSubmit,
       onResetPwd,
+      onSwitchPwdVisible,
     };
   },
 };

@@ -9,11 +9,12 @@
           <span>账号：</span><span>{{ isNull(user.username) }}</span>
         </li>
         <li class="user-info-list-item">
-          <span>昵称：</span><span>{{ user.nickname }}</span>
+          <span>昵称：</span><span>{{ user.nickName }}</span>
         </li>
         <li class="user-info-list-item">
           <span>角色：</span
-          ><el-tag v-if="user.roles.indexOf('admin') >= 0" size="small">管理员</el-tag>
+          >
+          <role-tag/>
         </li>
       </ul>
       <div class="user-info-operate">
@@ -38,6 +39,8 @@ import { ElMessageBox } from "element-plus";
 import common from "common";
 // 过滤器
 import filter from "common/filter";
+// 组件
+import RoleTag from "components/user/RoleTag/index.vue";
 
 export default {
   name: "AccountInfoPopover",
@@ -52,6 +55,8 @@ export default {
       default: "hover",
     },
   },
+
+  components: { RoleTag },
 
   emits: ["on-account-setting"],
 
@@ -99,7 +104,6 @@ export default {
 .user-info {
   &-list {
     &-item {
-      width: 50%;
       margin-bottom: 10px;
     }
   }

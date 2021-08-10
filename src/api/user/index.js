@@ -1,67 +1,102 @@
-// import request from "utils/request";
-// const VUE_APP_SERVER_API = process.env.VUE_APP_SERVER_API;
-
-const user = {
-  token: "debug",
-  userId: "U01",
-  avatar:
-    "https://img2.baidu.com/it/u=3436121203,3749922833&fm=26&fmt=auto&gp=0.jpg",
-  gender: "女",
-  username: "admin",
-  realname: "管理员",
-  nickname: "Admin",
-  companyId: "C01",
-  roles: ["admin"],
-};
+/*
+ * 功能 : 封装数据交互api接口(数据使用的是bmob云数据，请求方法使用bmob云规定方法)。
+ * 用处 : 用户信息操作相关api
+ * 作者 : 罗永梅（381612175@qq.com）
+ * 日期 : 2021-08-10
+ */
+import BmobServer from "bmob/bmob-server.js";
+import Bmob from "hydrogen-js-sdk";
 
 export default {
-  // 登录
-  Login: (data) => {
-    /* Demo-start */
+  /**
+   * 登录
+   *
+   * @param {*} params 参数对象
+   */
+  Login: (params) => {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const { username, password } = data;
-        if (username === "admin" && password === "nnland") {
-          resolve({
-            code: 200,
-            data: user,
-            message: "请求成功",
-          });
-        } else {
-          reject({
-            code: 404,
-            data: null,
-            message: "用户名密码不正确",
-          });
-        }
-      }, 500);
+      Bmob.User.login(params.username, params.password)
+        .then((res) => resolve({ code: 200, data: res }))
+        .catch((err) => reject(err));
     });
-    /* Demo-end */
   },
-  // 获取用户信息
+  /**
+   * 获取用户信息
+   *
+   * @param {*} token token
+   */
   GetUser: (token) => {
-    /* Demo-start */
+    let query = BmobServer.GetQuery("_User");
+    query.equalTo("token", "==", token);
+    // 只返回select的字段值
+    query.select(
+      "username",
+      "role",
+      "userFace",
+      "nickName",
+      "realName",
+      "gender",
+      "companyId"
+    );
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (token === "debug") {
-          resolve({
-            code: 200,
-            data: user,
-            message: "请求成功",
-          });
-        } else {
-          reject({
-            code: 404,
-            data: null,
-            message: "用户信息已失效",
-          });
-        }
-      }, 500);
+      query
+        .find()
+        .then((res) => {
+          resolve({ code: 200, data: res[0] });
+        })
+        .catch((err) => reject(err));
     });
-    /* Demo-end */
-    // return request({
-    //   url: `${VUE_APP_SERVER_API}/GetUser`,
-    //   method: "get",
-    // });
+  },
+  /**
+   * 修改个人资料
+   *
+   * @param {*} params 修改的参数对象
+   * @param {*} id 对象id
+   */
+  EditProfile: (params, id) => {
+    return new Promise((resolve, reject) => {
+      BmobServer.EditOne("_User", id, params)
+        .then((res) => resolve(res))
+        .catch((err) => reject(err));
+    });
+  },
+  /**
+   * 修改密码
+   *
+   * @param {*} params 修改的参数对象
+   * @param {*} token token
+   */
+  ChangePwd: (params, token) => {
+    let query = BmobServer.GetQuery("_User");
+    // 根据唯一键查询对象
+    query.equalTo("token", "==", token);
+    query.equalTo("password", "==", params.oldPassword);
+
+    return new Promise((resolve, reject) => {
+      query
+        .find()
+        .then((res) => {
+          if (res.length) {
+            // 只能批量修改
+            res.set("password", params.newPassword);
+            res
+              .saveAll()
+              .then(() => resolve({ code: 200, msg: "操作成功！" }))
+              .catch((err) => reject(err));
+          } else {
+            resolve({ code: 404, msg: "旧密码不正确！" });
+          }
+        })
+        .catch((err) => reject(err));
+    });
+  },
+  /**
+   * 退出登录，清理Bmob本地全部缓存
+   *
+   * @param {*} params 修改的参数对象
+   * @param {*} token token
+   */
+  Logout: () => {
+    Bmob.User.logout();
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="index-container">
+  <div class="map-index-container">
     <arc-gis-map
       ref="mapRef"
       :map-id="mapId"
@@ -207,7 +207,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.index-container {
+.map-index-container {
   position: relative;
 }
 

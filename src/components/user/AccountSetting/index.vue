@@ -8,25 +8,22 @@
   >
     <el-form :model="form" :rules="rules" ref="formRef" label-width="90px">
       <el-form-item label="账户" prop=""
-        ><span>{{ isNull(user.username) }}</span>
-        <span class="ml-10">
-          <el-tag v-if="user.roles.indexOf('admin') >= 0">管理员</el-tag>
-        </span></el-form-item
-      >
-      <el-form-item label="昵称" prop="nickname">
+        ><span>{{ isNull(user.username) }}</span> <span class="ml-10"><role-tag /></span
+      ></el-form-item>
+      <el-form-item label="昵称" prop="nickName">
         <el-input
           placeholder="请输入昵称"
           clearable
-          v-model="form.nickname"
+          v-model="form.nickName"
           @keyup.enter="onSubmit()"
         >
         </el-input>
       </el-form-item>
-      <el-form-item label="真实姓名" prop="realname">
+      <el-form-item label="真实姓名" prop="realName">
         <el-input
           placeholder="请输入真实姓名"
           clearable
-          v-model="form.realname"
+          v-model="form.realName"
           @keyup.enter="onSubmit()"
         >
         </el-input>
@@ -82,6 +79,8 @@ import filter from "common/filter";
 import common from "common";
 // 校验
 import { validPassword } from "utils/validate";
+// 组件
+import RoleTag from "components/user/RoleTag/index.vue";
 
 export default {
   name: "AccountSetting",
@@ -97,6 +96,8 @@ export default {
     },
   },
 
+  components: { RoleTag },
+
   setup(props, { emit }) {
     const { store, showDevMessage } = common();
     const { validForm } = formJs();
@@ -109,8 +110,8 @@ export default {
     const formRef = ref();
 
     const form = reactive({
-      nickname: "",
-      realname: "",
+      nickName: "",
+      realName: "",
       oldPassword: "",
       newPassword: "",
       comfirmPassword: "",
@@ -118,16 +119,16 @@ export default {
 
     // 表单规则
     const rules = reactive({
-      nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
-      realname: [{ required: true, message: "请输入真实姓名", trigger: "blur" }],
+      nickName: [{ required: true, message: "请输入昵称", trigger: "blur" }],
+      realName: [{ required: true, message: "请输入真实姓名", trigger: "blur" }],
     });
 
     const submitLoading = ref(false);
 
     // 重置表单
     const resetForm = () => {
-      form.nickname = user.value.nickname;
-      form.realname = user.value.realname;
+      form.nickName = user.value.nickName;
+      form.realName = user.value.realName;
     };
 
     onMounted(() => {
@@ -191,7 +192,7 @@ export default {
 </script>
 <style lang="scss">
 .account-setting-dialog {
-  .el-dialog__body{
+  .el-dialog__body {
     padding: 10px 20px;
   }
 }

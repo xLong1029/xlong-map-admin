@@ -23,7 +23,7 @@ router.beforeEach(async (to, from, next) => {
       if (hasToken) {
         if (to.path === "/login") {
           store.dispatch("app/setSysLoading", false);
-          next("/map");
+          next("/home");
         } else {
           // 获取用户信息
           const { roles } = await store.dispatch("user/getInfo");

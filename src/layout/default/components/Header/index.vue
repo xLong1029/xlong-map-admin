@@ -4,13 +4,13 @@
       <img class="logo" :src="logo" />
       <span class="title">{{ title }}</span>
     </div>
-    <div v-if="user && user.realname" class="header-content-right">
+    <div v-if="user && user.realName" class="header-content-right">
       <account-info-popover @on-account-setting="setAccountSettingVisible(true)">
         <div class="user-info">
-          <span v-if="user.avatar" class="user-avatar">
-            <img :src="user.avatar" />
+          <span class="user-avatar">
+            <img :src="user.avatar ? user.avatar : defaultAvatar" />
           </span>
-          <span>{{ isNull(user.nickname) }}</span>
+          <span>{{ isNull(user.nickName) }}</span>
         </div>
       </account-info-popover>
     </div>
@@ -29,8 +29,9 @@ import filter from "common/filter";
 // 组件
 import AccountSetting from "components/user/AccountSetting/index.vue";
 import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
-// logo图片
+// 图片
 import logo from "assets/images/logo.png";
+import defaultAvatar from "assets/images/default-avatar.png";
 
 export default {
   name: "AppHeader",
@@ -65,6 +66,7 @@ export default {
       user,
       isNull,
       accountSettingVisible,
+      defaultAvatar,
       setAccountSettingVisible,
     };
   },
