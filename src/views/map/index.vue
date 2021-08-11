@@ -30,11 +30,11 @@
     />
 
     <account-info-popover
-      v-if="user.avatar && !fixedHeader"
+      v-if="!fixedHeader"
       @on-account-setting="setAccountSettingVisible(true)"
     >
-      <span v-if="user.avatar && !fixedHeader" class="user-avatar">
-        <img :src="user.avatar" />
+      <span class="user-avatar">
+        <img :src="user.avatar ? user.avatar : defaultAvatar" />
       </span>
     </account-info-popover>
     <bottom-coord
@@ -61,6 +61,8 @@ import OperatePanel from "components/map/OperatePanel/index.vue";
 import BottomCoord from "components/map/BottomCoord/index.vue";
 import AccountSetting from "components/user/AccountSetting/index.vue";
 import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
+// 图片
+import defaultAvatar from "assets/images/default-avatar.png";
 
 export default {
   name: "Home",
@@ -177,7 +179,7 @@ export default {
     // 关闭截图
     const onCloseScreenshot = () => {
       startScreenshot.value = false;
-    }
+    };
 
     return {
       mapId,
@@ -193,6 +195,7 @@ export default {
       accountSettingVisible,
       coordInfo,
       mapRef,
+      defaultAvatar,
       setAccountSettingVisible,
       onMapDrag,
       onMapPointerMove,
@@ -201,7 +204,7 @@ export default {
       onFoldMapResPanel,
       onMapCameraChange,
       changeMapViewType,
-      onCloseScreenshot
+      onCloseScreenshot,
     };
   },
 };

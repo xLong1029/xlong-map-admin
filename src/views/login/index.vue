@@ -70,7 +70,7 @@ import common from "common";
 import formJs from "common/form.js";
 // 工具
 import { encrypt, decrypt } from "utils";
-import { reactive, ref, computed, onMounted, watch } from "@vue/runtime-core";
+import { reactive, ref, computed, onMounted, watch, toRaw } from "@vue/runtime-core";
 // logo图片
 import logo from "assets/images/logo.png";
 
@@ -138,7 +138,10 @@ export default {
       if (valid) {
         try {
           submitLoading.value = true;
-          const userInfo = await store.dispatch("user/login", form);
+
+          const params = toRaw(form);
+          const userInfo = await store.dispatch("user/login", params);
+
           if (remeberPwd.value) {
             // 本地存储用户名和密码
             Cookies.set("username", form.username, {

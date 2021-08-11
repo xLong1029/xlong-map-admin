@@ -92,7 +92,7 @@ export function validPhone(phone) {
  * @returns {Boolean}
  */
 export function validPassword(password) {
-  const reg = /^[\w]{6,16}$/;
+  const reg = /(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}/;
   return reg.test(password);
 }
 
