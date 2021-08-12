@@ -1,5 +1,12 @@
 <template>
-  <el-form :model="form" :rules="rules" ref="formRef" label-width="90px">
+  <el-form
+    v-loading="infoLoading"
+    element-loading-text="加载中，请稍后..."
+    :model="form"
+    :rules="rules"
+    ref="formRef"
+    label-width="90px"
+  >
     <el-form-item label="账户" prop=""
       ><span>{{ isNull(user.username) }}</span> <span class="ml-10"><role-tag /></span
     ></el-form-item>
@@ -22,7 +29,7 @@
       </el-input>
     </el-form-item>
     <el-form-item label="">
-      <el-button type="primary" :loading="submitLoading" @click="onSubmit()"
+      <el-button type="primary" :infoLoading="submitLoading" @click="onSubmit()"
         >保存修改</el-button
       >
     </el-form-item>
@@ -30,7 +37,7 @@
 </template>
 
 <script>
-import { computed, reactive, ref } from "@vue/reactivity";
+import { computed, reactive, ref, toRaw } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 表单
@@ -41,6 +48,10 @@ import filter from "common/filter";
 import common from "common";
 // 组件
 import RoleTag from "components/user/RoleTag/index.vue";
+// 工具
+import { strToArr } from "utils";
+// Api
+import Api from "api/user/index.js";
 
 export default {
   name: "AccountInfo",
@@ -48,12 +59,12 @@ export default {
   components: { RoleTag },
 
   setup(props, { emit }) {
-    const { store, showDevMessage } = common();
+    const { store } = common();
     const { validForm } = formJs();
     const { isNull } = filter();
 
-    // 用户信息
     const user = computed(() => store.getters.user);
+    const token = computed(() => store.getters.token);
 
     // 表单
     const formRef = ref();
@@ -71,8 +82,11 @@ export default {
 
     const submitLoading = ref(false);
 
+    const infoLoading = ref(false);
+
     onMounted(() => {
       resetForm();
+      getProfile();
     });
 
     // 重置表单
@@ -89,16 +103,65 @@ export default {
         try {
           submitLoading.value = true;
 
-          /* Demo-start */
-          setTimeout(() => {
-            showDevMessage();
-            submitLoading.value = false;
-          }, 500);
-          /* Demo-end */
+          const params = toRaw(form);
+
+          Api.EditProfile(params, user.value.userId)
+            .then(async (res) => {
+              const { code, msg } = res;
+              if (code == 200) {
+                getProfile();
+                ElMessage.success("信息保存成功");
+              } else {
+                ElMessage.success("信息保存失败");
+              }
+            })
+            .catch((err) => console.log(err))
+            .finally(() => (infoLoading.value = false));
         } catch (err) {
           submitLoading.value = false;
         }
       }
+    };
+
+    // 获取个人资料
+    const getProfile = () => {
+      infoLoading.value = true;
+
+      Api.GetUser(token.value)
+        .then((res) => {
+          const { code, data } = res;
+          // 获取到数据
+          if (code == 200) {
+            const {
+              username,
+              userFace,
+              nickName,
+              realName,
+              gender,
+              objectId,
+              role,
+            } = data;
+
+            form.nickName = nickName;
+            form.realName = realName;
+
+            // 更新用户信息
+            store.commit("user/SET_USER", {
+              avatar: userFace,
+              gender,
+              username,
+              realName,
+              nickName,
+              userId: objectId,
+              roles: role ? strToArr(role, ",") : null,
+            });
+          } else {
+            ElMessage.error("无法获取用户数据");
+            console.log("无该用户");
+          }
+        })
+        .catch((err) => console.log(err))
+        .finally(() => (infoLoading.value = false));
     };
 
     return {
@@ -107,6 +170,7 @@ export default {
       form,
       rules,
       submitLoading,
+      infoLoading,
       isNull,
       onSubmit,
     };

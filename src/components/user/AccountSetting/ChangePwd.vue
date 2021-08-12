@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import { reactive, ref } from "@vue/reactivity";
-import { onMounted, toRaw } from "@vue/runtime-core";
+import { reactive, ref, toRaw } from "@vue/reactivity";
+import { onMounted  } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 表单
 import formJs from "common/form.js";
@@ -50,6 +50,8 @@ import filter from "common/filter";
 import common from "common";
 // 校验
 import { validPassword } from "utils/validate";
+// Api
+import Api from "api/user/index.js";
 
 export default {
   name: "ChangePwd",

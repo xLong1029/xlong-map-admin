@@ -58,7 +58,7 @@ const actions = {
             } = data;
 
             const info = {
-              avatar: null,
+              avatar: userFace,
               roles: role ? strToArr(role, ",") : null,
               realName,
               username,
