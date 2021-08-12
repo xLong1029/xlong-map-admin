@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="form" :rules="rules" ref="formRef" label-width="90px">
+  <el-form :model="form" :rules="rules" ref="changePwdForm" label-width="90px">
     <el-form-item label="旧密码" prop="oldPassword">
       <el-input
         type="password"
@@ -40,7 +40,7 @@
 
 <script>
 import { reactive, ref, toRaw } from "@vue/reactivity";
-import { onMounted  } from "@vue/runtime-core";
+import { onMounted } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 表单
 import formJs from "common/form.js";
@@ -49,7 +49,7 @@ import filter from "common/filter";
 // 通用模块
 import common from "common";
 // 校验
-import { validPassword } from "utils/validate";
+import { validPassword, isEqual } from "utils/validate";
 // Api
 import Api from "api/user/index.js";
 
@@ -68,12 +68,12 @@ export default {
   },
 
   setup(props, { emit }) {
-    const { toPage } = common();
+    const { store, toPage } = common();
     const { validForm } = formJs();
     const { isNull } = filter();
 
     // 表单
-    const formRef = ref();
+    const changePwdForm = ref();
 
     const form = reactive({
       oldPassword: "",
@@ -82,22 +82,22 @@ export default {
     });
 
     // 校验
-    const validateNewPassword = (rule, value) => {
+    const validateNewPassword = (rule, value, callback) => {
       if (!value) {
-        return Promise.reject("请输入新密码");
+        callback(new Error("请输入新密码"));
       } else if (!validPassword(value)) {
-        return Promise.reject("密码中必须包含字母、数字，长度至少为6个字符");
+        callback(new Error("密码至少为6位，必须包含字母和数字"));
       } else {
-        return Promise.resolve();
+        callback();
       }
     };
-    const validateComfirPassword = (rule, value) => {
+    const validateComfirPassword = (rule, value, callback) => {
       if (!value) {
-        return Promise.reject("请输入确认密码");
+        callback(new Error("请输入确认密码"));
       } else if (!isEqual(value, form.newPassword)) {
-        return Promise.reject("两次输入密码不一致");
+        callback(new Error("两次输入密码不一致"));
       } else {
-        return Promise.resolve();
+        callback();
       }
     };
 
@@ -125,15 +125,15 @@ export default {
 
     // 保存修改
     const onSubmit = async () => {
-      const valid = await validForm(formRef.value, "信息填写有误，请检查");
+      const valid = await validForm(changePwdForm.value, "信息填写有误，请检查");
 
       if (valid) {
-        try {
-          submitLoading.value = true;
+        submitLoading.value = true;
 
-          const params = toRaw(form);
+        const params = toRaw(form);
 
-          Api.ChangePwd(params).then(async (res) => {
+        Api.ChangePwd(params)
+          .then(async (res) => {
             const { code, msg } = res;
             if (code == 200) {
               try {
@@ -146,16 +146,14 @@ export default {
                 console.log(err);
               }
             }
-          });
-          submitLoading.value = false;
-        } catch (err) {
-          submitLoading.value = false;
-        }
+          })
+          .catch((err) => console.log(err))
+          .finally(() => (submitLoading.value = false));
       }
     };
 
     return {
-      formRef,
+      changePwdForm,
       form,
       rules,
       submitLoading,

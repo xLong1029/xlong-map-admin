@@ -4,7 +4,7 @@
     element-loading-text="加载中，请稍后..."
     :model="form"
     :rules="rules"
-    ref="formRef"
+    ref="infoForm"
     label-width="90px"
   >
     <el-form-item label="账户" prop=""
@@ -29,7 +29,7 @@
       </el-input>
     </el-form-item>
     <el-form-item label="">
-      <el-button type="primary" :infoLoading="submitLoading" @click="onSubmit()"
+      <el-button type="primary" :loading="submitLoading" @click="onSubmit()"
         >保存修改</el-button
       >
     </el-form-item>
@@ -67,7 +67,7 @@ export default {
     const token = computed(() => store.getters.token);
 
     // 表单
-    const formRef = ref();
+    const infoForm = ref();
 
     const form = reactive({
       nickName: "",
@@ -97,29 +97,24 @@ export default {
 
     // 保存修改
     const onSubmit = async () => {
-      const valid = await validForm(formRef.value, "信息填写有误，请检查");
+      const valid = await validForm(infoForm.value, "信息填写有误，请检查");
 
       if (valid) {
-        try {
-          submitLoading.value = true;
+        submitLoading.value = true;
 
-          const params = toRaw(form);
-
-          Api.EditProfile(params, user.value.userId)
-            .then(async (res) => {
-              const { code, msg } = res;
-              if (code == 200) {
-                getProfile();
-                ElMessage.success("信息保存成功");
-              } else {
-                ElMessage.success("信息保存失败");
-              }
-            })
-            .catch((err) => console.log(err))
-            .finally(() => (infoLoading.value = false));
-        } catch (err) {
-          submitLoading.value = false;
-        }
+        const params = toRaw(form);
+        Api.EditProfile(params, user.value.userId)
+          .then(async (res) => {
+            const { code, msg } = res;
+            if (code == 200) {
+              getProfile();
+              ElMessage.success("信息保存成功");
+            } else {
+              ElMessage.success("信息保存失败");
+            }
+          })
+          .catch((err) => console.log(err))
+          .finally(() => (submitLoading.value = false));
       }
     };
 
@@ -166,7 +161,7 @@ export default {
 
     return {
       user,
-      formRef,
+      infoForm,
       form,
       rules,
       submitLoading,

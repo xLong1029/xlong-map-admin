@@ -13,8 +13,8 @@ export default function () {
    * @param {String} errorText 校验失败提示语
    */
   function validForm(form, errorText) {
-    return new Promise((resolve, reject) => {
-      return form.validate((valid) => {
+    return new Promise((resolve) => {
+      form.validate((valid) => {
         if (!valid) {
           ElMessage.error(errorText);
           resolve(false);
