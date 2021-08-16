@@ -1,7 +1,7 @@
 <template>
   <div :class="['map-info-panel', foldMapInfoPanel ? 'fold' : 'unfold']">
     <div class="map-info-panel__title" @click="setContentVisible(!foldMapInfoPanel)">
-      <div><i class="iconfont icon-tucengxuanze mr-10"></i><span>地图联动信息</span></div>
+      <div><span>地图联动信息</span></div>
       <i class="el-icon-caret-top"></i>
     </div>
     <div
@@ -18,7 +18,7 @@
       <div class="content">
         <span v-if="coordInfo.lon">经度：{{ coordInfo.lon }}</span>
         <span v-if="coordInfo.lat">，纬度：{{ coordInfo.lat }}</span>
-        <br/>
+        <br />
         <span v-if="coordInfo.locate">当前鼠标坐落：{{ coordInfo.locate }}</span>
       </div>
       <div class="title">视图方位</div>
@@ -27,7 +27,9 @@
         <span v-if="coordInfo.heading"> , 罗盘方位：{{ coordInfo.heading }}°</span>
       </div>
       <div class="title">
-        <span v-if="coordInfo.scale">地图比例 <span class="normal">1:{{ coordInfo.scale }}</span></span>
+        <span v-if="coordInfo.scale"
+          >地图比例 <span class="normal">1:{{ coordInfo.scale }}</span></span
+        >
       </div>
       <div class="content scle-content">
         <el-button type="primary" size="mini" @click="setScale(1500)"
