@@ -3,10 +3,10 @@
     <ul class="maps-list">
       <li
         class="maps-list-item"
-        :class="{ active: activeMap === index }"
+        :class="{ active: basemap === item.basemap }"
         v-for="(item, index) in maps"
         :key="'map' + index"
-        @click="onChangeMap(item, index)"
+        @click="onChangeMap(item)"
       >
         <img class="maps-list-item__img" :src="item.img" />
         <span class="maps-list-item__name">{{ item.name }}</span>
@@ -16,8 +16,7 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
-import common from "common";
+import { ref, inject } from "@vue/runtime-core";
 import hybridImg from "assets/images/map-3.jpg";
 import topoVectorImg from "assets/images/map-1.jpg";
 
@@ -32,8 +31,9 @@ export default {
     },
   },
 
-  setup() {
-    const { dispatchMapEvent } = common();
+  setup(props, {emit}) {
+    // 地图底图
+    const basemap = inject("getBasemap");
 
     const maps = ref([
       {
@@ -48,19 +48,14 @@ export default {
       },
     ]);
 
-    const activeMap = ref(0);
-
     // 切换底图
-    const onChangeMap = ({ basemap }, index) => {
-      activeMap.value = index;
-      dispatchMapEvent("onSwitchMap", {
-        basemap,
-      });
+    const onChangeMap = ({ basemap }) => {
+      emit("change-basemap", basemap);
     };
 
     return {
       maps,
-      activeMap,
+      basemap,
       onChangeMap,
     };
   },

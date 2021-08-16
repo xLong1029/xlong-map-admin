@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-coord">
-    <div class="copyright">
+    <div class="copyright" :class="{ black: basemap === 'hybrid' }">
       <span
         >Copyright © 2021
         <a class="link" target="blank" href="https://github.com/xLong1029/xlong-map-vue3"
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { inject } from "@vue/runtime-core";
 // 图片
 import QRCode from "assets/images/qrcode.jpg";
 
@@ -56,8 +57,12 @@ export default {
   },
 
   setup() {
+    // 地图底图
+    const basemap = inject("getBasemap");
+
     return {
       QRCode,
+      basemap,
     };
   },
 };
@@ -75,7 +80,7 @@ export default {
 
   .copyright {
     padding: 2px;
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.35);
     border-radius: 0 4px 0 0;
     .link {
       color: $primary-color;
@@ -93,6 +98,11 @@ export default {
 
     > span {
       margin: 0 10px;
+    }
+
+    &.black {
+      background: rgba(0, 0, 0, 0.35);
+      color: #999999;
     }
   }
 }

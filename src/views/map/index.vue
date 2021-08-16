@@ -27,6 +27,7 @@
       v-if="switchMap"
       :map-operate-panel="mapOperatePanel"
       :map-bottom-coord="mapBottomCoord"
+      @change-basemap="changeBasemap"
     />
     <utils-panel v-if="mapUtilsPanel" />
     <bottom-coord v-if="mapBottomCoord" :companyName="companyName" />
@@ -89,6 +90,9 @@ export default {
     // 当前地图视图为2D或者3D
     const mapViewType = ref("3D");
 
+    // 当前地图底图类型
+    const basemap = ref("hybrid");
+
     // 摄像机信息
     const cameraInfo = ref({
       tilt: 33.42,
@@ -124,6 +128,7 @@ export default {
     provide("getCoordInfo", coordInfo);
     provide("getFixedHeader", fixedHeader);
     provide("getStartScreenshot", startScreenshot);
+    provide("getBasemap", basemap);
 
     // 是否显示账户设置
     const accountSettingVisible = ref(false);
@@ -181,6 +186,11 @@ export default {
       mapViewType.value = type;
     };
 
+    // 改变地图底图
+    const changeBasemap = (val) => {
+      basemap.value = val;
+    };
+
     // 关闭截图
     const onCloseScreenshot = () => {
       startScreenshot.value = false;
@@ -209,6 +219,7 @@ export default {
       onFoldMapInfoPanel,
       onMapCameraChange,
       changeMapViewType,
+      changeBasemap,
       onCloseScreenshot,
     };
   },

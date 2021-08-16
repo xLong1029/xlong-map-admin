@@ -1,9 +1,6 @@
 <template>
   <div class="map-container">
-    <div
-      :id="mapId"
-      :class="{ 'show-header': fixedHeader  }"
-    ></div>
+    <div :id="mapId" :class="{ 'show-header': fixedHeader }"></div>
     <screenshot @close="onCloseScreenshot" />
   </div>
 </template>
@@ -44,6 +41,8 @@ export default {
     const coordInfo = inject("getCoordInfo");
     // 是否显示系统固定头部
     const fixedHeader = inject("getFixedHeader");
+    // 地图底图
+    const basemap = inject("getBasemap");
 
     // 地图事件传递
     const mapEvent = computed(() => store.getters.mapEvent);
@@ -80,27 +79,6 @@ export default {
             const { event, data } = e;
             // console.log(event, data);
 
-            // 切换底图
-            if (event === "onSwitchMap") {
-              arcGisMap = initMap(data.basemap);
-
-              console.log(data.basemap);
-              createView(
-                {
-                  map: arcGisMap,
-                  ...mapConfig,
-                },
-                mapViewType.value
-              );
-
-              // 摆正罗盘
-              emit("map-camera-change", {
-                tilt: 0,
-                heading: 0,
-              });
-              return;
-            }
-
             map()[event](arcGisMapView, data, mapViewType.value);
 
             // 放大缩小
@@ -123,6 +101,30 @@ export default {
           },
           val
         );
+      }
+    );
+
+    // 监听底图改变
+    watch(
+      () => basemap.value,
+      (val) => {
+        arcGisMap = initMap(val);
+
+        console.log(val);
+        createView(
+          {
+            map: arcGisMap,
+            ...mapConfig,
+          },
+          mapViewType.value
+        );
+
+        // 摆正罗盘
+        emit("map-camera-change", {
+          tilt: 0,
+          heading: 0,
+        });
+        return;
       }
     );
 
@@ -276,7 +278,7 @@ export default {
     return {
       fixedHeader,
       onSetScale,
-      onCloseScreenshot
+      onCloseScreenshot,
     };
   },
 };
@@ -294,7 +296,6 @@ export default {
     height: calc(100vh - #{$header-height});
   }
 }
-
 </style>
 <style lang="scss">
 /* 去掉地图聚焦边框 */
