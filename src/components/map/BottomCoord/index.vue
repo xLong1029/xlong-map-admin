@@ -23,16 +23,28 @@
           ><i class="iconfont icon-uicn mr-5"></i><span>UI中国</span></a
         ></span
       >|
-      <span
-        ><a class="link"
-          ><i class="iconfont icon-erweima mr-5"></i><span>微信订阅号</span></a
-        ></span
-      >
+
+      <el-popover placement="top" width="130" trigger="hover">
+        <template #reference>
+          <span>
+            <a class="link"
+              ><i class="iconfont icon-erweima mr-5"></i><span>微信订阅号</span></a
+            ></span
+          >
+        </template>
+        <div class="qrcode-container">
+          <img class="qrcode__img" :src="QRCode" />
+          <span class="qrcode__title">扫一扫，关注xLong设计</span>
+        </div>
+      </el-popover>
     </div>
   </div>
 </template>
 
 <script>
+// 图片
+import QRCode from "assets/images/qrcode.jpg";
+
 export default {
   name: "BottomCoord",
 
@@ -41,6 +53,12 @@ export default {
       type: String,
       default: "",
     },
+  },
+
+  setup() {
+    return {
+      QRCode,
+    };
   },
 };
 </script>
@@ -76,6 +94,24 @@ export default {
     > span {
       margin: 0 10px;
     }
+  }
+}
+
+.qrcode {
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__img {
+    width: 80px;
+    height: 80px;
+  }
+
+  &__title {
+    margin-top: 10px;
+    font-size: 12px;
   }
 }
 </style>
