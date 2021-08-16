@@ -23,13 +23,13 @@
       :map-bottom-coord="mapBottomCoord"
       @click-fold="onFoldMapInfoPanel"
     /> -->
-    <!-- <switch-map
+    <switch-map
       v-if="switchMap"
-      :map-info-panel="mapInfoPanel"
-      :fold-map-info-panel="foldMapInfoPanel"
+      :map-operate-panel="mapOperatePanel"
       :map-bottom-coord="mapBottomCoord"
-    /> -->
+    />
     <utils-panel v-if="mapUtilsPanel" />
+    <bottom-coord v-if="mapBottomCoord" :companyName="companyName" />
     <operate-panel
       v-if="mapOperatePanel"
       :map-bottom-coord="mapBottomCoord"

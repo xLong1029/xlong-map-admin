@@ -210,7 +210,7 @@ export default {
       const { component } = panel;
 
       // 分屏
-      if (component === "SplitScreen" || component === "Swipe") {
+      if (component === "SplitScreen" || component === "SwipePanel" || component === "LocatePanel") {
         // emit("open-full-screen-window", {
         //   visible: panelList.value[index].utilActive,
         //   panel,

@@ -50,7 +50,7 @@
       "children": [
         {
           "component": "LineOfSightPanel",
-          "classStyles": "iconfont icon-shixian",
+          "classStyles": "iconfont icon-yanjing",
           "utilName": "视线",
           "utilActive": false,
           "eventSuffix": "LineOfSight",
@@ -86,7 +86,7 @@
           "eventSuffix": "DayLight",
           "panelID": "dayLightPanel",
           "enable2D": false,
-          "enable3D": false
+          "enable3D": true
         }
       ]
     },

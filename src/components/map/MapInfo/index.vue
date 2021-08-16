@@ -18,6 +18,7 @@
       <div class="content">
         <span v-if="coordInfo.lon">经度：{{ coordInfo.lon }}</span>
         <span v-if="coordInfo.lat">，纬度：{{ coordInfo.lat }}</span>
+        <br/>
         <span v-if="coordInfo.locate">当前鼠标坐落：{{ coordInfo.locate }}</span>
       </div>
       <div class="title">视图方位</div>
@@ -108,7 +109,7 @@ export default {
   }
 
   &__title {
-    background: #f8f8f8;
+    background: #f5f5f5;
     padding: 0 10px;
     height: 40px;
     line-height: 40px;

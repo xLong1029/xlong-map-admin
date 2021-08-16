@@ -1,12 +1,5 @@
 <template>
-  <div
-    :class="[
-      'switch-map',
-      mapInfoPanel ? 'has-map-res-panel' : '',
-      foldMapInfoPanel ? 'layer-fold' : '',
-      mapBottomCoord ? 'has-bottom-coord' : '',
-    ]"
-  >
+  <div class="switch-map" :class="{ 'has-operate-panel': mapOperatePanel }">
     <ul class="maps-list">
       <li
         class="maps-list-item"
@@ -25,25 +18,15 @@
 <script>
 import { ref } from "@vue/reactivity";
 import common from "common";
-import hybridImg from "assets/images/map-3.png";
-import topoVectorImg from "assets/images/map-1.png";
+import hybridImg from "assets/images/map-3.jpg";
+import topoVectorImg from "assets/images/map-1.jpg";
 
 export default {
   name: "SwitchMap",
 
   props: {
-    // 是否显示地图资源面板
-    mapInfoPanel: {
-      type: Boolean,
-      default: true,
-    },
-    // 地图资源面板是否折叠
-    foldMapInfoPanel: {
-      type: Boolean,
-      default: true,
-    },
-    // 是否显示地图底部信息
-    mapBottomCoord: {
+    // 是否显示地图操作栏
+    mapOperatePanel: {
       type: Boolean,
       default: true,
     },
@@ -87,22 +70,14 @@ export default {
 .switch-map {
   position: absolute;
   bottom: 15px;
-  left: 15px;
+  right: 15px;
   background: #fff;
   border-radius: $map-border-radius;
   box-shadow: $map-box-shadow;
-  padding: 10px 0;
+  padding: 10px 5px;
 
-  &.has-map-res-panel {
-    left: 430px;
-
-    &.layer-fold {
-      left: 15px;
-    }
-  }
-
-  &.has-bottom-coord {
-    bottom: calc(#{$bottom-height} + 15px);
+  &.has-operate-panel {
+    right: 65px;
   }
 }
 
@@ -115,7 +90,9 @@ export default {
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    margin: 0 10px;
+    margin: 0 5px;
+    position: relative;
+    overflow: hidden;
 
     &.active {
       .maps-list-item__img {
@@ -123,20 +100,29 @@ export default {
       }
 
       .maps-list-item__name {
-        color: $primary-color;
+        color: #fff;
+        text-shadow: none;
+        background: $primary-color;
       }
     }
 
     &__img {
-      width: 48px;
-      height: 48px;
+      width: 80px;
+      height: 50px;
 
-      border-radius: 8px;
+      border-radius: 4px;
       overflow: hidden;
     }
     &__name {
+      border-radius: 0 0 4px 4px;
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      bottom: 0;
       font-size: 12px;
-      margin-top: 5px;
+      padding: 2px;
+      text-shadow: rgba(255, 255, 255, 0.85) 1px 0 0, rgba(255, 255, 255, 0.85) 0 1px 0,
+        rgba(255, 255, 255, 0.85) -1px 0 0, rgba(255, 255, 255, 0.85) 0 -1px 0;
     }
   }
 }
