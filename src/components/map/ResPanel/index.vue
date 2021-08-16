@@ -1,11 +1,11 @@
 <template>
-  <div :class="['map-res-panel', foldMapResPanel ? 'fold' : 'unfold']">
-    <div class="map-res-panel__title" @click="setContentVisible(!foldMapResPanel)">
+  <div :class="['map-res-panel', foldMapInfoPanel ? 'fold' : 'unfold']">
+    <div class="map-res-panel__title" @click="setContentVisible(!foldMapInfoPanel)">
       <div><i class="iconfont icon-tucengxuanze mr-10"></i><span>地图资源</span></div>
       <i class="el-icon-caret-top"></i>
     </div>
     <div
-      v-if="!foldMapResPanel"
+      v-if="!foldMapInfoPanel"
       class="map-res-panel__content"
       :class="{ 'show-header': fixedHeader, 'has-bottom-coord': mapBottomCoord }"
     >
@@ -34,7 +34,7 @@ export default {
 
   props: {
     // 是否折叠地图资源面板
-    foldMapResPanel: {
+    foldMapInfoPanel: {
       type: Boolean,
       default: false,
     },
@@ -47,7 +47,7 @@ export default {
 
   components: {
     List,
-    MyFavorites
+    MyFavorites,
   },
 
   setup(props, { emit }) {

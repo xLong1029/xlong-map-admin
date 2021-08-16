@@ -1,5 +1,5 @@
 <template>
-  <div :class="['operate-panel', mapBottomCoord ? 'has-bottom-coord' : '']">
+  <div class="operate-panel">
     <compass />
     <div class="map-transform" @click="onTransform()">
       <span class="text">切换</span>
@@ -103,10 +103,6 @@ export default {
   position: absolute;
   bottom: 15px;
   right: 8px;
-
-  &.has-bottom-coord {
-    bottom: calc(15px + #{$bottom-height});
-  }
 
   .iconfont {
     font-size: 24px;

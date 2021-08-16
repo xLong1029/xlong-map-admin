@@ -13,13 +13,13 @@ const getters = {
   theme:(state) => state.settings.theme,
   showSettings:(state) => state.settings.showSettings,
   fixedHeader:(state) => state.settings.fixedHeader,
-  mapResPanel:(state) => state.settings.mapResPanel,
+  mapInfoPanel:(state) => state.settings.mapInfoPanel,
   mapUtilsPanel:(state) => state.settings.mapUtilsPanel,
   mapOperatePanel:(state) => state.settings.mapOperatePanel,
   switchMap:(state) => state.settings.switchMap,
   mapBottomCoord:(state) => state.settings.mapBottomCoord,
   // map
-  foldMapResPanel:(state) => state.map.foldMapResPanel,
+  foldMapInfoPanel:(state) => state.map.foldMapInfoPanel,
   mapEvent:(state) => state.map.mapEvent
 };
 

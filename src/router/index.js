@@ -18,19 +18,19 @@ export const constantRoutes = [
   {
     path: "/",
     component: LayoutDefault,
-    redirect: "/home",
+    redirect: "/map",
     children: [
-      {
-        path: "home",
-        component: () => import("@/views/home/index.vue"),
-        name: "Home",
-        meta: { title: "首页", icon: "el-icon-s-home" },
-      },
       {
         path: "map",
         name: "Map",
         component: () => import("@/views/map/index.vue"),
-        meta: { title: "GIS地图示例", icon: "el-icon-s-home" },
+        meta: { title: "GIS地图", icon: "el-icon-s-home" },
+      },
+      {
+        path: "describe",
+        component: () => import("@/views/describe/index.vue"),
+        name: "Describe",
+        meta: { title: "系统说明", icon: "el-icon-s-home" },
       },
     ],
   },

@@ -1,11 +1,11 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2659669 */
-  src: url('iconfont.eot?t=1628557246239'); /* IE9 */
-  src: url('iconfont.eot?t=1628557246239#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('iconfont.woff2?t=1628557246239') format('woff2'),
-       url('iconfont.woff?t=1628557246239') format('woff'),
-       url('iconfont.ttf?t=1628557246239') format('truetype'),
-       url('iconfont.svg?t=1628557246239#iconfont') format('svg');
+  src: url('iconfont.eot?t=1629075600904'); /* IE9 */
+  src: url('iconfont.eot?t=1629075600904#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('iconfont.woff2?t=1629075600904') format('woff2'),
+       url('iconfont.woff?t=1629075600904') format('woff'),
+       url('iconfont.ttf?t=1629075600904') format('truetype'),
+       url('iconfont.svg?t=1629075600904#iconfont') format('svg');
 }
 
 .iconfont {
@@ -14,6 +14,26 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-QQ:before {
+  content: "\e65e";
+}
+
+.icon-github1:before {
+  content: "\e603";
+}
+
+.icon-erweima:before {
+  content: "\e65b";
+}
+
+.icon-zcool:before {
+  content: "\e638";
+}
+
+.icon-uicn:before {
+  content: "\e63a";
 }
 
 .icon-bukejian:before {

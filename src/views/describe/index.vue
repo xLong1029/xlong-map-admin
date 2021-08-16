@@ -1,16 +1,16 @@
 <template>
-  <div class="home-container">
-    首页
+  <div class="describe-container">
+    系统描述
   </div>
 </template>
 
 <script>
 export default {
-  name: "Home"
+  name: "Describe"
 };
 </script>
 
 <style lang="scss" scoped>
-.home-container {
+.describe-container {
 }
 </style>

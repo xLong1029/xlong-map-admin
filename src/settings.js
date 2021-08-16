@@ -37,9 +37,9 @@ export default {
 
   /**
    * @type {boolean} true | false
-   * @description 是否显示地图资源面板
+   * @description 是否显示地图联动信息面板
    */
-  mapResPanel: true,
+  mapInfoPanel: true,
 
   /**
    * @type {boolean} true | false

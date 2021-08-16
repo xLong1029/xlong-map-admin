@@ -8,7 +8,7 @@ let settings = getLocalS("settings")
 const {
   showSettings,
   fixedHeader,
-  mapResPanel,
+  mapInfoPanel,
   mapUtilsPanel,
   mapOperatePanel,
   switchMap,
@@ -21,7 +21,7 @@ const state = {
   theme: defaultSettings.theme,
   showSettings,
   fixedHeader,
-  mapResPanel,
+  mapInfoPanel,
   mapUtilsPanel,
   mapOperatePanel,
   switchMap,

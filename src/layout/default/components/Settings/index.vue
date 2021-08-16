@@ -18,8 +18,8 @@
     <h3 class="drawer-title mt-20">地图配置</h3>
 
     <div class="drawer-item">
-      <span>地图资源</span>
-      <el-switch v-model="mapResPanel" class="drawer-switch" />
+      <span>地图联动信息</span>
+      <el-switch v-model="mapInfoPanel" class="drawer-switch" />
     </div>
 
     <div class="drawer-item">
@@ -70,12 +70,12 @@ export default {
       },
     });
 
-    const mapResPanel = computed({
+    const mapInfoPanel = computed({
       get() {
-        return store.getters.mapResPanel;
+        return store.getters.mapInfoPanel;
       },
       set(val) {
-        changeSettings("mapResPanel", val);
+        changeSettings("mapInfoPanel", val);
       },
     });
 
@@ -121,7 +121,7 @@ export default {
 
     return {
       fixedHeader,
-      mapResPanel,
+      mapInfoPanel,
       mapUtilsPanel,
       mapOperatePanel,
       switchMap,

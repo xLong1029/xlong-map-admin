@@ -10,18 +10,25 @@
       @map-camera-change="onMapCameraChange"
       @close-screenshot="onCloseScreenshot"
     ></arc-gis-map>
-    <res-panel
-      v-if="mapResPanel"
-      :fold-map-res-panel="foldMapResPanel"
+    <map-info
+      v-if="mapInfoPanel"
+      :fold-map-info-panel="foldMapInfoPanel"
       :map-bottom-coord="mapBottomCoord"
-      @click-fold="onFoldMapResPanel"
+      @click-fold="onFoldMapInfoPanel"
+      @map-set-view-scale="onMapSetView"
     />
-    <switch-map
+    <!-- <res-panel
+      v-if="mapInfoPanel"
+      :fold-map-info-panel="foldMapInfoPanel"
+      :map-bottom-coord="mapBottomCoord"
+      @click-fold="onFoldMapInfoPanel"
+    /> -->
+    <!-- <switch-map
       v-if="switchMap"
-      :map-res-panel="mapResPanel"
-      :fold-map-res-panel="foldMapResPanel"
+      :map-info-panel="mapInfoPanel"
+      :fold-map-info-panel="foldMapInfoPanel"
       :map-bottom-coord="mapBottomCoord"
-    />
+    /> -->
     <utils-panel v-if="mapUtilsPanel" />
     <operate-panel
       v-if="mapOperatePanel"
@@ -37,11 +44,7 @@
         <img :src="user.avatar ? user.avatar : defaultAvatar" />
       </span>
     </account-info-popover>
-    <bottom-coord
-      v-if="mapBottomCoord"
-      :companyName="companyName"
-      @map-set-view-scale="onMapSetView"
-    />
+    <bottom-coord v-if="mapBottomCoord" :companyName="companyName" />
     <account-setting
       :visible="accountSettingVisible"
       @close="setAccountSettingVisible(false)"
@@ -54,7 +57,8 @@ import { computed, reactive, ref, provide } from "@vue/runtime-core";
 import { useStore } from "vuex";
 // 组件
 import ArcGisMap from "./map.vue";
-import ResPanel from "components/map/ResPanel/index.vue";
+// import ResPanel from "components/map/ResPanel/index.vue";
+import MapInfo from "components/map/mapInfo/index.vue";
 import SwitchMap from "components/map/SwitchMap/index.vue";
 import UtilsPanel from "components/map/UtilsPanel/index.vue";
 import OperatePanel from "components/map/OperatePanel/index.vue";
@@ -69,7 +73,8 @@ export default {
 
   components: {
     ArcGisMap,
-    ResPanel,
+    // ResPanel,
+    MapInfo,
     SwitchMap,
     UtilsPanel,
     OperatePanel,
@@ -106,7 +111,7 @@ export default {
 
     const user = computed(() => store.getters.user);
     const fixedHeader = computed(() => store.getters.fixedHeader);
-    const mapResPanel = computed(() => store.getters.mapResPanel);
+    const mapInfoPanel = computed(() => store.getters.mapInfoPanel);
     const switchMap = computed(() => store.getters.switchMap);
     const mapUtilsPanel = computed(() => store.getters.mapUtilsPanel);
     const mapOperatePanel = computed(() => store.getters.mapOperatePanel);
@@ -130,7 +135,7 @@ export default {
     const mapRef = ref();
 
     // 是否折叠地图资源面板
-    const foldMapResPanel = ref(true);
+    const foldMapInfoPanel = ref(false);
 
     // 显示账户设置
     const setAccountSettingVisible = (val) => {
@@ -162,8 +167,8 @@ export default {
     };
 
     // 折叠地图资源面板
-    const onFoldMapResPanel = (val) => {
-      foldMapResPanel.value = val;
+    const onFoldMapInfoPanel = (val) => {
+      foldMapInfoPanel.value = val;
     };
 
     // 监听地图摄像机视角改变
@@ -185,12 +190,12 @@ export default {
       mapId,
       user,
       fixedHeader,
-      mapResPanel,
+      mapInfoPanel,
       switchMap,
       mapUtilsPanel,
       mapOperatePanel,
       mapBottomCoord,
-      foldMapResPanel,
+      foldMapInfoPanel,
       companyName,
       accountSettingVisible,
       coordInfo,
@@ -201,7 +206,7 @@ export default {
       onMapPointerMove,
       onMapScaleChange,
       onMapSetView,
-      onFoldMapResPanel,
+      onFoldMapInfoPanel,
       onMapCameraChange,
       changeMapViewType,
       onCloseScreenshot,

@@ -92,6 +92,14 @@ export default {
       type: Number,
       default: 5,
     },
+    generalUtils: {
+      type: Array,
+      default: () => [],
+    },
+    utilList: {
+      type: Array,
+      default: () => [],
+    },
   },
 
   components: {

@@ -2,8 +2,8 @@
   <div
     :class="[
       'switch-map',
-      mapResPanel ? 'has-map-res-panel' : '',
-      foldMapResPanel ? 'layer-fold' : '',
+      mapInfoPanel ? 'has-map-res-panel' : '',
+      foldMapInfoPanel ? 'layer-fold' : '',
       mapBottomCoord ? 'has-bottom-coord' : '',
     ]"
   >
@@ -33,12 +33,12 @@ export default {
 
   props: {
     // 是否显示地图资源面板
-    mapResPanel: {
+    mapInfoPanel: {
       type: Boolean,
       default: true,
     },
     // 地图资源面板是否折叠
-    foldMapResPanel: {
+    foldMapInfoPanel: {
       type: Boolean,
       default: true,
     },
