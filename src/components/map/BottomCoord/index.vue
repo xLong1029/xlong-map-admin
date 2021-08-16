@@ -75,7 +75,7 @@ export default {
 
   .copyright {
     padding: 2px;
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.6);
     border-radius: 0 4px 0 0;
     .link {
       color: $primary-color;

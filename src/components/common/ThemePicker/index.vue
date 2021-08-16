@@ -20,13 +20,13 @@
 // 获取element-plus版本号
 import { version } from "element-plus/package.json";
 import { computed, watch, ref } from "@vue/runtime-core";
-import { useStore } from "vuex";
+import common from "common";
 // Element Plus主题
 const ORIGINAL_THEME = "#409EFF";
 
 export default {
   setup(props, { emit }) {
-    const store = useStore();
+    const { store, changeSettings } = common();
 
     const chalk = ref("");
     const theme = ref("");
@@ -46,8 +46,11 @@ export default {
     watch(
       () => theme.value,
       async (val) => {
+
         if (typeof val !== "string") return;
-        const oldVal = chalk.value ? theme.value : ORIGINAL_THEME;
+        // const oldVal = chalk.value ? theme.value : ORIGINAL_THEME;
+        const oldVal = ORIGINAL_THEME;
+
         const themeCluster = getThemeCluster(val.replace("#", ""));
 
         // 全局修改自定义的$primary-color
@@ -75,8 +78,6 @@ export default {
 
         const chalkHandler = getHandler("chalk-style");
         chalkHandler();
-
-        emit("change", val);
       }
     );
 
