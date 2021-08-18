@@ -67,6 +67,7 @@ export default {
 
     // 用户信息
     const user = computed(() => store.getters.user);
+    const sysTitle = computed(() => store.getters.sysTitle);
 
     const onAccountSetting = (val) => {
       emit("on-account-setting", val);
@@ -74,7 +75,7 @@ export default {
 
     // 退出登录
     const onLogout = () => {
-      ElMessageBox.confirm("确认登录吗？", "温馨提示", {
+      ElMessageBox.confirm("确认退出登录吗？", "温馨提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -82,7 +83,7 @@ export default {
         try {
           await store.dispatch("user/logout");
           await store.dispatch("permission/generateRoutes", null);
-          ElMessage.success(`您已退出${title.value}`);
+          ElMessage.success(`您已退出${sysTitle.value}`);
           toPage("/login");
         } catch (err) {
           console.log(err);

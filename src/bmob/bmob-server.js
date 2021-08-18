@@ -4,7 +4,7 @@
  * 日期 : 2021-08-09
  * 版本 : version 2.4
  */
-import { APPLICATION_ID, REST_API_KEY, SERCRET_KEY, SECURITY_CODE } from '@/config/index.js';
+import { APPLICATION_ID, REST_API_KEY, SERCRET_KEY, SECURITY_CODE } from 'config/index.js';
 import { objOmit } from 'utils';
 import Bmob from "hydrogen-js-sdk";
 

@@ -106,7 +106,7 @@ export default {
       lat: 22.81221937964247,
       tilt: 0,
       heading: 0,
-      scale: 150000,
+      scale: 1500,
       locate: "",
     });
 

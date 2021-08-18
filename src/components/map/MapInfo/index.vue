@@ -141,6 +141,7 @@ export default {
 
     .normal {
       font-weight: normal;
+      color: #333;
     }
 
     .scle-content {

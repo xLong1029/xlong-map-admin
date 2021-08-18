@@ -38,12 +38,12 @@ export default {
     const maps = ref([
       {
         basemap: "hybrid",
-        name: "卫星地图",
+        name: "影像地图",
         img: hybridImg,
       },
       {
         basemap: "topo-vector",
-        name: "电子地图",
+        name: "矢量地图",
         img: topoVectorImg,
       },
     ]);

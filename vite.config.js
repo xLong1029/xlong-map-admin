@@ -40,7 +40,7 @@ export default defineConfig({
     // 使用IP启动项目
     host: "0.0.0.0",
     // 配置启用的端口号
-    port,
+    port
   },
   resolve: {
     // 设置别名
@@ -55,6 +55,7 @@ export default defineConfig({
       utils: resolve(__dirname, "src/utils"),
       router: resolve(__dirname, "src/router"),
       bmob: resolve("src/bmob"),
+      config: resolve("src/config"),
       "~@": resolve(__dirname, "src/"),
     },
   },

@@ -1,5 +1,8 @@
 import LayoutDefault from "@/layout/default/index.vue";
 
+// const modules = import.meta.glob("@/views/account-manage/*/*.vue");
+// console.log(modules);
+
 const router = [
   {
     path: "/account-manage",
@@ -8,7 +11,7 @@ const router = [
     children: [
       {
         path: "index",
-        component: () => import("@/views/account-manage/index"),
+        component: () => import("@/views/account-manage/index.vue"),
         name: "AccountManage",
         meta: {
           title: "账户管理",
