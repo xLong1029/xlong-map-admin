@@ -35,7 +35,16 @@ export default {
   setup(props, { emit }) {
     const { mapEvent, mapViewConfig } = map();
 
-    const { TDTBasemapLeyar, graphicsLayer } = layers();
+    const {
+      imageBasemapLayer,
+      imageBasemapNoteLayer,
+      
+      vectorBasemapLayer,
+      vectorBasemapNoteLayer,
+      vectorBasemapGroupLayer,
+      terrainBasemapLayer,
+      graphicsLayer,
+    } = layers();
 
     // 获取顶级组件传递的值：当前地图视图是2D或者3D
     const mapViewType = inject("getMapViewType");
@@ -45,8 +54,6 @@ export default {
     const coordInfo = inject("getCoordInfo");
     // 是否显示系统固定头部
     const fixedHeader = inject("getFixedHeader");
-    // 地图底图
-    const basemap = inject("getBasemap");
 
     let arcGisMap = null;
     let arcGisMapView = null;
@@ -83,37 +90,12 @@ export default {
           val
         );
 
+        initCamera(arcGisMapView);
+
         changeMapCameraInfo(0, 0);
         changeCoordInfoTiltHeading(0, 0);
       }
     );
-
-    // 监听底图改变
-    // watch(
-    //   () => basemap.value,
-    //   (val) => {
-    //     arcGisMap = new Map({
-    //       basemap: "hybrid",
-    //       ground: "world-elevation",
-    //       logo: false,
-    //     });
-
-    //     // createView(
-    //     //   {
-    //     //     map: arcGisMap,
-    //     //     ...mapViewConfig,
-    //     //   },
-    //     //   mapViewType.value
-    //     // );
-
-    //     // // 摆正罗盘
-    //     // emit("map-camera-change", {
-    //     //   tilt: 0,
-    //     //   heading: 0,
-    //     // });
-    //     return;
-    //   }
-    // );
 
     onMounted(() => {
       arcGisMap = initMap();
@@ -133,22 +115,16 @@ export default {
      * 初始化地图
      */
     const initMap = () => {
-      let map = new Map({
-        basemap: new Basemap({
-          baseMapLayers: [TDTBasemapLeyar],
-        }),
+      const layerList = [imageBasemapLayer, vectorBasemapGroupLayer];
+      let map = new Map({});
+
+      map.basemap = new Basemap({
+        baseMapLayers: layerList,
       });
 
-      map.add(TDTBasemapLeyar);
-
-      // const vectorBasemap = new TileLayer({
-      //   title: "中文矢量地图",
-      //   id: "vectorBasemap",
-      //   // url:
-      //   //   "http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
-      //   url: "http://t0.tianditu.gov.cn/img_c/wmts?tk=967eee390c6f9d1a84a3c072dcb9f51d",
-      //   visible: true,
-      // });
+      layerList.forEach((e) => {
+        map.add(e);
+      });
 
       return map;
     };
@@ -185,7 +161,7 @@ export default {
      * @param {*} animation 是否显示进场动画
      * @param {*} duration 动画持续时间
      */
-    const initCamera = (arcGisMapView, animation = true, duration = 5000) => {
+    const initCamera = (arcGisMapView, animation = false, duration = 5000) => {
       let gotoInfo = {
         center: [coordInfo.lon, coordInfo.lat],
         tilt: cameraInfo.value.tilt,

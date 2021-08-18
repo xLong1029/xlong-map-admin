@@ -10,18 +10,24 @@ import {
   TDT_TOKEN,
   SPATIAL_REFERENCE_WKID,
   MAP_VECTOR_BASEMAP_LAYER,
-  MAP_TDT_BASEMAP_LAYER,
+  MAP_VECTOR_BASEMAP_NOTE_LAYER,
+  MAP_VECTOR_BASEMAP_GROUP_LAYER,
+  MAP_IMAGE_BASEMAP_LAYER,
+  MAP_IMAGE_BASEMAP_NOTE_LAYER,
+  MAP_TERRAIN_BASEMAP_LAYER,
+  MAP_TERRAIN_BASEMAP_GROUP_LAYER,
   MAP_GRAPHICS_LAYER,
 } from "config/index.js";
 import TileInfo from "@arcgis/core/layers/support/TileInfo";
 import WebTileLayer from "@arcgis/core/layers/WebTileLayer";
-import TileLayer from "@arcgis/core/layers/TileLayer";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import GroupLayer from "@arcgis/core/layers/GroupLayer";
 
 export default function () {
   // 天地图地址
   const tdtBaseUrl = "http://{subDomain}.tianditu.gov.cn/";
 
+  // 空间参照坐标系
   const spatialReference = {
     wkid: SPATIAL_REFERENCE_WKID,
   };
@@ -161,23 +167,83 @@ export default function () {
     ],
   });
 
-  // 空间参照坐标系
+  // 天地图配置
+  const tdtConfig = {
+    subDomains: ["t0"],
+    tileInfo,
+    spatialReference,
+    fullExtent: {
+      xmin: -180,
+      ymin: -90,
+      xmax: 180,
+      ymax: 90,
+      spatialReference: SPATIAL_REFERENCE_WKID,
+    },
+  };
 
-  const TDTBasemapLeyar = new WebTileLayer(
-    `${tdtBaseUrl}/img_c/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&LAYER=img&STYLE=default&FORMAT=tiles&TILEMATRIXSET=c&TILEMATRIX={level}&TILEROW={row}&TILECOL={col}&tk=${TDT_TOKEN}`,
+  // 天地图影像底图
+
+  const imageBasemapLayer = new WebTileLayer(
+    `${tdtBaseUrl}/img_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=c&TileMatrix={level}&TileRow={row}&TileCol={col}&style=default&format=tiles&tk=${TDT_TOKEN}`,
     {
-      id: MAP_TDT_BASEMAP_LAYER,
-      title: "天地图影像图层",
-      subDomains: ["t0"],
-      tileInfo,
-      spatialReference,
-      fullExtent: {
-        xmin: -180,
-        ymin: -90,
-        xmax: 180,
-        ymax: 90,
-        spatialReference: SPATIAL_REFERENCE_WKID,
-      },
+      id: MAP_IMAGE_BASEMAP_LAYER,
+      title: "天地图影像底图图层",
+      ...tdtConfig,
+      visible: true,
+    }
+  );
+
+  // 天地图影像注记
+  const imageBasemapNoteLayer = new WebTileLayer(
+    `${tdtBaseUrl}/cia_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cia&tileMatrixSet=c&TileMatrix={level}&TileRow={row}&TileCol={col}&style=default&format=tiles&tk=${TDT_TOKEN}`,
+    {
+      id: MAP_IMAGE_BASEMAP_NOTE_LAYER,
+      title: "天地图影像注记图层",
+      ...tdtConfig,
+    }
+  );
+
+  // 天地图矢量底图
+  const vectorBasemapLayer = new WebTileLayer(
+    `${tdtBaseUrl}/DataServer?T=vec_c&x={col}&y={row}&l={level}&tk=${TDT_TOKEN}`,
+    {
+      id: MAP_VECTOR_BASEMAP_LAYER,
+      title: "天地矢量底图图层",
+      ...tdtConfig,
+      visible: true,
+    }
+  );
+
+  // 天地图矢量注记
+  const vectorBasemapNoteLayer = new WebTileLayer(
+    `${tdtBaseUrl}/DataServer?T=cva_c&x={col}&y={row}&l={level}&tk=${TDT_TOKEN}`,
+    {
+      id: MAP_VECTOR_BASEMAP_NOTE_LAYER,
+      title: "天地矢量底图图层",
+      ...tdtConfig,
+      visible: true,
+    }
+  );
+
+  // 天地图矢量地图群组
+  const vectorBasemapGroupLayer = new GroupLayer({
+    id: MAP_VECTOR_BASEMAP_GROUP_LAYER,
+    layers: [vectorBasemapLayer, vectorBasemapNoteLayer],
+    opacity: 1,
+    elevationInfo: {
+      mode: "relative-to-ground",
+    },
+    visible: false,
+  });
+
+  // 天地图地形底图
+  const terrainBasemapLayer = new WebTileLayer(
+    `${tdtBaseUrl}/ter_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={x}&TILECOL={y}&tk=${TDT_TOKEN}`,
+    {
+      id: MAP_TERRAIN_BASEMAP_LAYER,
+      title: "天地图地形晕渲图层",
+      ...tdtConfig,
+      visible: false,
     }
   );
 
@@ -193,7 +259,12 @@ export default function () {
 
   return {
     tdtBaseUrl,
-    TDTBasemapLeyar,
+    imageBasemapLayer,
+    imageBasemapNoteLayer,
+    vectorBasemapLayer,
+    vectorBasemapNoteLayer,
+    vectorBasemapGroupLayer,
+    terrainBasemapLayer,
     graphicsLayer,
   };
 }

@@ -19,9 +19,10 @@
 import { ref, inject } from "@vue/runtime-core";
 import hybridImg from "assets/images/map-3.jpg";
 import topoVectorImg from "assets/images/map-1.jpg";
+import common from "common/index.js";
 
 export default {
-  name: "SwitchMap",
+  name: "Basemap",
 
   props: {
     // 是否显示地图操作栏
@@ -31,26 +32,35 @@ export default {
     },
   },
 
-  setup(props, {emit}) {
+  setup(props, { emit }) {
+    const { dispatchMapEvent } = common();
     // 地图底图
     const basemap = inject("getBasemap");
 
     const maps = ref([
       {
         basemap: "hybrid",
-        name: "影像地图",
+        name: "影像",
         img: hybridImg,
       },
       {
-        basemap: "topo-vector",
-        name: "矢量地图",
+        basemap: "vector",
+        name: "矢量",
         img: topoVectorImg,
       },
+      // {
+      //   basemap: "terrain",
+      //   name: "地形",
+      //   img: topoVectorImg,
+      // },
     ]);
 
     // 切换底图
     const onChangeMap = ({ basemap }) => {
       emit("change-basemap", basemap);
+      dispatchMapEvent("onSwitchBasemap", {
+        basemap,
+      });
     };
 
     return {

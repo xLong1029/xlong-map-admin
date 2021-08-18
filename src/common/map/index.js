@@ -34,9 +34,9 @@ export default function () {
         snapToZoom: false,
         viewingMode: "local",
       },
-      spatialReference: {
-        wkid: SPATIAL_REFERENCE_WKID,
-      },
+      // spatialReference: {
+      //   wkid: SPATIAL_REFERENCE_WKID,
+      // },
     };
   };
 
