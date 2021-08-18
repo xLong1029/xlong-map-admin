@@ -32,8 +32,8 @@
         >
       </div>
       <div class="content scle-content">
-        <el-button type="primary" size="mini" @click="setScale(1500)"
-          >以最佳比例1:1500显示</el-button
+        <el-button type="primary" size="mini" @click="setScale(2000)"
+          >以最佳比例1:2000显示</el-button
         >
       </div>
     </div>

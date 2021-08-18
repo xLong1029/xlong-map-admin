@@ -102,11 +102,11 @@ export default {
     // 坐标信息
     const coordInfo = reactive({
       // 会展中心坐标
-      lon: 108.37586419698286,
-      lat: 22.81221937964247,
+      lon: 108.37586,
+      lat: 22.81221,
       tilt: 0,
       heading: 0,
-      scale: 1500,
+      scale: 50000000,
       locate: "",
     });
 

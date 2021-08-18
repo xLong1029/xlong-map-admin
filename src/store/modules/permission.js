@@ -1,7 +1,7 @@
 import { asyncRoutes, constantRoutes, resetRouter } from "router";
 import router from "router";
+
 const modules = import.meta.glob("/src/views/*/*.vue");
-console.log(modules);
 
 /**
  * 使用meta.role判断当前用户是否具有权限访问

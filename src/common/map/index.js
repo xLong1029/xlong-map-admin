@@ -1,17 +1,48 @@
 /*
- * 模块 : 地图操作事件模块
+ * 模块 : 地图相关
  * 作者 : 罗永梅（381612175@qq.com）
- * 日期 : 2021-06-30
+ * 日期 : 2021-08-18
  * 版本 : version 1.0
  */
-const eventsModules = import.meta.globEager('./modules/*.js');
 
-export default function() {
-  let events = {};
-  Object.keys(eventsModules).forEach(modulePath => {
-    const module = eventsModules[modulePath].default || eventsModules[modulePath];
-    events = {...events, ...module};
-  })
+import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
+// 配置
+import { SPATIAL_REFERENCE_WKID } from "config/index.js";
 
-  return events;
+export default function () {
+  const store = useStore();
+
+  // 地图事件传递
+  const mapEvent = computed(() => store.getters.mapEvent);
+
+  // 地图视图参数配置
+  const mapViewConfig = (container) => {
+    return {
+      container,
+      alphaCompositingEnabled: true,
+      // 星空环境
+      environment: {
+        background: {
+          type: "color",
+          color: [0, 0, 0],
+        },
+        starsEnabled: true,
+        atmosphereEnabled: true,
+      },
+      constraints: {
+        snapToZoom: false,
+        viewingMode: "local",
+      },
+      spatialReference: {
+        wkid: SPATIAL_REFERENCE_WKID,
+      },
+    };
+  };
+
+  return {
+    store,
+    mapEvent,
+    mapViewConfig,
+  };
 }
