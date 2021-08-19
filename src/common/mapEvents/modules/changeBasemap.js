@@ -6,7 +6,7 @@
 import {
   MAP_IMAGE_BASEMAP_LAYER,
   MAP_VECTOR_BASEMAP_GROUP_LAYER,
-  // MAP_TERRAIN_BASEMAP_GROUP_LAYER,
+  MAP_TERRAIN_BASEMAP_GROUP_LAYER,
 } from "config/index.js";
 
 export default {
@@ -18,12 +18,12 @@ export default {
    */
   onSwitchBasemap: (view, data) => {
     const { basemap } = data;
-    console.log(`点击切换底图${basemap}`);
+    console.log(`点击切换底图：${basemap}`);
 
     const layerList = [
       MAP_IMAGE_BASEMAP_LAYER,
       MAP_VECTOR_BASEMAP_GROUP_LAYER,
-      // MAP_TERRAIN_BASEMAP_GROUP_LAYER,
+      MAP_TERRAIN_BASEMAP_GROUP_LAYER,
     ];
 
     layerList.forEach((e) => {
@@ -35,7 +35,7 @@ export default {
     });
 
     switch (basemap) {
-      case "hybrid":
+      case "image":
         view.map.findLayerById(MAP_IMAGE_BASEMAP_LAYER).visible = true;
         break;
       case "vector":

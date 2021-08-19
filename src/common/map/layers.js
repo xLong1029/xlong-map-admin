@@ -15,6 +15,7 @@ import {
   MAP_IMAGE_BASEMAP_LAYER,
   MAP_IMAGE_BASEMAP_NOTE_LAYER,
   MAP_TERRAIN_BASEMAP_LAYER,
+  MAP_TERRAIN_BASEMAP_NOTE_LAYER,
   MAP_TERRAIN_BASEMAP_GROUP_LAYER,
   MAP_GRAPHICS_LAYER,
 } from "config/index.js";
@@ -169,7 +170,7 @@ export default function () {
 
   // 天地图配置
   const tdtConfig = {
-    subDomains: ["t0"],
+    subDomains: ['t0','t1','t2','t3','t4','t5','t6','t7'],
     tileInfo,
     spatialReference,
     fullExtent: {
@@ -228,6 +229,7 @@ export default function () {
   // 天地图矢量地图群组
   const vectorBasemapGroupLayer = new GroupLayer({
     id: MAP_VECTOR_BASEMAP_GROUP_LAYER,
+    title: "天地图矢量底图群组",
     layers: [vectorBasemapLayer, vectorBasemapNoteLayer],
     opacity: 1,
     elevationInfo: {
@@ -236,16 +238,39 @@ export default function () {
     visible: false,
   });
 
-  // 天地图地形底图
+  // 天地图地形晕渲底图
   const terrainBasemapLayer = new WebTileLayer(
-    `${tdtBaseUrl}/ter_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={x}&TILECOL={y}&tk=${TDT_TOKEN}`,
+    `${tdtBaseUrl}/ter_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=ter&tileMatrixSet=c&TileMatrix={level}&TileRow={row}&TileCol={col}&style=default&format=tiles&tk=${TDT_TOKEN}`,
     {
       id: MAP_TERRAIN_BASEMAP_LAYER,
       title: "天地图地形晕渲图层",
       ...tdtConfig,
-      visible: false,
+      visible: true,
     }
   );
+
+  // 天地图地形晕渲注记
+  const terrainBasemapNoteLayer = new WebTileLayer(
+    `${tdtBaseUrl}/cta_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=cta&tileMatrixSet=c&TileMatrix={level}&TileRow={row}&TileCol={col}&style=default&format=tiles&tk=${TDT_TOKEN}`,
+    {
+      id: MAP_TERRAIN_BASEMAP_NOTE_LAYER,
+      title: "天地图地形晕渲注记图层",
+      ...tdtConfig,
+      visible: true,
+    }
+  );
+
+  // 天地图地形晕渲群组
+  const terrainBasemapNoteGroupLayer = new GroupLayer({
+    id: MAP_TERRAIN_BASEMAP_GROUP_LAYER,
+    title: "天地图地形晕渲群组",
+    layers: [terrainBasemapLayer, terrainBasemapNoteLayer],
+    opacity: 1,
+    elevationInfo: {
+      mode: "relative-to-ground",
+    },
+    visible: false,
+  });
 
   // 图形绘制图层
   const graphicsLayer = new GraphicsLayer({
@@ -265,6 +290,8 @@ export default function () {
     vectorBasemapNoteLayer,
     vectorBasemapGroupLayer,
     terrainBasemapLayer,
+    terrainBasemapNoteLayer,
+    terrainBasemapNoteGroupLayer,
     graphicsLayer,
   };
 }

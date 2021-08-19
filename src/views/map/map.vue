@@ -37,12 +37,8 @@ export default {
 
     const {
       imageBasemapLayer,
-      imageBasemapNoteLayer,
-      
-      vectorBasemapLayer,
-      vectorBasemapNoteLayer,
       vectorBasemapGroupLayer,
-      terrainBasemapLayer,
+      terrainBasemapNoteGroupLayer,
       graphicsLayer,
     } = layers();
 
@@ -90,8 +86,6 @@ export default {
           val
         );
 
-        initCamera(arcGisMapView);
-
         changeMapCameraInfo(0, 0);
         changeCoordInfoTiltHeading(0, 0);
       }
@@ -107,19 +101,24 @@ export default {
         },
         mapViewType.value
       );
-
-      initCamera(arcGisMapView);
     });
 
     /**
      * 初始化地图
      */
     const initMap = () => {
-      const layerList = [imageBasemapLayer, vectorBasemapGroupLayer];
-      let map = new Map({});
+      const layerList = [
+        imageBasemapLayer,
+        vectorBasemapGroupLayer,
+        terrainBasemapNoteGroupLayer,
+      ];
 
-      map.basemap = new Basemap({
+      const basemap = new Basemap({
         baseMapLayers: layerList,
+      });
+
+      let map = new Map({
+        basemap,
       });
 
       layerList.forEach((e) => {
@@ -135,6 +134,7 @@ export default {
      * @param {*} type 视图类型
      */
     const createView = (params, type) => {
+      console.log(type);
       arcGisMapView =
         type === "2D"
           ? new MapView(params)
@@ -152,6 +152,10 @@ export default {
       arcGisMapView.ui._removeComponents(["attribution"]);
 
       setViewMouseEvent(mapViewType.value);
+
+      if (type === "3D") {
+        initCamera(arcGisMapView);
+      }
     };
 
     /**

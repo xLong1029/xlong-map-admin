@@ -17,8 +17,9 @@
 
 <script>
 import { ref, inject } from "@vue/runtime-core";
-import hybridImg from "assets/images/map-3.jpg";
-import topoVectorImg from "assets/images/map-1.jpg";
+import imageImg from "assets/images/map-1.jpg";
+import vectorImg from "assets/images/map-2.jpg";
+import terrainImg from "assets/images/map-3.jpg";
 import common from "common/index.js";
 
 export default {
@@ -39,20 +40,20 @@ export default {
 
     const maps = ref([
       {
-        basemap: "hybrid",
+        basemap: "image",
         name: "影像",
-        img: hybridImg,
+        img: imageImg,
       },
       {
         basemap: "vector",
         name: "矢量",
-        img: topoVectorImg,
+        img: vectorImg,
       },
-      // {
-      //   basemap: "terrain",
-      //   name: "地形",
-      //   img: topoVectorImg,
-      // },
+      {
+        basemap: "terrain",
+        name: "地形",
+        img: terrainImg,
+      },
     ]);
 
     // 切换底图
