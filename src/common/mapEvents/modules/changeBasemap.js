@@ -35,7 +35,7 @@ export default {
     });
 
     switch (basemap) {
-      case "image":
+      case "hybrid":
         view.map.findLayerById(MAP_IMAGE_BASEMAP_LAYER).visible = true;
         break;
       case "vector":

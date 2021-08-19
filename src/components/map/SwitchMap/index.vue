@@ -40,7 +40,7 @@ export default {
 
     const maps = ref([
       {
-        basemap: "image",
+        basemap: "hybrid",
         name: "影像",
         img: imageImg,
       },

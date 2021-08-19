@@ -78,8 +78,6 @@ export default {
     watch(
       () => mapViewType.value,
       (val) => {
-        arcGisMap = initMap();
-
         createView(
           {
             map: arcGisMap,
