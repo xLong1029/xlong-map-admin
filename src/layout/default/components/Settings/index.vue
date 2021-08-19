@@ -18,7 +18,7 @@
     <h3 class="drawer-title mt-20">地图配置</h3>
 
     <div class="drawer-item">
-      <span>地图联动信息</span>
+      <span>地图信息</span>
       <el-switch v-model="mapInfoPanel" class="drawer-switch" />
     </div>
 

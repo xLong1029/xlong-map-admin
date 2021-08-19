@@ -1,17 +1,19 @@
 <template>
   <div class="switch-map" :class="{ 'has-operate-panel': mapOperatePanel }">
-    <ul class="maps-list">
-      <li
-        class="maps-list-item"
-        :class="{ active: basemap === item.basemap }"
-        v-for="(item, index) in maps"
-        :key="'map' + index"
-        @click="onChangeMap(item)"
-      >
-        <img class="maps-list-item__img" :src="item.img" />
-        <span class="maps-list-item__name">{{ item.name }}</span>
-      </li>
-    </ul>
+    <div class="maps-list-wrapper">
+      <ul class="maps-list">
+        <li
+          class="maps-list-item"
+          :class="{ active: basemap === item.basemap }"
+          v-for="(item, index) in maps"
+          :key="'map' + index"
+          @click="onChangeMap(item)"
+        >
+          <img class="maps-list-item__img" :src="item.img" />
+          <span class="maps-list-item__name">{{ item.name }}</span>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -59,6 +61,10 @@ export default {
     // 切换底图
     const onChangeMap = ({ basemap }) => {
       emit("change-basemap", basemap);
+
+      if(basemap === 'terrain'){
+        emit("map-set-view-scale", { scale: 30000 });
+      }
       dispatchMapEvent("onSwitchBasemap", {
         basemap,
       });
@@ -75,12 +81,18 @@ export default {
 <style lang="scss" scoped>
 .switch-map {
   position: absolute;
-  bottom: 15px;
+  bottom: 10px;
   right: 15px;
   background: #fff;
   border-radius: $map-border-radius;
   box-shadow: $map-box-shadow;
-  padding: 10px 5px;
+  width: 120px;
+  overflow: hidden;
+  transition: 0.5s;
+
+  &:hover {
+    width: 274px;
+  }
 
   &.has-operate-panel {
     right: 65px;
@@ -88,21 +100,36 @@ export default {
 }
 
 .maps-list {
-  display: flex;
-  justify-content: space-between;
+  &-wrapper {
+    margin: 8px;
+    overflow: hidden;
+  }
+
+  float: left;
+  width: 274px;
+  height: 50px;
 
   &-item {
+    float: left;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    margin: 0 5px;
+    margin: 0 4px;
     position: relative;
     overflow: hidden;
 
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
     &.active {
       .maps-list-item__img {
-        border: 2px solid $primary-color;
+        border: 1px solid $primary-color;
       }
 
       .maps-list-item__name {
@@ -120,13 +147,14 @@ export default {
       overflow: hidden;
     }
     &__name {
-      border-radius: 0 0 4px 4px;
+      border-radius: 4px 0 0 0;
       position: absolute;
       text-align: center;
-      width: 100%;
+      // width: 100%;
+      right: 0;
       bottom: 0;
       font-size: 12px;
-      padding: 2px;
+      padding: 2px 4px;
       text-shadow: rgba(255, 255, 255, 0.85) 1px 0 0, rgba(255, 255, 255, 0.85) 0 1px 0,
         rgba(255, 255, 255, 0.85) -1px 0 0, rgba(255, 255, 255, 0.85) 0 -1px 0;
     }

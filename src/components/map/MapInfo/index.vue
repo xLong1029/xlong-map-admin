@@ -1,7 +1,7 @@
 <template>
   <div :class="['map-info-panel', foldMapInfoPanel ? 'fold' : 'unfold']">
     <div class="map-info-panel__title" @click="setContentVisible(!foldMapInfoPanel)">
-      <div><span>地图联动信息</span></div>
+      <div><span>地图信息</span></div>
       <i class="el-icon-caret-top"></i>
     </div>
     <div
@@ -11,7 +11,7 @@
     >
       <div class="title">
         当前视图<span class="normal ml-10"
-          ><el-tag size="small">{{ mapViewType }}视图</el-tag></span
+          ><el-tag size="small" type="success">{{ mapViewType }}视图</el-tag></span
         >
       </div>
       <div class="title">鼠标位置</div>
@@ -32,8 +32,8 @@
         >
       </div>
       <div class="content scle-content">
-        <el-button type="primary" size="mini" @click="setScale(2000)"
-          >以最佳比例1:2000显示</el-button
+        <el-button type="primary" size="mini" @click="setScale(bastScale)"
+          >以最佳比例1:{{ bastScale }}显示</el-button
         >
       </div>
     </div>
@@ -41,13 +41,13 @@
 </template>
 
 <script>
-import { inject } from "@vue/runtime-core";
+import { ref, inject, watch } from "@vue/runtime-core";
 
 export default {
   name: "MapInfo",
 
   props: {
-    // 是否折叠地图联动信息面板
+    // 是否折叠地图信息面板
     foldMapInfoPanel: {
       type: Boolean,
       default: false,
@@ -66,6 +66,19 @@ export default {
     const mapViewType = inject("getMapViewType");
     // 坐标信息
     const coordInfo = inject("getCoordInfo");
+    // 地图底图
+    const basemap = inject("getBasemap");
+    // 最佳比例
+    const bastScale = ref(2000);
+
+    console.log(basemap);
+
+    watch(
+      () => basemap.value,
+      (val) => {
+        bastScale.value = val === "terrain" ? 30000 : 2000;
+      }
+    );
 
     // 收起面板
     const setContentVisible = (val) => {
@@ -81,6 +94,8 @@ export default {
       fixedHeader,
       mapViewType,
       coordInfo,
+      basemap,
+      bastScale,
       setContentVisible,
       setScale,
     };
@@ -96,12 +111,11 @@ export default {
   background: #fff;
   border-radius: $map-border-radius;
   width: 280px;
-
   overflow: hidden;
   box-shadow: $map-box-shadow;
 
   &.fold {
-    width: 150px;
+    width: 100px;
 
     .el-icon-caret-top {
       transition: 0.2s;

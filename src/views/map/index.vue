@@ -28,6 +28,7 @@
       :map-operate-panel="mapOperatePanel"
       :map-bottom-coord="mapBottomCoord"
       @change-basemap="changeBasemap"
+      @map-set-view-scale="onMapSetView"
     />
     <utils-panel v-if="mapUtilsPanel" />
     <bottom-coord v-if="mapBottomCoord" :companyName="companyName" />
@@ -59,7 +60,7 @@ import { useStore } from "vuex";
 // 组件
 import ArcGisMap from "./map.vue";
 // import ResPanel from "components/map/ResPanel/index.vue";
-import MapInfo from "components/map/mapInfo/index.vue";
+import MapInfo from "components/map/MapInfo/index.vue";
 import SwitchMap from "components/map/SwitchMap/index.vue";
 import UtilsPanel from "components/map/UtilsPanel/index.vue";
 import OperatePanel from "components/map/OperatePanel/index.vue";
@@ -95,8 +96,8 @@ export default {
 
     // 摄像机信息
     const cameraInfo = ref({
-      tilt: 33.42,
-      heading: 67.26,
+      tilt: 37,
+      heading: 44,
     });
 
     // 坐标信息

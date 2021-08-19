@@ -101,7 +101,7 @@ export default {
 <style lang="scss" scoped>
 .operate-panel {
   position: absolute;
-  bottom: 15px;
+  bottom: 10px;
   right: 8px;
 
   .iconfont {
