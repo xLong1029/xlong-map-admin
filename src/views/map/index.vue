@@ -91,7 +91,7 @@ export default {
     const mapViewType = ref("3D");
 
     // 当前地图底图类型
-    const basemap = ref("hybrid");
+    const basemap = ref("image");
 
     // 摄像机信息
     const cameraInfo = ref({

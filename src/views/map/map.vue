@@ -78,6 +78,8 @@ export default {
     watch(
       () => mapViewType.value,
       (val) => {
+        arcGisMap = initMap();
+
         createView(
           {
             map: arcGisMap,
@@ -92,7 +94,7 @@ export default {
     );
 
     onMounted(() => {
-      arcGisMap = initMap();
+      arcGisMap = initMap(mapViewType.value);
 
       createView(
         {
@@ -105,8 +107,10 @@ export default {
 
     /**
      * 初始化地图
+     *
+     * @param {*} type 视图类型
      */
-    const initMap = () => {
+    const initMap = (type) => {
       const layerList = [
         imageBasemapLayer,
         vectorBasemapGroupLayer,
@@ -134,10 +138,9 @@ export default {
      * @param {*} type 视图类型
      */
     const createView = (params, type) => {
-      console.log(type);
       arcGisMapView =
         type === "2D"
-          ? new MapView(params)
+          ? new MapView({ ...params })
           : new SceneView({
               ...params,
               zoom: 1,
@@ -165,7 +168,7 @@ export default {
      * @param {*} animation 是否显示进场动画
      * @param {*} duration 动画持续时间
      */
-    const initCamera = (arcGisMapView, animation = false, duration = 5000) => {
+    const initCamera = (arcGisMapView, animation = true, duration = 5000) => {
       let gotoInfo = {
         center: [coordInfo.lon, coordInfo.lat],
         tilt: cameraInfo.value.tilt,
