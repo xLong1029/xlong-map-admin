@@ -1,12 +1,26 @@
 <template>
-  <div class="map-container">
-    <div :id="mapId" :class="{ 'show-header': fixedHeader }"></div>
+  <!-- <div class="map-container" style="display: flex">
+    <div :id="map3D.id" :class="{ 'show-header': fixedHeader }"></div>
+    <div :id="map2D.id" :class="{ 'show-header': fixedHeader }"></div>
+    <screenshot @close="onCloseScreenshot" />
+  </div> -->
+  <div class="map-container" style="display: flex">
+    <div
+      :id="map3D.id"
+      :class="{ 'show-header': fixedHeader, hide: mapViewType !== '3D' }"
+    ></div>
+    <div
+      :id="map2D.id"
+      :class="{ 'show-header': fixedHeader, hide: mapViewType !== '2D' }"
+    ></div>
     <screenshot @close="onCloseScreenshot" />
   </div>
 </template>
 
 <script>
-import { onMounted, watch, inject } from "@vue/runtime-core";
+import { ref, onMounted, watch, inject, nextTick } from "@vue/runtime-core";
+import { ElMessage } from "element-plus";
+// Arcgis
 import Map from "@arcgis/core/Map";
 import SceneView from "@arcgis/core/views/SceneView";
 import MapView from "@arcgis/core/views/MapView";
@@ -21,14 +35,6 @@ import layers from "common/map/layers.js";
 
 export default {
   name: "Map",
-
-  props: {
-    // 地图容器id
-    mapId: {
-      type: String,
-      default: "mainMap",
-    },
-  },
 
   components: { Screenshot },
 
@@ -51,8 +57,25 @@ export default {
     // 是否显示系统固定头部
     const fixedHeader = inject("getFixedHeader");
 
-    let arcGisMap = null;
-    let arcGisMapView = null;
+    let arcgisMap = null;
+
+    // 3D地图配置
+    let map3D = {
+      id: "map3D",
+      view: null,
+    };
+
+    // 2D地图配置
+    let map2D = {
+      id: "map2D",
+      view: null,
+    };
+
+    // 当前地图配置
+    let currentMapConfig = null;
+
+    // 最终视图缩放大小
+    let finalViewZoom = 17;
 
     // 监听地图事件传递
     watch(
@@ -63,52 +86,63 @@ export default {
             const { event, data } = e;
             // console.log(event, data);
 
-            mapEvents()[event](arcGisMapView, data, mapViewType.value);
+            // 2/3D视图转换
+            if (event === "onTransformView") {
+              onTransformView(data.viewType);
+              return false;
+            }
+
+            currentMapConfig = mapViewType.value === "2D" ? map2D : map3D;
+
+            console.log(currentMapConfig);
+
+            mapEvents()[event](currentMapConfig.view, data, mapViewType.value);
 
             // 放大缩小
             if (event === "onZoomIn" || event === "onZoomOut") {
-              changeMapViewScale(Math.round(arcGisMapView.scale));
+              changeViewScale(Math.round(currentMapConfig.view.scale));
             }
           });
         }
       }
     );
 
-    // 监听视图改变
-    watch(
-      () => mapViewType.value,
-      (val) => {
-        createView(
-          {
-            map: arcGisMap,
-            ...mapViewConfig,
-          },
-          val
-        );
-
-        changeMapCameraInfo(0, 0);
-        changeCoordInfoTiltHeading(0, 0);
-      }
-    );
-
     onMounted(() => {
-      arcGisMap = initMap(mapViewType.value);
-
-      createView(
-        {
-          map: arcGisMap,
-          ...mapViewConfig(props.mapId),
-        },
-        mapViewType.value
-      );
+      currentMapConfig = mapViewType.value === "2D" ? map2D : map3D;
+      initMap(currentMapConfig, mapViewType.value);
     });
 
     /**
      * 初始化地图
      *
-     * @param {*} type 视图类型
+     * @param {*} mapConfig 地图配置
      */
-    const initMap = (type) => {
+    const initMap = (mapConfig) => {
+      arcgisMap = createMap(mapConfig.id);
+
+      map2D.view = createView(
+        {
+          map: arcgisMap,
+          ...mapViewConfig(map2D.id),
+        },
+        "2D"
+      );
+
+      map3D.view = createView(
+        {
+          map: arcgisMap,
+          ...mapViewConfig(map3D.id),
+        },
+        "3D"
+      );
+
+      // initCamera(mapConfig.view);
+    };
+
+    /**
+     * 创建地图
+     */
+    const createMap = () => {
       const layerList = [
         imageBasemapLayer,
         vectorBasemapGroupLayer,
@@ -127,145 +161,196 @@ export default {
         map.add(e);
       });
 
+      console.log(map);
+
       return map;
     };
 
     /**
      * 创建视图
+     *
      * @param {*} params 视图参数
      * @param {*} type 视图类型
      */
     const createView = (params, type) => {
-      arcGisMapView =
+      let view =
         type === "2D"
-          ? new MapView({ ...params })
+          ? new MapView({
+              ...params,
+              center: [108.37586, 22.81221],
+              zoom: finalViewZoom,
+              scale: coordInfo.scale,
+            })
           : new SceneView({
               ...params,
               zoom: 1,
             });
 
-      arcGisMapView.scale = coordInfo.scale;
+      view.map.add(graphicsLayer);
 
-      arcGisMapView.map.add(graphicsLayer);
+      view.ui.empty("top-left");
 
-      arcGisMapView.ui.empty("top-left");
       // 移除powered by
-      arcGisMapView.ui._removeComponents(["attribution"]);
+      view.ui._removeComponents(["attribution"]);
 
-      setViewMouseEvent(mapViewType.value);
+      setViewMouseKeyEvent(view);
+      initCamera(view);
 
-      if (type === "3D") {
-        initCamera(arcGisMapView);
-      }
+      return view;
     };
 
     /**
      * 初始化摄像机
      *
-     * @param {*} arcGisMapView 视图对象
+     * @param {*} view 视图对象
+     * @param {*} type
      * @param {*} animation 是否显示进场动画
      * @param {*} duration 动画持续时间
      */
-    const initCamera = (arcGisMapView, animation = true, duration = 5000) => {
+    const initCamera = (view, animation = true, duration = 5000) => {
       let gotoInfo = {
         center: [coordInfo.lon, coordInfo.lat],
         tilt: cameraInfo.value.tilt,
         heading: cameraInfo.value.heading,
-        zoom: 17,
+        zoom: finalViewZoom,
       };
 
       if (!animation) {
         gotoInfo.tilt = 0;
         gotoInfo.heading = 0;
-        gotoInfo.zoom = 17;
         duration = 0;
       }
 
-      arcGisMapView.when(function () {
+      view.when(function () {
         setTimeout(
           () => {
-            arcGisMapView.goTo(gotoInfo, { duration }).then(() => {
+            view.goTo(gotoInfo, { duration }).then(() => {
               // 摄像机移动结束设置当前比例
-              changeMapViewScale(Math.round(arcGisMapView.scale));
+              changeViewScale(Math.round(view.scale));
             });
           },
           animation ? 1500 : 0
         );
 
         // 监听摄像机
-        arcGisMapView.watch("camera", (camera) => {
+        view.watch("camera", (camera) => {
           let tilt = camera.tilt;
           let heading = camera.heading;
           // let position = camera.position;
           // console.log(tilt, heading, position);
 
-          changeMapCameraInfo(tilt, heading);
+          changeCameraInfo(tilt, heading);
           changeCoordInfoTiltHeading(tilt, heading);
         });
       });
     };
 
-    // 地图鼠标事件
-    const setViewMouseEvent = () => {
-      // 鼠标移动
-      arcGisMapView.on("pointer-move", (e) => {
-        let point = arcGisMapView.toMap({ x: e.x, y: e.y });
-        if (point) {
-          const { longitude, latitude } = point;
+    /**
+     * 2/3D视图转换
+     *
+     * @param {*} type 要转换的视图类型
+     */
+    const onTransformView = (type) => {
+      nextTick(() => {
+        console.log(cameraInfo, map2D, map3D);
 
-          emit("map-pointer-move", {
-            lon: parseFloat(longitude).toFixed(5),
-            lat: parseFloat(latitude).toFixed(5),
+        const currentViewCenter = currentMapConfig.view.center;
+
+        // 切换至2D
+        if (type === "2D") {
+          map3D.view.goTo({ tilt: 0, heading: 0 }, { duration: 3000 }).then(() => {
+            const viewpoint = map3D.view.viewpoint.clone();
+            map2D.view.viewpoint = viewpoint;
+
+            currentMapConfig = map2D;
+            
+            mapViewType.value = type;
+            ElMessage.success(`您已成功切换至${type}视图`);
           });
+        } else {
+          const viewpoint = map2D.view.viewpoint.clone();
+          map3D.view.viewpoint = viewpoint;
+
+          currentMapConfig = map3D;
+
+          mapViewType.value = type;
+
+          map3D.view.goTo({ tilt: 45 }, { duration: 3000 }).then(() => {
+            ElMessage.success(`您已成功切换至${type}视图`);
+          });
+          // ElMessage.success(`您已成功切换至${type}视图`);
+        }
+      });
+    };
+
+    // 地图鼠标/键盘事件
+    const setViewMouseKeyEvent = (view) => {
+      // 2D视图下，不可以用WASD控制方向
+      view.on("key-down", (e) => {
+        if (mapViewType.value == "2D") {
+          const forbidKeys = ["a", "s", "d", "w", "A", "S", "D", "W"];
+          if (forbidKeys.indexOf(e.key) !== -1) {
+            e.stopPropagation();
+          }
         }
       });
 
-      arcGisMapView.on("drag", (e) => {
+      // 鼠标移动
+      view.on("pointer-move", (e) => {
+        let point = view.toMap({ x: e.x, y: e.y });
+        if (point) {
+          const { longitude, latitude } = point;
+
+          coordInfo.lon = parseFloat(longitude).toFixed(5);
+          coordInfo.lat = parseFloat(latitude).toFixed(5);
+        }
+      });
+
+      view.on("drag", (e) => {
         if (mapViewType.value == "3D") {
-          const { tilt, heading } = arcGisMapView.camera;
+          const { tilt, heading } = view.camera;
           changeCoordInfoTiltHeading(tilt, heading);
         }
       });
 
       // 鼠标滚轮事件
-      arcGisMapView.on("mouse-wheel", () => {
-        changeMapViewScale(Math.round(arcGisMapView.scale));
+      view.on("mouse-wheel", () => {
+        changeViewScale(Math.round(view.scale));
       });
     };
 
     // 修改地图摄像机位置
-    const changeMapCameraInfo = (tilt, heading) => {
-      emit("map-camera-change", {
-        tilt,
-        heading,
-      });
+    const changeCameraInfo = (tilt, heading) => {
+      cameraInfo.value = { tilt, heading };
     };
 
     // 修改地图视图比例
-    const changeMapViewScale = (scale) => {
-      emit("map-scale-change", { scale });
+    const changeViewScale = (scale) => {
+      coordInfo.scale = scale;
     };
 
-    // 修改地图视图比例
+    // 修改坐标摄像机位置
     const changeCoordInfoTiltHeading = (tilt, heading) => {
-      emit("map-drag", {
-        tilt: mapViewType.value === "2D" ? "0.00" : parseFloat(tilt).toFixed(2),
-        heading: mapViewType.value === "2D" ? "0.00" : parseFloat(heading).toFixed(2),
-      });
+      coordInfo.tilt = mapViewType.value === "2D" ? "0.00" : parseFloat(tilt).toFixed(2);
+      coordInfo.heading =
+        mapViewType.value === "2D" ? "0.00" : parseFloat(heading).toFixed(2);
     };
 
     // 设置地图视图比例-父组件调用
     const onSetScale = (scale) => {
-      arcGisMapView.scale = scale;
+      currentMapConfig.view.scale = scale;
     };
 
     // 关闭截图功能
     const onCloseScreenshot = () => {
-      arcGisMapView.container.classList.remove("screenshotCursor");
+      currentMapConfig.view.container.classList.remove("screenshotCursor");
       emit("close-screenshot");
     };
 
     return {
+      map2D,
+      map3D,
+      mapViewType,
       fixedHeader,
       onSetScale,
       onCloseScreenshot,
@@ -278,12 +363,18 @@ export default {
   position: relative;
 }
 
-#mainMap {
+#map3D,
+#map2D {
   width: 100%;
   height: 100vh;
+  display: flex;
 
   &.show-header {
     height: calc(100vh - #{$header-height});
+  }
+
+  &.hide {
+    display: none;
   }
 }
 </style>

@@ -46,7 +46,7 @@ const actions = {
           const { code, data } = res;
 
           // 登录成功
-          if (code == 200) {
+          if (code == 200 && data) {
             const {
               realName,
               username,

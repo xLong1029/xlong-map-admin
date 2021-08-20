@@ -62,7 +62,7 @@ export default {
     const onChangeMap = ({ basemap }) => {
       emit("change-basemap", basemap);
 
-      if(basemap === 'terrain'){
+      if (basemap === "terrain") {
         emit("map-set-view-scale", { scale: 30000 });
       }
       dispatchMapEvent("onSwitchBasemap", {
@@ -133,7 +133,6 @@ export default {
       }
 
       .maps-list-item__name {
-        color: #fff;
         text-shadow: none;
         background: $primary-color;
       }
@@ -155,8 +154,8 @@ export default {
       bottom: 0;
       font-size: 12px;
       padding: 2px 4px;
-      text-shadow: rgba(255, 255, 255, 0.85) 1px 0 0, rgba(255, 255, 255, 0.85) 0 1px 0,
-        rgba(255, 255, 255, 0.85) -1px 0 0, rgba(255, 255, 255, 0.85) 0 -1px 0;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.5);
     }
   }
 }

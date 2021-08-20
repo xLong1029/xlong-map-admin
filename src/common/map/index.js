@@ -32,6 +32,8 @@ export default function () {
       },
       constraints: {
         snapToZoom: false,
+        // 禁止旋转
+        rotationEnabled: false,
         viewingMode: "local",
       },
       spatialReference: {

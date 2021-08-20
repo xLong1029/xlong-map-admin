@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { ElMessage } from "element-plus";
 import { inject } from "@vue/runtime-core";
 import common from "common";
 import Compass from "./Compass.vue";
@@ -56,10 +55,10 @@ export default {
     // 2/3D转换
     const onTransform = () => {
       const viewType = mapViewType.value === "3D" ? "2D" : "3D";
-      console.log(`点击了2/3D切换按钮，当前视图是${viewType}视图`);
-
-      emit("change-map-view-type", viewType);
-      ElMessage.success(`您已成功切换${viewType}视图`);
+      console.log(`点击了2/3D切换按钮，即将转换至${viewType}视图`);
+      dispatchMapEvent("onTransformView", {
+        viewType,
+      });
     };
 
     // 定位

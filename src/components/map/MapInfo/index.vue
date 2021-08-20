@@ -21,11 +21,13 @@
         <br />
         <span v-if="coordInfo.locate">当前鼠标坐落：{{ coordInfo.locate }}</span>
       </div>
-      <div class="title">视图方位</div>
-      <div class="content">
-        <span v-if="coordInfo.tilt">视角倾斜：{{ coordInfo.tilt }}°</span>
-        <span v-if="coordInfo.heading"> , 罗盘方位：{{ coordInfo.heading }}°</span>
-      </div>
+      <template v-if="mapViewType === '3D'">
+        <div class="title">视图方位</div>
+        <div class="content">
+          <span v-if="coordInfo.tilt">视角倾斜：{{ coordInfo.tilt }}°</span>
+          <span v-if="coordInfo.heading"> , 罗盘方位：{{ coordInfo.heading }}°</span>
+        </div>
+      </template>
       <div class="title">
         <span v-if="coordInfo.scale"
           >地图比例 <span class="normal">1:{{ coordInfo.scale }}</span></span
@@ -70,8 +72,6 @@ export default {
     const basemap = inject("getBasemap");
     // 最佳比例
     const bastScale = ref(2000);
-
-    console.log(basemap);
 
     watch(
       () => basemap.value,

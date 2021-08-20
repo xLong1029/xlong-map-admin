@@ -2,12 +2,7 @@
   <div class="map-index-container">
     <arc-gis-map
       ref="mapRef"
-      :map-id="mapId"
       :map-operate-panel="mapOperatePanel"
-      @map-drag="onMapDrag"
-      @map-pointer-move="onMapPointerMove"
-      @map-scale-change="onMapScaleChange"
-      @map-camera-change="onMapCameraChange"
       @close-screenshot="onCloseScreenshot"
     ></arc-gis-map>
     <map-info
@@ -32,11 +27,7 @@
     />
     <utils-panel v-if="mapUtilsPanel" />
     <bottom-coord v-if="mapBottomCoord" :companyName="companyName" />
-    <operate-panel
-      v-if="mapOperatePanel"
-      :map-bottom-coord="mapBottomCoord"
-      @change-map-view-type="changeMapViewType"
-    />
+    <operate-panel v-if="mapOperatePanel" :map-bottom-coord="mapBottomCoord" />
 
     <account-info-popover
       v-if="!fixedHeader"
@@ -96,7 +87,7 @@ export default {
 
     // 摄像机信息
     const cameraInfo = ref({
-      tilt: 37,
+      tilt: 45,
       heading: 44,
     });
 
@@ -134,9 +125,6 @@ export default {
     // 是否显示账户设置
     const accountSettingVisible = ref(false);
 
-    // 地图容器ID
-    const mapId = ref("mainMap");
-
     // 地图实例
     const mapRef = ref();
 
@@ -148,24 +136,7 @@ export default {
       accountSettingVisible.value = val;
     };
 
-    // 监听地图鼠标拖动
-    const onMapDrag = ({ tilt, heading }) => {
-      coordInfo.tilt = tilt;
-      coordInfo.heading = heading;
-    };
-
-    // 监听地图鼠标移动
-    const onMapPointerMove = ({ lon, lat }) => {
-      coordInfo.lon = lon;
-      coordInfo.lat = lat;
-    };
-
-    // 监听地图视图比例改变
-    const onMapScaleChange = ({ scale }) => {
-      coordInfo.scale = scale;
-    };
-
-    // 监听通过底部信息设置地图比例
+    // 监听通过地图信息设置地图比例
     const onMapSetView = ({ scale }) => {
       coordInfo.scale = scale;
       // 调用子组件方法
@@ -175,16 +146,6 @@ export default {
     // 折叠地图资源面板
     const onFoldMapInfoPanel = (val) => {
       foldMapInfoPanel.value = val;
-    };
-
-    // 监听地图摄像机视角改变
-    const onMapCameraChange = ({ tilt, heading }) => {
-      cameraInfo.value = { tilt, heading };
-    };
-
-    // 改变地图视图类型
-    const changeMapViewType = (type) => {
-      mapViewType.value = type;
     };
 
     // 改变地图底图
@@ -198,7 +159,6 @@ export default {
     };
 
     return {
-      mapId,
       user,
       fixedHeader,
       mapInfoPanel,
@@ -213,13 +173,8 @@ export default {
       mapRef,
       defaultAvatar,
       setAccountSettingVisible,
-      onMapDrag,
-      onMapPointerMove,
-      onMapScaleChange,
       onMapSetView,
       onFoldMapInfoPanel,
-      onMapCameraChange,
-      changeMapViewType,
       changeBasemap,
       onCloseScreenshot,
     };
