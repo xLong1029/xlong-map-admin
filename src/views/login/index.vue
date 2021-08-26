@@ -40,7 +40,7 @@
           <el-checkbox v-model="remeberPwd" :disabled="submitLoading"
             >记住密码</el-checkbox
           >
-          <a class="forget-link blue" @click="onResetPwd">忘记密码?</a>
+          <a class="forget-link" @click="onResetPwd">忘记密码?</a>
         </div>
         <el-button
           class="login__btn"

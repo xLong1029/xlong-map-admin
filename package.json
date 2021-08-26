@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@arcgis/core": "^4.19.3",
-    "element-plus": "^1.0.2-beta.70",
+    "element-plus": "^1.0.2-beta.71",
     "hydrogen-js-sdk": "^2.2.4",
     "js-cookie": "^2.2.1",
     "sass-resources-loader": "^2.2.3",
