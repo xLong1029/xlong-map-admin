@@ -2,7 +2,6 @@ import {
   ElAlert,
   ElConfigProvider,
   ElEmpty,
-  ElTree,
   ElInput,
   ElSelect,
   ElTabs,
@@ -10,10 +9,8 @@ import {
   ElSwitch,
   ElColorPicker,
   ElDialog,
-  ElPopconfirm,
   ElTag,
   ElPopover,
-  ElDrawer,
   ElButton,
   ElForm,
   ElFormItem,
@@ -26,12 +23,12 @@ import {
 } from "element-plus";
 import "element-plus/packages/theme-chalk/src/index.scss";
 import "element-plus/packages/theme-chalk/src/base.scss";
+// import "@/styles/element-variables.scss";
 
 const components = [
   ElAlert,
   ElConfigProvider,
   ElEmpty,
-  ElTree,
   ElInput,
   ElSelect,
   ElTabs,
@@ -39,10 +36,8 @@ const components = [
   ElSwitch,
   ElColorPicker,
   ElDialog,
-  ElPopconfirm,
   ElTag,
   ElPopover,
-  ElDrawer,
   ElButton,
   ElForm,
   ElFormItem,

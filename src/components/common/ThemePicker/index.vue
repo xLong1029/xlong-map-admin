@@ -33,6 +33,8 @@ export default {
 
     const defaultTheme = computed(() => store.state.settings.theme);
 
+    console.log(defaultTheme);
+
     watch(
       () => defaultTheme.value,
       (val) => {
@@ -46,6 +48,8 @@ export default {
     watch(
       () => theme.value,
       async (val) => {
+
+        console.log(123);
 
         if (typeof val !== "string") return;
         // const oldVal = chalk.value ? theme.value : ORIGINAL_THEME;

@@ -1,6 +1,6 @@
 import Api from "api/user/index.js";
 import { resetRouter } from "router";
-import { strToArr } from "utils";
+import { strToArr, delLocalS } from "utils";
 import { getToken, removeToken, setToken } from "utils/auth";
 
 const defaultUser = {
@@ -15,6 +15,7 @@ const defaultUser = {
 
 // 清空账户信息
 function clearAccount(_commit) {
+  delLocalS("bmob");
   removeToken();
   resetRouter();
   _commit("SET_TOKEN", null);
@@ -86,7 +87,7 @@ const actions = {
   // 登出
   logout({ commit }) {
     return new Promise((resolve) => {
-      Api.Logout();
+      // Api.Logout();
       clearAccount(commit);
       resolve();
     });
