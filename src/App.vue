@@ -1,9 +1,9 @@
 <template>
-  <el-config-provider :locale="locale">
+  <!-- <el-config-provider :locale="locale"> -->
     <div id="app" v-loading="sysLoading" element-loading-text="系统初始化，请稍后...">
       <router-view />
     </div>
-  </el-config-provider>
+  <!-- </el-config-provider> -->
 </template>
 
 <script>
