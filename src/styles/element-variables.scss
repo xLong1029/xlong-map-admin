@@ -1,29 +1,26 @@
-/**
-* I think element-plus's default theme color is too light for long-term use.
-* So I modified the default color and you can modify it to your liking.
-**/
+/* 改变主题色变量 */
+$--colors: (
+  "primary": (
+    "base": #1890ff,
+  ),
+  "warning": (
+    "base": #f0ad4e,
+  ),
+  "danger": (
+    "base": #ff4949,
+  ),
+  "error": (
+    "base": #db2828,
+  ),
+  "info": (
+    "base": #42b8dd,
+  ),
+);
 
-/* theme color */
-$--color-primary: #1890ff;
-$--color-success: #13ce66;
+/* 改变 icon 字体路径变量，必需 */
+$--font-path: "node_modules/element-plus/dist/fonts";
 
-$--color-warning: #f0ad4e;
-$--color-danger: #ff4949;
-$--color-info: #1E1E1E;
-
-$--button-font-weight: 400;
-
-$--color-text-regular: #1f2d3d;
-
-$--border-color-light: #dfe4ed;
-$--border-color-lighter: #e6ebf5;
-
-$--table-border:1px solid #dfe6ec;
-
-/* icon font path, required */
-$--font-path: 'element-plus/lib/theme-chalk/fonts.scss';
-
-@import "element-plus/packages/theme-chalk/src/index.scss";
+@import "node_modules/element-plus/packages/theme-chalk/src/index";
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass

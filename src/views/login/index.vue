@@ -246,6 +246,10 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: 24px;
+
+  .forget-link{
+    color: $primary-color;
+  }
 }
 
 .copyright {

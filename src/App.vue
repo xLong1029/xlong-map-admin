@@ -11,10 +11,12 @@ import { computed, onMounted } from "@vue/runtime-core";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { logInfo, getLocalS } from "utils";
 import common from "common";
+import themeJs from "common/theme.js";
 
 export default {
   setup() {
     const { store, changeSettings } = common();
+    const { changeTheme } = themeJs();
 
     // 通过计算属性获取store的值
     const currentEnv = computed(() => store.getters.currentEnv);
@@ -35,10 +37,8 @@ export default {
         const settings = JSON.parse(getLocalS("settings"));
 
         if (settings.theme) {
-          // 解决更换主题无效的问题
-          setTimeout(() => {
-            changeSettings("theme", settings.theme);
-          }, 1000);
+          changeTheme(settings.theme);
+          changeSettings("theme", settings.theme);
         }
       }
     });
