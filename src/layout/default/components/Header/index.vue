@@ -13,8 +13,16 @@
           <span>{{ isNull(user.nickName) }}</span>
         </div>
       </AccountInfoPopover>
+      <div class="operate-icon">
+        <i v-if="setFull" class="iconfont icon-quxiaoquanping" @click="onFullExit" title="取消全屏"></i>
+        <i v-else class="iconfont icon-quanping" @click="onFullScreen" title="全屏显示"></i>
+      </div>
     </div>
-    <AccountSetting :visible="accountSettingVisible" @close="setAccountSettingVisible(false)" />
+
+    <AccountSetting
+      :visible="accountSettingVisible"
+      @close="setAccountSettingVisible(false)"
+    />
   </div>
 </template>
 
@@ -43,11 +51,32 @@ const user = computed(() => store.getters.user);
 // 是否显示账户设置
 const accountSettingVisible = ref(false);
 
+// 是否设置全屏
+const setFull = ref(false);
+
 // 显示账户设置
 const setAccountSettingVisible = (val) => {
   accountSettingVisible.value = val;
 };
 
+// 全屏显示
+const onFullScreen = () => {
+  setFull.value = true;
+  let e = document.documentElement;
+
+  if (e.requestFullscreen) e.requestFullscreen();
+  else if (e.mozRequestFullScreen) e.mozRequestFullScreen();
+  else if (e.webkitRequestFullscreen) e.webkitRequestFullscreen();
+  else if (e.msRequestFullscreen) e.msRequestFullscreen();
+};
+
+// 退出全屏
+const onFullExit = () => {
+  setFull.value = false;
+  if (document.exitFullscreen) document.exitFullscreen();
+  else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+  else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+};
 </script>
 
 <style lang="scss" scoped>
@@ -104,6 +133,33 @@ const setAccountSettingVisible = (val) => {
   img {
     width: 100%;
     height: 100%;
+  }
+}
+
+.operate-icon{
+  margin-left: 20px;
+  padding-left: 20px;
+  position: relative;
+
+  &::after{
+    position: absolute;
+    content: "";
+    display: block;
+    width: 1px;
+    height: 80%;
+    margin-top: 8%;
+    background: #dcdcdc;
+    left: 0;
+    top: 0;
+  }
+
+  .iconfont{
+    font-size: 20px;
+    cursor: pointer;
+
+    &:hover{
+      color: $primary-color;
+    }
   }
 }
 </style>
