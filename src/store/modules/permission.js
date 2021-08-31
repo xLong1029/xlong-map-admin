@@ -60,6 +60,8 @@ const actions = {
     return new Promise((resolve) => {
       resetRouter();
 
+      console.log(roles);
+
       const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);
 
       // 404重定向配置放结尾
@@ -73,6 +75,8 @@ const actions = {
       accessedRoutes.forEach((e) => {
         router.addRoute(e);
       });
+
+      console.log(accessedRoutes);
 
       commit("SET_ROUTES", accessedRoutes);
       resolve(accessedRoutes);

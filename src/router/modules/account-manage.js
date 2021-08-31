@@ -1,8 +1,5 @@
 import LayoutDefault from "@/layout/default/index.vue";
 
-// const modules = import.meta.glob("@/views/account-manage/*/*.vue");
-// console.log(modules);
-
 const router = [
   {
     path: "/account-manage",

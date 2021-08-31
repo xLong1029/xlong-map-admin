@@ -1,8 +1,11 @@
 <template>
   <div class="header-content flex">
     <div class="header-content-left">
-      <img class="logo" :src="logoImg" />
-      <span class="title">{{ title }}</span>
+      <div class="logo-container">
+        <img class="logo" :src="logoImg" :title="sysTitle" />
+        <!-- <span class="title">{{ title }}</span> -->
+      </div>
+      <Navbar />
     </div>
     <div v-if="user && user.realName" class="header-content-right">
       <AccountInfoPopover @on-account-setting="setAccountSettingVisible(true)">
@@ -14,8 +17,18 @@
         </div>
       </AccountInfoPopover>
       <div class="operate-icon">
-        <i v-if="setFull" class="iconfont icon-quxiaoquanping" @click="onFullExit" title="取消全屏"></i>
-        <i v-else class="iconfont icon-quanping" @click="onFullScreen" title="全屏显示"></i>
+        <i
+          v-if="setFull"
+          class="iconfont icon-quxiaoquanping"
+          @click="onFullExit"
+          title="取消全屏"
+        ></i>
+        <i
+          v-else
+          class="iconfont icon-quanping"
+          @click="onFullScreen"
+          title="全屏显示"
+        ></i>
       </div>
     </div>
 
@@ -34,6 +47,7 @@ import filter from "common/filter";
 // 组件
 import AccountSetting from "components/user/AccountSetting/index.vue";
 import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
+import Navbar from "./Navbar/index.vue";
 // 图片
 import logoImg from "assets/images/logo.png";
 import defaultAvatarImg from "assets/images/default-avatar.png";
@@ -43,7 +57,7 @@ const store = useStore();
 const { isNull } = filter();
 
 // 标题
-const title = computed(() => store.getters.sysTitle);
+const sysTitle = computed(() => store.getters.sysTitle);
 
 // 用户信息
 const user = computed(() => store.getters.user);
@@ -91,6 +105,12 @@ const onFullExit = () => {
     display: flex;
     align-items: center;
 
+    .logo-container {
+      display: flex;
+      align-items: center;
+      min-width: 200px;
+    }
+
     .logo {
       height: 28px;
       margin-right: 15px;
@@ -136,12 +156,12 @@ const onFullExit = () => {
   }
 }
 
-.operate-icon{
+.operate-icon {
   margin-left: 20px;
   padding-left: 20px;
   position: relative;
 
-  &::after{
+  &::after {
     position: absolute;
     content: "";
     display: block;
@@ -153,11 +173,11 @@ const onFullExit = () => {
     top: 0;
   }
 
-  .iconfont{
+  .iconfont {
     font-size: 20px;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
       color: $primary-color;
     }
   }

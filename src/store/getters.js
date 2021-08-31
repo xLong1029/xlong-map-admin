@@ -5,6 +5,8 @@ const getters = {
   sysTitle:(state) => state.app.sysTitle,
   currentEnv: (state) => state.app.currentEnv,
   companyName: (state) => state.app.companyName,
+  // permission
+  permissionRoutes: state => state.permission.routes,
   // user
   token: (state) => state.user.token,
   user: (state) => state.user.user,

@@ -1,4 +1,5 @@
 import {
+  ElMenu,
   ElAlert,
   ElConfigProvider,
   ElEmpty,
@@ -24,6 +25,7 @@ import {
 import "@/styles/element-variables.scss";
 
 const components = [
+  ElMenu,
   ElAlert,
   ElConfigProvider,
   ElEmpty,
