@@ -1,4 +1,8 @@
 // cover some element-plus styles
 .el-dialog{
     border-radius: 6px !important;
+
+    &__headerbtn .el-dialog__close{
+        font-size: 20px;
+    }
 }

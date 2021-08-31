@@ -17,16 +17,29 @@
     align-items: center;
     justify-content: space-between;
 
-    .icon-guanbi {
+    .el-icon-question,
+    .el-icon-close {
       cursor: pointer;
+
+      &:hover {
+        color: $primary-color;
+      }
+    }
+
+    .el-icon-question {
+      font-size: 16px;
+      color: #555555;
+    }
+
+    .el-icon-close {
+      font-size: 20px;
     }
   }
 
   &__content {
     padding: 10px;
-    
 
-    .action-button {
+    :deep(.action-button) {
       font-size: 16px;
       background-color: transparent;
       border: $border;

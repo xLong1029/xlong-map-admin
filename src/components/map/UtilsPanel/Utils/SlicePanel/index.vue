@@ -1,69 +1,56 @@
 <template>
-  <div v-drag class="util-panel slice-panel">
-    <div class="util-panel__header drag-move">
-      <span>{{ panel.utilName }}分析工具</span>
-      <i class="iconfont icon-guanbi" title="关闭窗口" @click="onClose"></i>
-    </div>
-    <div :id="panelID" class="util-panel__content slice-panel__content">
-    </div>
-  </div>
+  <UtilPanel
+    width="260px"
+    :title="`${panel.utilName}分析工具`"
+    :panel-id="panelID"
+    :show-help-icon="false"
+    @on-click-close="onClose"
+  >
+  </UtilPanel>
 </template>
 
-<script>
+<script setup>
+import { defineProps, defineEmits } from "@vue/runtime-core";
+import UtilPanel from "components/common/UtilPanel/index.vue";
 
-export default {
-  name: "SlicePanel",
-
-  props: {
-    // 面板
-    panel: {
-      type: Object,
-      default: () => ({
-        utilName: "剖面",
-      }),
-    },
-    // 当前面板索引在panelList中的索引
-    index: {
-      type: Number,
-      default: 0,
-    },
-    mapViewType: {
-      type: String,
-      default: "3D",
-    }
+const props = defineProps({
+  // 面板
+  panel: {
+    type: Object,
+    default: () => ({
+      utilName: "剖面",
+    }),
   },
-
-  setup(props, content) {
-    // 当前面板ID
-    const panelID = "slicePanel";
-    
-    // 关闭面板
-    const onClose = () => {
-      content.emit("close", {
-        panel: props.panel,
-        index: props.index,
-        active: false,
-        eventSuffix: "Slice",
-        panelID,
-      });
-    };
-
-    return {
-      panelID,
-      onClose,
-    };
+  // 当前面板索引在panelList中的索引
+  index: {
+    type: Number,
+    default: 0,
   },
+  mapViewType: {
+    type: String,
+    default: "3D",
+  },
+});
+
+const emit = defineEmits(["close"]);
+
+// 当前面板ID
+const panelID = "slicePanel";
+
+// 关闭面板
+const onClose = () => {
+  emit("close", {
+    panel: props.panel,
+    index: props.index,
+    active: false,
+    eventSuffix: "Slice",
+    panelID,
+  });
 };
 </script>
-<style lang="scss" scoped>
-@import "~@/styles/util-panel.scss";
-.slice-panel {
-  width: 260px;
 
-  &__content{
-    padding: 10px;
-  }
+<style lang="scss">
+#slicePanel {
+  padding: 10px;
 }
 </style>
-
-
