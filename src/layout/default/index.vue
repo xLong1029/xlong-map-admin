@@ -1,45 +1,29 @@
 <template>
   <div class="app-wrapper">
     <div v-if="fixedHeader" class="header-container fixed">
-      <app-header />
+      <AppHeader />
     </div>
     <div class="main-container" :class="{ 'show-header': fixedHeader }">
-      <app-main />
+      <AppMain />
 
-      <right-panel v-if="showSettings">
-        <app-settings />
-      </right-panel>
+      <RightPanel v-if="showSettings">
+        <AppSettings />
+      </RightPanel>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed } from "@vue/runtime-core";
 import { useStore } from "vuex";
 import { AppMain, AppSettings, AppHeader } from "./components/index.js";
 import RightPanel from "@/components/common/RightPanel/index.vue";
 
-export default {
-  name: "LayoutDefault",
-  components: {
-    AppMain,
-    AppSettings,
-    AppHeader,
-    RightPanel,
-  },
-  setup() {
-    const store = useStore();
+const store = useStore();
 
-    const showSettings = computed(() => store.getters.showSettings);
+const showSettings = computed(() => store.getters.showSettings);
 
-    const fixedHeader = computed(() => store.getters.fixedHeader);
-
-    return {
-      showSettings,
-      fixedHeader,
-    };
-  },
-};
+const fixedHeader = computed(() => store.getters.fixedHeader);
 </script>
 
 <style lang="scss" scoped>

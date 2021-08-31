@@ -9,7 +9,7 @@
     <!-- 工具列表 -->
     <div v-for="(item, index) in utilList" :key="'util-list' + index">
       <div class="more-util-list__title">{{ item.title }}</div>
-      <draggable
+      <Draggable
         class="more-util-list"
         :list="item.children"
         :group="{ name: 'util', pull: 'clone', put: false }"
@@ -26,7 +26,7 @@
             <div class="more-util-list-item__name">{{ element.utilName }}</div>
           </li>
         </template>
-      </draggable>
+      </Draggable>
     </div>
 
     <el-alert
@@ -44,7 +44,7 @@
           <span class="block mt-10">拖动工具到此处</span>
         </div>
 
-        <draggable
+        <Draggable
           class="custom-utils-container more-util-list"
           :list="customUtils"
           group="util"
@@ -60,7 +60,7 @@
               <div class="more-util-list-item__name">{{ element.utilName }}</div>
             </li>
           </template>
-        </draggable>
+        </Draggable>
       </div>
       <div class="button-container">
         <el-button @click="onClearCustomUtils" :disabled="!customUtils.length"
@@ -72,145 +72,121 @@
   </el-dialog>
 </template>
 
-<script>
-import draggable from "vuedraggable";
+<script setup>
+import Draggable from "vuedraggable";
 import moreUtilPanel from "mock/moreUtilPanel.json";
-import { reactive, ref } from "@vue/reactivity";
-import { onMounted } from "@vue/runtime-core";
+import { reactive, ref, onMounted, defineProps, defineEmits } from "@vue/runtime-core";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { setLocalS, getLocalS } from "utils";
 
-export default {
-  name: "CustomUtilDialog",
-
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    customNum: {
-      type: Number,
-      default: 5,
-    },
-    generalUtils: {
-      type: Array,
-      default: () => [],
-    },
-    utilList: {
-      type: Array,
-      default: () => [],
-    },
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
   },
-
-  components: {
-    draggable,
+  customNum: {
+    type: Number,
+    default: 5,
   },
-
-  // 多个emit事件时需要定义，否则后台警告"Extraneous non-emits event listeners (save) were passed to component but could not be automatically inherited because component renders fragment or text root nodes. If the listener is intended to be a component custom event listener only, declare it using the "emits" option"
-  emits: ["close", "save"],
-
-  setup(props, { emit }) {
-    const utilList = reactive([...moreUtilPanel.list]);
-
-    // 自定义常用工具
-    const customUtils = ref([]);
-
-    // 固定常用工具
-    const commonUtils = ref([
-      {
-        component: "MeasurePanel",
-        classStyles: "iconfont icon-celianggongju",
-        utilName: "量算",
-        utilActive: false,
-        eventSuffix: "Measure",
-        panelID: null,
-        enable2D: true,
-        enable3D: true,
-      },
-      {
-        component: "DrawPanel",
-        classStyles: "iconfont icon-huizhi",
-        utilName: "绘制",
-        utilActive: false,
-        eventSuffix: "Draw",
-        panelID: "drawPanel",
-        enable2D: true,
-        enable3D: true,
-      },
-    ]);
-
-    onMounted(() => {
-      // 从缓存获取自定义工具
-      if (getLocalS("customUtils")) {
-        customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
-      }
-      else{
-        customUtils.value = [...commonUtils.value];
-      }
-    });
-
-    const onClose = () => {
-      emit("close", false);
-    };
-
-    // 监听拖拽事件
-    const onChangeCustomUtil = (event) => {
-      // console.log(event);
-    };
-
-    // 添加自定义工具
-    const onAddCustomUtil = (item) => {
-      // console.log(customUtils, item);
-
-      if (customUtils.value.length >= props.customNum) {
-        ElMessage.warning(`只能自定义${props.customNum}个工具`);
-      } else {
-        if (customUtils.value.indexOf(item) < 0) {
-          return item;
-        } else {
-          ElMessage.warning("该工具已存在，请勿重复添加");
-        }
-      }
-    };
-
-    // 移除自定义工具
-    const onRemoveCustomUtil = (item) => {
-      const index = customUtils.value.findIndex((e) => e.component === item.component);
-      customUtils.value.splice(index, 1);
-    };
-
-    // 清空自定义工具
-    const onClearCustomUtils = () => {
-      ElMessageBox.confirm("确定清空所有自定义工具吗？", "温馨提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          customUtils.value = [];
-          ElMessage.success("已清空自定义工具");
-        })
-        .catch();
-    };
-
-    // 保存自定义工具
-    const onSaveCustomUtils = () => {
-      setLocalS("customUtils", JSON.stringify(customUtils.value));
-      ElMessage.success("自定义工具保存成功");
-      emit("save", false);
-    };
-
-    return {
-      utilList,
-      customUtils,
-      onClose,
-      onChangeCustomUtil,
-      onAddCustomUtil,
-      onRemoveCustomUtil,
-      onClearCustomUtils,
-      onSaveCustomUtils,
-    };
+  generalUtils: {
+    type: Array,
+    default: () => [],
   },
+  utilList: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const emit = defineEmits(["close", "save"]);
+
+const utilList = reactive([...moreUtilPanel.list]);
+
+// 自定义常用工具
+const customUtils = ref([]);
+
+// 固定常用工具
+const commonUtils = ref([
+  {
+    component: "MeasurePanel",
+    classStyles: "iconfont icon-celianggongju",
+    utilName: "量算",
+    utilActive: false,
+    eventSuffix: "Measure",
+    panelID: null,
+    enable2D: true,
+    enable3D: true,
+  },
+  {
+    component: "DrawPanel",
+    classStyles: "iconfont icon-huizhi",
+    utilName: "绘制",
+    utilActive: false,
+    eventSuffix: "Draw",
+    panelID: "drawPanel",
+    enable2D: true,
+    enable3D: true,
+  },
+]);
+
+onMounted(() => {
+  // 从缓存获取自定义工具
+  if (getLocalS("customUtils")) {
+    customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
+  } else {
+    customUtils.value = [...commonUtils.value];
+  }
+});
+
+const onClose = () => {
+  emit("close", false);
+};
+
+// 监听拖拽事件
+const onChangeCustomUtil = (event) => {
+  // console.log(event);
+};
+
+// 添加自定义工具
+const onAddCustomUtil = (item) => {
+  // console.log(customUtils, item);
+
+  if (customUtils.value.length >= props.customNum) {
+    ElMessage.warning(`只能自定义${props.customNum}个工具`);
+  } else {
+    if (customUtils.value.indexOf(item) < 0) {
+      return item;
+    } else {
+      ElMessage.warning("该工具已存在，请勿重复添加");
+    }
+  }
+};
+
+// 移除自定义工具
+const onRemoveCustomUtil = (item) => {
+  const index = customUtils.value.findIndex((e) => e.component === item.component);
+  customUtils.value.splice(index, 1);
+};
+
+// 清空自定义工具
+const onClearCustomUtils = () => {
+  ElMessageBox.confirm("确定清空所有自定义工具吗？", "温馨提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      customUtils.value = [];
+      ElMessage.success("已清空自定义工具");
+    })
+    .catch(() => console.log("取消清空"));
+};
+
+// 保存自定义工具
+const onSaveCustomUtils = () => {
+  setLocalS("customUtils", JSON.stringify(customUtils.value));
+  ElMessage.success("自定义工具保存成功");
+  emit("save", false);
 };
 </script>
 <style lang="scss" scoped>

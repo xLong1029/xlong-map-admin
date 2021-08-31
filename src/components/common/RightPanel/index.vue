@@ -16,80 +16,72 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { addClass, removeClass } from "@/utils";
-import { ref } from "@vue/reactivity";
 import { useStore } from "vuex";
-import { computed, onBeforeUnmount, onMounted, watch } from "@vue/runtime-core";
+import {
+  ref,
+  computed,
+  onBeforeUnmount,
+  onMounted,
+  watch,
+  defineProps,
+} from "@vue/runtime-core";
 
-export default {
-  name: "RightPanel",
-  props: {
-    clickNotClose: {
-      default: false,
-      type: Boolean,
-    },
+const props = defineProps({
+  clickNotClose: {
+    default: false,
+    type: Boolean,
   },
+});
 
-  setup(props) {
-    const store = useStore();
+const store = useStore();
 
-    const show = ref(false);
-    const rightPanel = ref(null);
-    const theme = computed(() => store.getters.theme);
+const show = ref(false);
+const rightPanel = ref(null);
+const theme = computed(() => store.getters.theme);
 
-    watch(
-      () => show,
-      (newVal) => {
-        if (newVal && !props.clickNotClose) {
-          this.addEventClick();
-        }
-        if (newVal) {
-          addClass(document.body, "showRightPanel");
-        } else {
-          removeClass(document.body, "showRightPanel");
-        }
-      }
-    );
+watch(
+  () => show,
+  (newVal) => {
+    if (newVal && !props.clickNotClose) {
+      this.addEventClick();
+    }
+    if (newVal) {
+      addClass(document.body, "showRightPanel");
+    } else {
+      removeClass(document.body, "showRightPanel");
+    }
+  }
+);
 
-    onMounted(() => {
-      insertToBody();
-    });
+onMounted(() => {
+  insertToBody();
+});
 
-    onBeforeUnmount(() => {
-      const elx = rightPanel.value;
-      if (elx) {
-        elx.remove();
-      }
-    });
+onBeforeUnmount(() => {
+  const elx = rightPanel.value;
+  if (elx) {
+    elx.remove();
+  }
+});
 
-    const addEventClick = () => {
-      window.addEventListener("click", this.closeSidebar);
-    };
+const addEventClick = () => {
+  window.addEventListener("click", this.closeSidebar);
+};
 
-    const closeSidebar = (evt) => {
-      const parent = evt.target.closest(".rightPanel");
-      if (!parent) {
-        this.show = false;
-        window.removeEventListener("click", this.closeSidebar);
-      }
-    };
+const closeSidebar = (evt) => {
+  const parent = evt.target.closest(".rightPanel");
+  if (!parent) {
+    this.show = false;
+    window.removeEventListener("click", this.closeSidebar);
+  }
+};
 
-    const insertToBody = () => {
-      const elx = rightPanel.value;
-      const body = document.querySelector("body");
-      body.insertBefore(elx, body.firstChild);
-    };
-
-    return {
-      show,
-      theme,
-      rightPanel,
-      addEventClick,
-      closeSidebar,
-      insertToBody,
-    };
-  },
+const insertToBody = () => {
+  const elx = rightPanel.value;
+  const body = document.querySelector("body");
+  body.insertBefore(elx, body.firstChild);
 };
 </script>
 

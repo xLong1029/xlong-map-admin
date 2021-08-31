@@ -42,66 +42,51 @@
   </div>
 </template>
 
-<script>
-import { ref, inject, watch } from "@vue/runtime-core";
+<script setup>
+import { ref, inject, watch, defineProps } from "@vue/runtime-core";
 
-export default {
-  name: "MapInfo",
-
-  props: {
-    // 是否折叠地图信息面板
-    foldMapInfoPanel: {
-      type: Boolean,
-      default: false,
-    },
-    // 是否显示地图底部信息
-    mapBottomCoord: {
-      type: Boolean,
-      default: true,
-    },
+const props = defineProps({
+  // 是否折叠地图信息面板
+  foldMapInfoPanel: {
+    type: Boolean,
+    default: false,
   },
-
-  setup(props, { emit }) {
-    // 是否显示系统固定头部
-    const fixedHeader = inject("getFixedHeader");
-    // 当前视图类型
-    const mapViewType = inject("getMapViewType");
-    // 坐标信息
-    const coordInfo = inject("getCoordInfo");
-    // 地图底图
-    const basemap = inject("getBasemap");
-    // 最佳比例
-    const bastScale = ref(2000);
-
-    watch(
-      () => basemap.value,
-      (val) => {
-        bastScale.value = val === "terrain" ? 30000 : 2000;
-      }
-    );
-
-    // 收起面板
-    const setContentVisible = (val) => {
-      emit("click-fold", val);
-    };
-
-    // 设置当前比例
-    const setScale = (scale) => {
-      emit("map-set-view-scale", { scale: Math.round(scale) });
-    };
-
-    return {
-      fixedHeader,
-      mapViewType,
-      coordInfo,
-      basemap,
-      bastScale,
-      setContentVisible,
-      setScale,
-    };
+  // 是否显示地图底部信息
+  mapBottomCoord: {
+    type: Boolean,
+    default: true,
   },
+});
+
+// 是否显示系统固定头部
+const fixedHeader = inject("getFixedHeader");
+// 当前视图类型
+const mapViewType = inject("getMapViewType");
+// 坐标信息
+const coordInfo = inject("getCoordInfo");
+// 地图底图
+const basemap = inject("getBasemap");
+// 最佳比例
+const bastScale = ref(2000);
+
+watch(
+  () => basemap.value,
+  (val) => {
+    bastScale.value = val === "terrain" ? 30000 : 2000;
+  }
+);
+
+// 收起面板
+const setContentVisible = (val) => {
+  emit("click-fold", val);
+};
+
+// 设置当前比例
+const setScale = (scale) => {
+  emit("map-set-view-scale", { scale: Math.round(scale) });
 };
 </script>
+
 <style lang="scss" scoped>
 .map-info-panel {
   position: absolute;

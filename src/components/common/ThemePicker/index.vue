@@ -16,34 +16,26 @@
   />
 </template>
 
-<script>
+<script setup>
 import { watch } from "@vue/runtime-core";
 import themeJs from "common/theme.js";
 
-export default {
-  setup() {
-    const { theme, defaultTheme, changeTheme } = themeJs();
+const { theme, defaultTheme, changeTheme } = themeJs();
 
-    watch(
-      () => defaultTheme.value,
-      (val) => {
-        theme.value = val;
-      },
-      {
-        immediate: true,
-      }
-    );
-
-    watch(
-      () => theme.value,
-      (val) => changeTheme(val)
-    );
-
-    return {
-      theme,
-    };
+watch(
+  () => defaultTheme.value,
+  (val) => {
+    theme.value = val;
   },
-};
+  {
+    immediate: true,
+  }
+);
+
+watch(
+  () => theme.value,
+  (val) => changeTheme(val)
+);
 </script>
 
 <style>

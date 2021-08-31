@@ -24,55 +24,43 @@
   </el-dialog>
 </template>
 
-<script>
-import { ref } from "@vue/reactivity";
+<script setup>
+import { ref, defineProps, defineEmits } from "@vue/runtime-core";
 // 组件
 import AccountInfo from "./AccountInfo.vue";
 import ChangePwd from "./ChangePwd.vue";
 
-export default {
-  name: "AccountSetting",
-
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    title: {
-      type: String,
-      default: "账户设置",
-    },
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false,
   },
-
-  components: { AccountInfo, ChangePwd },
-
-  setup(props, { emit }) {
-    // 当前激活Tab的name
-    const activeName = ref("accountInfo");
-
-    const tabs = ref([
-      {
-        name: "accountInfo",
-        label: "用户信息",
-        component: "AccountInfo",
-      },
-      {
-        name: "changePwd",
-        label: "修改密码",
-        component: "ChangePwd",
-      },
-    ]);
-
-    const onClose = () => {
-      emit("close", false);
-    };
-
-    return {
-      activeName,
-      tabs,
-      onClose,
-    };
+  title: {
+    type: String,
+    default: "账户设置",
   },
+});
+
+const emit = defineEmits(["close"]);
+
+// 当前激活Tab的name
+const activeName = ref("accountInfo");
+
+const tabs = [
+  {
+    name: "accountInfo",
+    label: "用户信息",
+    component: AccountInfo,
+  },
+  {
+    name: "changePwd",
+    label: "修改密码",
+    component: ChangePwd,
+  },
+];
+
+const onClose = () => {
+  emit("close", false);
 };
 </script>
 <style lang="scss">

@@ -17,65 +17,56 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, inject } from "@vue/runtime-core";
 import imageImg from "assets/images/map-1.jpg";
 import vectorImg from "assets/images/map-2.jpg";
 import terrainImg from "assets/images/map-3.jpg";
 import common from "common/index.js";
 
-export default {
-  name: "Basemap",
-
-  props: {
-    // 是否显示地图操作栏
-    mapOperatePanel: {
-      type: Boolean,
-      default: true,
-    },
+const props = defineProps({
+  // 是否显示地图操作栏
+  mapOperatePanel: {
+    type: Boolean,
+    default: true,
   },
+});
 
-  setup(props, { emit }) {
-    const { dispatchMapEvent } = common();
-    // 地图底图
-    const basemap = inject("getBasemap");
+const emit = defineEmits(["change-basemap", "map-set-view-scale"]);
 
-    const maps = ref([
-      {
-        basemap: "hybrid",
-        name: "影像",
-        img: imageImg,
-      },
-      {
-        basemap: "vector",
-        name: "矢量",
-        img: vectorImg,
-      },
-      {
-        basemap: "terrain",
-        name: "地形",
-        img: terrainImg,
-      },
-    ]);
+const { dispatchMapEvent } = common();
 
-    // 切换底图
-    const onChangeMap = ({ basemap }) => {
-      emit("change-basemap", basemap);
+// 地图底图
+const basemap = inject("getBasemap");
 
-      if (basemap === "terrain") {
-        emit("map-set-view-scale", { scale: 30000 });
-      }
-      dispatchMapEvent("onSwitchBasemap", {
-        basemap,
-      });
-    };
-
-    return {
-      maps,
-      basemap,
-      onChangeMap,
-    };
+const maps = ref([
+  {
+    basemap: "hybrid",
+    name: "影像",
+    img: imageImg,
   },
+  {
+    basemap: "vector",
+    name: "矢量",
+    img: vectorImg,
+  },
+  {
+    basemap: "terrain",
+    name: "地形",
+    img: terrainImg,
+  },
+]);
+
+// 切换底图
+const onChangeMap = ({ basemap }) => {
+  emit("change-basemap", basemap);
+
+  if (basemap === "terrain") {
+    emit("map-set-view-scale", { scale: 30000 });
+  }
+  dispatchMapEvent("onSwitchBasemap", {
+    basemap,
+  });
 };
 </script>
 <style lang="scss" scoped>

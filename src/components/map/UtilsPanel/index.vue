@@ -23,7 +23,7 @@
           </div>
 
           <!-- 工具箱 -->
-          <more-utils
+          <MoreUtils
             :map-view-type="mapViewType"
             :highlight-panels="highlightPanels"
             @click-util="onClickUtilBoxUtils"
@@ -33,7 +33,7 @@
               <i class="util-list-item__icon iconfont icon-gongjuxiang"></i>
               <span class="util-list-item__name">工具箱</span>
             </div>
-          </more-utils>
+          </MoreUtils>
         </div>
       </div>
 
@@ -53,7 +53,7 @@
       </template>
 
       <!-- 自定义常用工具栏 -->
-      <custom-util-dialog
+      <CustomUtilDialog
         :visible="customUtilDialog.visible"
         @close="setCustomUtilDialogVisible(false)"
         @save="onSaveCustomUtils"
@@ -63,9 +63,7 @@
 </template>
 
 <script>
-import { ref, reactive } from "@vue/reactivity";
-import { onMounted, inject } from "@vue/runtime-core";
-import { nextTick } from "vue";
+import { defineComponent } from "@vue/runtime-core";
 // 组件
 import MoreUtils from "./MoreUtils/index.vue";
 import CustomUtilDialog from "./MoreUtils/CustomUtilDialog.vue";
@@ -79,13 +77,8 @@ import {
   ScreenshotPanel,
   LocatePanel,
 } from "./Utils/index.js";
-// 通用模块
-import common from "common";
-import utilsPanel from "common/utilsPanel.js";
-// 工具
-import { getLocalS } from "utils";
 
-export default {
+export default defineComponent({
   name: "UtilsPanel",
 
   components: {
@@ -101,274 +94,259 @@ export default {
     ScreenshotPanel,
     LocatePanel,
   },
+});
+</script>
 
-  setup(props, { emit }) {
-    const { dispatchMapEvent, showDevMessage } = common();
-    const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
+<script setup>
+import { ref, reactive, onMounted, inject, nextTick } from "@vue/runtime-core";
+// 通用模块
+import common from "common";
+import utilsPanel from "common/utilsPanel.js";
+// 工具
+import { getLocalS } from "utils";
+const { dispatchMapEvent, showDevMessage } = common();
+const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
 
-    // 获取顶级组件传递的值：当前地图视图是2D或者3D
-    const mapViewType = inject("getMapViewType");
-    // 获取顶级组件传递的值：是否显示固定头部
-    const fixedHeader = inject("getFixedHeader");
+// 获取顶级组件传递的值：当前地图视图是2D或者3D
+const mapViewType = inject("getMapViewType");
+// 获取顶级组件传递的值：是否显示固定头部
+const fixedHeader = inject("getFixedHeader");
 
-    // 固定常用工具
-    const commonUtils = ref([
-      {
-        component: "MeasurePanel",
-        classStyles: "iconfont icon-celianggongju",
-        utilName: "量算",
-        utilActive: false,
-        eventSuffix: "Measure",
-        panelID: null,
-        enable2D: true,
-        enable3D: true,
-      },
-      {
-        component: "DrawPanel",
-        classStyles: "iconfont icon-huizhi",
-        utilName: "绘制",
-        utilActive: false,
-        eventSuffix: "Draw",
-        panelID: "drawPanel",
-        enable2D: true,
-        enable3D: true,
-      },
-    ]);
+// 固定常用工具
+const commonUtils = ref([
+  {
+    component: "MeasurePanel",
+    classStyles: "iconfont icon-celianggongju",
+    utilName: "量算",
+    utilActive: false,
+    eventSuffix: "Measure",
+    panelID: null,
+    enable2D: true,
+    enable3D: true,
+  },
+  {
+    component: "DrawPanel",
+    classStyles: "iconfont icon-huizhi",
+    utilName: "绘制",
+    utilActive: false,
+    eventSuffix: "Draw",
+    panelID: "drawPanel",
+    enable2D: true,
+    enable3D: true,
+  },
+]);
 
-    // 工具面板列表
-    const panelList = ref([
-      // json内容示例
-      // {
-      //   // 对应组件
-      //   component: "MeasurePanel",
-      //   // 图标样式
-      //   classStyles: "iconfont icon-liangsuan",
-      //   // 工具名称
-      //   utilName: "量算",
-      //   // 工具激活/高亮状态
-      //   utilActive: false,
-      //   // 传递事件后缀名, 例如 "onOpenMeasure" 和 "onRemoveMeasure"
-      //   eventSuffix: "Measure",
-      //   // 工具应添加容器的ID
-      //   panelID: null,
-      //   // 2D模式下是否可用
-      //   enable2D: true,
-      //   // 3D模式下是否可用
-      //   enable3D: true
-      // }
-    ]);
+// 工具面板列表
+const panelList = ref([
+  // json内容示例
+  // {
+  //   // 对应组件
+  //   component: "MeasurePanel",
+  //   // 图标样式
+  //   classStyles: "iconfont icon-liangsuan",
+  //   // 工具名称
+  //   utilName: "量算",
+  //   // 工具激活/高亮状态
+  //   utilActive: false,
+  //   // 传递事件后缀名, 例如 "onOpenMeasure" 和 "onRemoveMeasure"
+  //   eventSuffix: "Measure",
+  //   // 工具应添加容器的ID
+  //   panelID: null,
+  //   // 2D模式下是否可用
+  //   enable2D: true,
+  //   // 3D模式下是否可用
+  //   enable3D: true
+  // }
+]);
 
-    // 高亮面板
-    const highlightPanels = ref([]);
+// 高亮面板
+const highlightPanels = ref([]);
 
-    // 自定义常用工具
-    const customUtils = ref([]);
+// 自定义常用工具
+const customUtils = ref([]);
 
-    // 自定义工具弹窗
-    const customUtilDialog = reactive({
-      visible: false,
-    });
+// 自定义工具弹窗
+const customUtilDialog = reactive({
+  visible: false,
+});
 
-    onMounted(() => {
-      let list = [];
+onMounted(() => {
+  let list = [];
 
-      moreUtilPanel.list.forEach((e) => {
-        if (e.children && e.children.length) {
-          e.children.forEach((c) => {
-            list.push(c);
-          });
-        }
+  moreUtilPanel.list.forEach((e) => {
+    if (e.children && e.children.length) {
+      e.children.forEach((c) => {
+        list.push(c);
       });
+    }
+  });
 
-      // 从缓存获取自定义工具
-      if (getLocalS("customUtils")) {
-        customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
-      } else {
-        customUtils.value = [...commonUtils.value];
-      }
+  // 从缓存获取自定义工具
+  if (getLocalS("customUtils")) {
+    customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
+  } else {
+    customUtils.value = [...commonUtils.value];
+  }
 
-      panelList.value = [...commonUtils.value, ...list];
+  panelList.value = [...commonUtils.value, ...list];
 
-      // console.log(panelList.value);
+  // console.log(panelList.value);
+});
+
+/**
+ * 工具点击事件
+ * @param panel 面板对象
+ * @param eventSuffix 事件后缀名
+ * @param panelID 工具应添加容器的ID
+ */
+const onClickUtil = (panel, eventSuffix, panelID) => {
+  // console.log(panel, eventSuffix, panelID);
+
+  // 禁止操作
+  const { enable2D, enable3D } = panel;
+  if (isUtilDisabled(enable2D, enable3D, mapViewType.value)) {
+    return false;
+  }
+
+  const { component } = panel;
+
+  // 分屏
+  if (
+    component === "SplitScreen" ||
+    component === "SwipePanel" ||
+    component === "LocatePanel"
+  ) {
+    // emit("open-full-screen-window", {
+    //   visible: panelList.value[index].utilActive,
+    //   panel,
+    //   index,
+    // });
+    showDevMessage();
+    return;
+  }
+
+  const index = panelList.value.findIndex((e) => e.component === component);
+  setPanelVisble(panel, index, !panelList.value[index].utilActive);
+
+  handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
+};
+
+// 点击工具箱里的工具
+const onClickUtilBoxUtils = ({ panel, eventSuffix, panelID }) => {
+  onClickUtil(panel, eventSuffix, panelID);
+};
+
+// 自定义工具栏可见性
+const setCustomUtilDialogVisible = (val) => {
+  customUtilDialog.visible = val;
+};
+
+// 保存自定义工具
+const onSaveCustomUtils = () => {
+  setCustomUtilDialogVisible(false);
+  if (getLocalS("customUtils")) {
+    customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
+  }
+};
+
+// 设置样式
+const setClassStyles = ({ enable2D, enable3D, component }) => {
+  let classStyles = "util-list-item";
+
+  if (isUtilDisabled(enable2D, enable3D, mapViewType.value)) {
+    classStyles += " is-disabled";
+  }
+
+  if (isUtilActive(highlightPanels.value, component)) {
+    classStyles += " is-active";
+  }
+
+  return classStyles;
+};
+
+/**
+ * 设置面板可见性
+ * @param panel 面板对象
+ * @param index 面板索引
+ * @param active 是否激活
+ */
+const setPanelVisble = (panel, index, active) => {
+  panelList.value[index].utilActive = active;
+  handleHighlightPanels(panel, active);
+};
+
+/**
+ * 处理高亮面板
+ * @param {*} panel 面板对象
+ * @param {*} utilActive 面板激活状态
+ */
+const handleHighlightPanels = (panel, utilActive) => {
+  const index = highlightPanels.value.findIndex((e) => e.component === panel.component);
+
+  if (utilActive && index < 0) {
+    highlightPanels.value.push(panel);
+  } else if (!utilActive && index >= 0) {
+    highlightPanels.value.splice(index, 1);
+  }
+};
+
+// 当前面板是否高亮
+const isHighlightPanel = (panel) => {
+  const index = highlightPanels.value.findIndex((e) => e.component === panel.component);
+  return index >= 0;
+};
+
+/**
+ * 处理工具面板展开或者收起
+ * @param panel 面板对象
+ * @param eventSuffix 事件后缀名
+ * @param panelID 工具应添加容器的ID
+ */
+const handleUtilPanelEvent = (utilActive, eventSuffix, panelID) => {
+  if (eventSuffix) {
+    nextTick(() => {
+      dispatchMapEvent(
+        utilActive ? `onOpen${eventSuffix}` : `onRemove${eventSuffix}`,
+        panelID
+          ? {
+              panelID,
+            }
+          : null
+      );
     });
+  }
+};
 
-    /**
-     * 工具点击事件
-     * @param panel 面板对象
-     * @param eventSuffix 事件后缀名
-     * @param panelID 工具应添加容器的ID
-     */
-    const onClickUtil = (panel, eventSuffix, panelID) => {
-      // console.log(panel, eventSuffix, panelID);
+// 清屏
+const onClearScreen = () => {
+  const events = [];
+  const data = null;
 
-      // 禁止操作
-      const { enable2D, enable3D } = panel;
-      if (isUtilDisabled(enable2D, enable3D, mapViewType.value)) {
-        return false;
-      }
-
-      const { component } = panel;
-
-      // 分屏
-      if (component === "SplitScreen" || component === "SwipePanel" || component === "LocatePanel") {
-        // emit("open-full-screen-window", {
-        //   visible: panelList.value[index].utilActive,
-        //   panel,
-        //   index,
-        // });
-        showDevMessage();
-        return;
-      }
-
-      const index = panelList.value.findIndex((e) => e.component === component);
-      setPanelVisble(panel, index, !panelList.value[index].utilActive);
-
-      handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
-    };
-
-    // 点击工具箱里的工具
-    const onClickUtilBoxUtils = ({ panel, eventSuffix, panelID }) => {
-      onClickUtil(panel, eventSuffix, panelID);
-    };
-
-    // 自定义工具栏可见性
-    const setCustomUtilDialogVisible = (val) => {
-      customUtilDialog.visible = val;
-    };
-
-    // 保存自定义工具
-    const onSaveCustomUtils = () => {
-      setCustomUtilDialogVisible(false);
-      if (getLocalS("customUtils")) {
-        customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
-      }
-    };
-
-    // 设置样式
-    const setClassStyles = ({ enable2D, enable3D, component }) => {
-      let classStyles = "util-list-item";
-
-      if (isUtilDisabled(enable2D, enable3D, mapViewType.value)) {
-        classStyles += " is-disabled";
-      }
-
-      if (isUtilActive(highlightPanels.value, component)) {
-        classStyles += " is-active";
-      }
-
-      return classStyles;
-    };
-
-    /**
-     * 设置面板可见性
-     * @param panel 面板对象
-     * @param index 面板索引
-     * @param active 是否激活
-     */
-    const setPanelVisble = (panel, index, active) => {
-      panelList.value[index].utilActive = active;
-      handleHighlightPanels(panel, active);
-    };
-
-    /**
-     * 处理高亮面板
-     * @param {*} panel 面板对象
-     * @param {*} utilActive 面板激活状态
-     */
-    const handleHighlightPanels = (panel, utilActive) => {
-      const index = highlightPanels.value.findIndex(
-        (e) => e.component === panel.component
-      );
-
-      if (utilActive && index < 0) {
-        highlightPanels.value.push(panel);
-      } else if (!utilActive && index >= 0) {
-        highlightPanels.value.splice(index, 1);
-      }
-    };
-
-    // 当前面板是否高亮
-    const isHighlightPanel = (panel) => {
-      const index = highlightPanels.value.findIndex(
-        (e) => e.component === panel.component
-      );
-      return index >= 0;
-    };
-
-    /**
-     * 处理工具面板展开或者收起
-     * @param panel 面板对象
-     * @param eventSuffix 事件后缀名
-     * @param panelID 工具应添加容器的ID
-     */
-    const handleUtilPanelEvent = (utilActive, eventSuffix, panelID) => {
-      if (eventSuffix) {
-        nextTick(() => {
-          dispatchMapEvent(
-            utilActive ? `onOpen${eventSuffix}` : `onRemove${eventSuffix}`,
-            panelID
-              ? {
-                  panelID,
-                }
-              : null
-          );
-        });
-      }
-    };
-
-    // 清屏
-    const onClearScreen = () => {
-      const events = [];
-      const data = null;
-
-      panelList.value.forEach((e) => {
-        if (e.utilActive) {
-          e.utilActive = false;
-          events.push({
-            event: `onRemove${e.eventSuffix}`,
-            data,
-          });
-        }
-      });
-
+  panelList.value.forEach((e) => {
+    if (e.utilActive) {
+      e.utilActive = false;
       events.push({
-        event: "onClearScreen",
+        event: `onRemove${e.eventSuffix}`,
         data,
       });
+    }
+  });
 
-      dispatchMapEvent(events);
-    };
+  events.push({
+    event: "onClearScreen",
+    data,
+  });
 
-    // 点击关闭按钮关闭面板
-    const onClosePanel = ({ panel, index, active, eventSuffix, panelID }) => {
-      setPanelVisble(panel, index, active);
-      handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
-    };
+  dispatchMapEvent(events);
+};
 
-    // 设置
-    const onClickSetting = () => {};
-
-    return {
-      fixedHeader,
-      mapViewType,
-      panelList,
-      commonUtils,
-      customUtils,
-      customUtilDialog,
-      highlightPanels,
-      setPanelVisble,
-      setCustomUtilDialogVisible,
-      setClassStyles,
-      onClosePanel,
-      onClearScreen,
-      onClickUtil,
-      onClickUtilBoxUtils,
-      onSaveCustomUtils,
-      onClickSetting,
-    };
-  },
+// 点击关闭按钮关闭面板
+const onClosePanel = ({ panel, index, active, eventSuffix, panelID }) => {
+  setPanelVisble(panel, index, active);
+  handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
 };
 </script>
+
 <style lang="scss" scoped>
 .utils-panel {
   position: absolute;

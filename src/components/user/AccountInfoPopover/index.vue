@@ -12,9 +12,8 @@
           <span>昵称：</span><span>{{ user.nickName }}</span>
         </li>
         <li class="user-info-list-item">
-          <span>角色：</span
-          >
-          <role-tag/>
+          <span>角色：</span>
+          <RoleTag />
         </li>
       </ul>
       <div class="user-info-operate">
@@ -31,8 +30,8 @@
   </el-popover>
 </template>
 
-<script>
-import { computed } from "@vue/reactivity";
+<script setup>
+import { computed, defineProps, defineEmits } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 import { ElMessageBox } from "element-plus";
 // 通用模块
@@ -42,65 +41,51 @@ import filter from "common/filter";
 // 组件
 import RoleTag from "components/user/RoleTag/index.vue";
 
-export default {
-  name: "AccountInfoPopover",
-
-  props: {
-    placement: {
-      type: String,
-      default: "bottom",
-    },
-    trigger: {
-      type: String,
-      default: "hover",
-    },
+const props = defineProps({
+  placement: {
+    type: String,
+    default: "bottom",
   },
-
-  components: { RoleTag },
-
-  emits: ["on-account-setting"],
-
-  setup(props, { emit }) {
-    const { store, toPage } = common();
-
-    const { isNull } = filter();
-
-    // 用户信息
-    const user = computed(() => store.getters.user);
-    const sysTitle = computed(() => store.getters.sysTitle);
-
-    const onAccountSetting = (val) => {
-      emit("on-account-setting", val);
-    };
-
-    // 退出登录
-    const onLogout = () => {
-      ElMessageBox.confirm("确认退出登录吗？", "温馨提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).then(async () => {
-        try {
-          await store.dispatch("user/logout");
-          await store.dispatch("permission/generateRoutes", null);
-          ElMessage.success(`您已退出${sysTitle.value}`);
-          toPage("/login");
-        } catch (err) {
-          console.log(err);
-          toPage("/login");
-        }
-      });
-    };
-
-    return {
-      user,
-      isNull,
-      onAccountSetting,
-      onLogout,
-    };
+  trigger: {
+    type: String,
+    default: "hover",
   },
+});
+
+const emit = defineEmits(["on-account-setting"]);
+
+const { store, toPage } = common();
+
+const { isNull } = filter();
+
+// 用户信息
+const user = computed(() => store.getters.user);
+const sysTitle = computed(() => store.getters.sysTitle);
+
+const onAccountSetting = (val) => {
+  emit("on-account-setting", val);
+};
+
+// 退出登录
+const onLogout = () => {
+  ElMessageBox.confirm("确认退出登录吗？", "温馨提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(async () => {
+    try {
+      await store.dispatch("user/logout");
+      await store.dispatch("permission/generateRoutes", null);
+      ElMessage.success(`您已退出${sysTitle.value}`);
+      toPage("/login");
+    } catch (err) {
+      console.log(err);
+      toPage("/login");
+    }
+  });
 };
 </script>
+
 <style lang="scss" scoped>
 .user-info {
   &-list {

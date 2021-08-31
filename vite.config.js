@@ -40,7 +40,7 @@ export default defineConfig({
     // 使用IP启动项目
     host: "0.0.0.0",
     // 配置启用的端口号
-    port
+    port: 8080
   },
   resolve: {
     // 设置别名

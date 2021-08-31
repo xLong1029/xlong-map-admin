@@ -31,12 +31,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "Page404"
-};
-</script>
-
 <style lang="scss" scoped>
 .http404-container {
   transform: translate(-50%, -50%);

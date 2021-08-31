@@ -38,9 +38,9 @@
   </el-form>
 </template>
 
-<script>
+<script setup>
 import { reactive, ref, toRaw } from "@vue/reactivity";
-import { onMounted } from "@vue/runtime-core";
+import { onMounted, defineProps } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 表单
 import formJs from "common/form.js";
@@ -53,114 +53,95 @@ import { validPassword, isEqual } from "utils/validate";
 // Api
 import Api from "api/user/index.js";
 
-export default {
-  name: "ChangePwd",
-
-  props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-    title: {
-      type: String,
-      default: "账户设置",
-    },
+const props = defineProps({
+  clickNotClose: {
+    default: false,
+    type: Boolean,
   },
+});
 
-  setup(props, { emit }) {
-    const { store, toPage } = common();
-    const { validForm } = formJs();
-    const { isNull } = filter();
+const { store, toPage } = common();
+const { validForm } = formJs();
+const { isNull } = filter();
 
-    // 表单
-    const changePwdForm = ref();
+// 表单
+const changePwdForm = ref();
 
-    const form = reactive({
-      oldPassword: "",
-      newPassword: "",
-      comfirmPassword: "",
-    });
+const form = reactive({
+  oldPassword: "",
+  newPassword: "",
+  comfirmPassword: "",
+});
 
-    // 校验
-    const validateNewPassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error("请输入新密码"));
-      } else if (!validPassword(value)) {
-        callback(new Error("密码至少为6位，必须包含字母和数字"));
-      } else {
-        callback();
-      }
-    };
-    const validateComfirPassword = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error("请输入确认密码"));
-      } else if (!isEqual(value, form.newPassword)) {
-        callback(new Error("两次输入密码不一致"));
-      } else {
-        callback();
-      }
-    };
+// 校验
+const validateNewPassword = (rule, value, callback) => {
+  if (!value) {
+    callback(new Error("请输入新密码"));
+  } else if (!validPassword(value)) {
+    callback(new Error("密码至少为6位，必须包含字母和数字"));
+  } else {
+    callback();
+  }
+};
+const validateComfirPassword = (rule, value, callback) => {
+  if (!value) {
+    callback(new Error("请输入确认密码"));
+  } else if (!isEqual(value, form.newPassword)) {
+    callback(new Error("两次输入密码不一致"));
+  } else {
+    callback();
+  }
+};
 
-    // 表单规则
-    const rules = reactive({
-      oldPassword: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
-      newPassword: [{ required: true, validator: validateNewPassword, trigger: "blur" }],
-      comfirmPassword: [
-        { required: true, validator: validateComfirPassword, trigger: "blur" },
-      ],
-    });
+// 表单规则
+const rules = reactive({
+  oldPassword: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
+  newPassword: [{ required: true, validator: validateNewPassword, trigger: "blur" }],
+  comfirmPassword: [
+    { required: true, validator: validateComfirPassword, trigger: "blur" },
+  ],
+});
 
-    const submitLoading = ref(false);
+const submitLoading = ref(false);
 
-    onMounted(() => {
-      resetForm();
-    });
+onMounted(() => {
+  resetForm();
+});
 
-    // 重置表单
-    const resetForm = () => {
-      form.oldPassword = "";
-      form.newPassword = "";
-      form.comfirmPassword = "";
-    };
+// 重置表单
+const resetForm = () => {
+  form.oldPassword = "";
+  form.newPassword = "";
+  form.comfirmPassword = "";
+};
 
-    // 保存修改
-    const onSubmit = async () => {
-      const valid = await validForm(changePwdForm.value, "信息填写有误，请检查");
+// 保存修改
+const onSubmit = async () => {
+  const valid = await validForm(changePwdForm.value, "信息填写有误，请检查");
 
-      if (valid) {
-        submitLoading.value = true;
+  if (valid) {
+    submitLoading.value = true;
 
-        const params = toRaw(form);
+    const params = toRaw(form);
 
-        Api.ChangePwd(params)
-          .then(async (res) => {
-            const { code, msg } = res;
-            if (code == 200) {
-              try {
-                await store.dispatch("user/logout");
-                await store.dispatch("permission/generateRoutes", null);
-                ElMessage.success("密码修改成功！请重新登录");
+    Api.ChangePwd(params)
+      .then(async (res) => {
+        const { code, msg } = res;
+        if (code == 200) {
+          try {
+            await store.dispatch("user/logout");
+            await store.dispatch("permission/generateRoutes", null);
+            ElMessage.success("密码修改成功！请重新登录");
 
-                toPage("/login");
-              } catch (err) {
-                console.log(err);
-              }
-            }
-          })
-          .catch((err) => console.log(err))
-          .finally(() => (submitLoading.value = false));
-      }
-    };
-
-    return {
-      changePwdForm,
-      form,
-      rules,
-      submitLoading,
-      isNull,
-      onSubmit,
-    };
-  },
+            toPage("/login");
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => (submitLoading.value = false));
+  }
 };
 </script>
 <style lang="scss">

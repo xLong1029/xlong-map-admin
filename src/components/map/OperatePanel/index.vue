@@ -1,6 +1,6 @@
 <template>
   <div class="operate-panel">
-    <compass />
+    <Compass />
     <div class="map-transform" @click="onTransform()">
       <span class="text">切换</span>
       <span>{{ mapViewType === "2D" ? "3D" : "2D" }}</span>
@@ -23,80 +23,65 @@
   </div>
 </template>
 
-<script>
-import { inject } from "@vue/runtime-core";
+<script setup>
+import { inject, defineProps } from "@vue/runtime-core";
 import common from "common";
 import Compass from "./Compass.vue";
 
-export default {
-  name: "OperatePanel",
-
-  props: {
-    // 是否显示地图底部信息
-    mapBottomCoord: {
-      type: Boolean,
-      default: true,
-    },
+const props = defineProps({
+  placement: {
+    type: String,
+    default: "bottom",
   },
-
-  components: { Compass },
-
-  setup(props, { emit }) {
-    const { dispatchMapEvent, showDevMessage } = common();
-
-    // 获取顶级组件传递的值：当前地图视图是2D或者3D
-    const mapViewType = inject("getMapViewType");
-    // 坐标信息
-    const coordInfo = inject("getCoordInfo");
-
-    const maxScale = 30000;
-    const minScale = 1500;
-
-    // 2/3D转换
-    const onTransform = () => {
-      const viewType = mapViewType.value === "3D" ? "2D" : "3D";
-      console.log(`点击了2/3D切换按钮，即将转换至${viewType}视图`);
-      dispatchMapEvent("onTransformView", {
-        viewType,
-      });
-    };
-
-    // 定位
-    const onLocate = () => {
-      showDevMessage();
-    };
-
-    // 放大
-    const onZoomIn = () => {
-      if (coordInfo.scale <= minScale) {
-        return false;
-      }
-
-      dispatchMapEvent("onZoomIn", null);
-    };
-
-    // 缩小
-    const onZoomOut = () => {
-      if (coordInfo.scale >= maxScale) {
-        return false;
-      }
-
-      dispatchMapEvent("onZoomOut", null);
-    };
-
-    return {
-      mapViewType,
-      coordInfo,
-      minScale,
-      maxScale,
-      onTransform,
-      onLocate,
-      onZoomIn,
-      onZoomOut,
-    };
+  trigger: {
+    type: String,
+    default: "hover",
   },
+});
+
+const { dispatchMapEvent, showDevMessage } = common();
+
+// 获取顶级组件传递的值：当前地图视图是2D或者3D
+const mapViewType = inject("getMapViewType");
+// 坐标信息
+const coordInfo = inject("getCoordInfo");
+
+const maxScale = 30000;
+const minScale = 1500;
+
+// 2/3D转换
+const onTransform = () => {
+  const viewType = mapViewType.value === "3D" ? "2D" : "3D";
+  console.log(`点击了2/3D切换按钮，即将转换至${viewType}视图`);
+  dispatchMapEvent("onTransformView", {
+    viewType,
+  });
+};
+
+// 定位
+const onLocate = () => {
+  showDevMessage();
+};
+
+// 放大
+const onZoomIn = () => {
+  if (coordInfo.scale <= minScale) {
+    return false;
+  }
+
+  dispatchMapEvent("onZoomIn", null);
+};
+
+// 缩小
+const onZoomOut = () => {
+  if (coordInfo.scale >= maxScale) {
+    return false;
+  }
+
+  dispatchMapEvent("onZoomOut", null);
 };
 </script>
+
 <style lang="scss" scoped>
 .operate-panel {
   position: absolute;

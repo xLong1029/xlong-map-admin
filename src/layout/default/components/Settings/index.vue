@@ -4,7 +4,7 @@
 
     <div class="drawer-item">
       <span>主题颜色</span>
-      <theme-picker
+      <ThemePicker
         style="float: right; height: 26px; margin: -3px 8px 0 0"
         @change="changeSettings('theme', $event)"
       />
@@ -48,88 +48,70 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import ThemePicker from "components/common/ThemePicker/index.vue";
 import { computed } from "@vue/runtime-core";
 import common from "common";
 
-export default {
-  name: "AppSettings",
-  components: { ThemePicker },
+const { store, changeSettings } = common();
 
-  setup() {
-    const { store, changeSettings } = common();
-
-    const fixedHeader = computed({
-      get() {
-        return store.getters.fixedHeader;
-      },
-      set(val) {
-        
-        changeSettings("fixedHeader", val);
-      },
-    });
-
-    const mapInfoPanel = computed({
-      get() {
-        return store.getters.mapInfoPanel;
-      },
-      set(val) {
-        changeSettings("mapInfoPanel", val);
-      },
-    });
-
-    const mapUtilsPanel = computed({
-      get() {
-        return store.getters.mapUtilsPanel;
-      },
-      set(val) {
-        changeSettings("mapUtilsPanel", val);
-      },
-    });
-
-    const mapOperatePanel = computed({
-      get() {
-        return store.getters.mapOperatePanel;
-      },
-      set(val) {
-        changeSettings("mapOperatePanel", val);
-      },
-    });
-
-    const switchMap = computed({
-      get() {
-        return store.getters.switchMap;
-      },
-      set(val) {
-        changeSettings("switchMap", val);
-      },
-    });
-
-    const mapBottomCoord = computed({
-      get() {
-        return store.getters.mapBottomCoord;
-      },
-      set(val) {
-        changeSettings("mapBottomCoord", val);
-      },
-    });
-
-    const resetSetting = () => {
-      store.dispatch("settings/resetSetting");
-    };
-
-    return {
-      fixedHeader,
-      mapInfoPanel,
-      mapUtilsPanel,
-      mapOperatePanel,
-      switchMap,
-      mapBottomCoord,
-      changeSettings,
-      resetSetting,
-    };
+const fixedHeader = computed({
+  get() {
+    return store.getters.fixedHeader;
   },
+  set(val) {
+
+    changeSettings("fixedHeader", val);
+  },
+});
+
+const mapInfoPanel = computed({
+  get() {
+    return store.getters.mapInfoPanel;
+  },
+  set(val) {
+    changeSettings("mapInfoPanel", val);
+  },
+});
+
+const mapUtilsPanel = computed({
+  get() {
+    return store.getters.mapUtilsPanel;
+  },
+  set(val) {
+    changeSettings("mapUtilsPanel", val);
+  },
+});
+
+const mapOperatePanel = computed({
+  get() {
+    return store.getters.mapOperatePanel;
+  },
+  set(val) {
+    changeSettings("mapOperatePanel", val);
+  },
+});
+
+const switchMap = computed({
+  get() {
+    return store.getters.switchMap;
+  },
+  set(val) {
+    changeSettings("switchMap", val);
+  },
+});
+
+const mapBottomCoord = computed({
+  get() {
+    return store.getters.mapBottomCoord;
+  },
+  set(val) {
+    changeSettings("mapBottomCoord", val);
+  },
+});
+
+const resetSetting = () => {
+  store.dispatch("settings/resetSetting");
 };
 </script>
 

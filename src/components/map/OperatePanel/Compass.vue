@@ -3,109 +3,102 @@
     <span
       ref="compassRef"
       class="pointer"
-      :class="{ 'is-disabled': mapViewType === '2D'}"
+      :class="{ 'is-disabled': mapViewType === '2D' }"
       title="恢复正北方向"
       @click="onReset"
     ></span>
     <span
       class="arrow-left"
-      :class="{ 'is-disabled': mapViewType === '2D'}"
+      :class="{ 'is-disabled': mapViewType === '2D' }"
       title="逆时针转动45°"
       @click="onRotate(-1)"
     ></span>
     <span
       class="arrow-right"
-      :class="{ 'is-disabled': mapViewType === '2D'}"
+      :class="{ 'is-disabled': mapViewType === '2D' }"
       title="顺时针转动45°"
       @click="onRotate(1)"
     ></span>
   </div>
 </template>
 
-<script>
+<script setup>
 import common from "common";
 import { inject, watch } from "@vue/runtime-core";
 import { ref } from "@vue/reactivity";
-export default {
-  name: "Compass",
 
-  setup() {
-    const { dispatchMapEvent } = common();
-    // 当前地图视图为2D或者3D
-    const mapViewType = inject("getMapViewType");
-    // 摄像机信息
-    const cameraInfo = inject("getCameraInfo");
-    // 罗盘实例
-    const compassRef = ref("");
-    // 指针旋转角度
-    const angle = ref(0);
+const { dispatchMapEvent } = common();
+// 当前地图视图为2D或者3D
+const mapViewType = inject("getMapViewType");
+// 摄像机信息
+const cameraInfo = inject("getCameraInfo");
+// 罗盘实例
+const compassRef = ref("");
+// 指针旋转角度
+const angle = ref(0);
 
-    // 监听指针信息改变
-    watch(
-      () => cameraInfo.value,
-      ({ tilt, heading }) => {
-        angle.value = -heading;
-        setCompassStyles(angle.value, "0s");
-      }
-    );
+// 监听指针信息改变
+watch(
+  () => cameraInfo.value,
+  ({ tilt, heading }) => {
+    angle.value = -heading;
+    setCompassStyles(angle.value, "0s");
+  }
+);
 
-    // 监听地图视图改变
-    watch(
-      () => mapViewType.value,
-      (val) => {
-        // 2D视图
-        if (val === "2D") {
-          angle.value = 0;
-          setCompassStyles(angle.value, "0s");
-        }
-      }
-    );
+// 监听地图视图改变
+watch(
+  () => mapViewType.value,
+  (val) => {
+    // 2D视图
+    if (val === "2D") {
+      angle.value = 0;
+      setCompassStyles(angle.value, "0s");
+    }
+  }
+);
 
-    // 指针复位
-    const onReset = () => {
-      if (mapViewType.value === "2D") {
-        return false;
-      }
+// 指针复位
+const onReset = () => {
+  if (mapViewType.value === "2D") {
+    return false;
+  }
 
-      angle.value = Math.abs(angle.value) > 180 ? 360 : 0;
+  angle.value = Math.abs(angle.value) > 180 ? 360 : 0;
 
-      setCompassStyles(angle.value);
-      dispatchMapEvent("onRotate", { angle: 0 });
-    };
+  setCompassStyles(angle.value);
+  dispatchMapEvent("onRotate", { angle: 0 });
+};
 
-    /**
-     * 旋转
-     *
-     * @param {*} direction 旋转方向 1 顺时针 -1 逆时针
-     */
-    const onRotate = (direction) => {
-      if (mapViewType.value === "2D") {
-        return false;
-      }
+/**
+ * 旋转
+ *
+ * @param {*} direction 旋转方向 1 顺时针 -1 逆时针
+ */
+const onRotate = (direction) => {
+  if (mapViewType.value === "2D") {
+    return false;
+  }
 
-      angle.value = direction > 0 ? angle.value + 45 : angle.value - 45;
+  angle.value = direction > 0 ? angle.value + 45 : angle.value - 45;
 
-      setCompassStyles(angle.value);
-      dispatchMapEvent("onRotate", { angle: angle.value });
-    };
+  setCompassStyles(angle.value);
+  dispatchMapEvent("onRotate", { angle: angle.value });
+};
 
-    /**
-     * 设置指针样式
-     * @param {*} angle 旋转角度
-     * @param {*} duration 动画持续时间
-     */
-    const setCompassStyles = (angle, duration = "0.2s") => {
-      const transform = `rotateZ(${angle}deg)`;
+/**
+ * 设置指针样式
+ * @param {*} angle 旋转角度
+ * @param {*} duration 动画持续时间
+ */
+const setCompassStyles = (angle, duration = "0.2s") => {
+  const transform = `rotateZ(${angle}deg)`;
 
-      const compass = compassRef.value;
-      compass.style["transition-duration"] = duration;
-      compass.style["transform"] = transform;
-      compass.style["-webkit-transform"] = transform;
-      compass.style["-moz-transform"] = transform;
-    };
-
-    return { compassRef, mapViewType, onReset, onRotate };
-  },
+  const compass = compassRef.value;
+  compass.style["transition-duration"] = duration;
+  compass.style["transform"] = transform;
+  compass.style["-webkit-transform"] = transform;
+  compass.style["-moz-transform"] = transform;
 };
 </script>
 <style lang="scss" scoped>

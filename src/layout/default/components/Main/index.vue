@@ -13,20 +13,11 @@
   </div>
 </template>
 
-<script>
+<script setup>
 // 通用方法
 import common from "common";
 
-export default {
-  name: "AppMain",
-  setup() {
-    const { pageLoading } = common();
-
-    return {
-      pageLoading,
-    };
-  },
-};
+const { pageLoading } = common();
 </script>
 
 <style lang="scss" scoped>

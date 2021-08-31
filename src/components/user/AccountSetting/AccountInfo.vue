@@ -8,7 +8,7 @@
     label-width="90px"
   >
     <el-form-item label="账户" prop=""
-      ><span>{{ isNull(user.username) }}</span> <span class="ml-10"><role-tag /></span
+      ><span>{{ isNull(user.username) }}</span> <span class="ml-10"><RoleTag /></span
     ></el-form-item>
     <el-form-item label="昵称" prop="nickName">
       <el-input
@@ -36,7 +36,7 @@
   </el-form>
 </template>
 
-<script>
+<script setup>
 import { computed, reactive, ref, toRaw } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
@@ -53,123 +53,96 @@ import { strToArr } from "utils";
 // Api
 import Api from "api/user/index.js";
 
-export default {
-  name: "AccountInfo",
+const { store } = common();
+const { validForm } = formJs();
+const { isNull } = filter();
 
-  components: { RoleTag },
+const user = computed(() => store.getters.user);
+const token = computed(() => store.getters.token);
 
-  setup(props, { emit }) {
-    const { store } = common();
-    const { validForm } = formJs();
-    const { isNull } = filter();
+// 表单
+const infoForm = ref();
 
-    const user = computed(() => store.getters.user);
-    const token = computed(() => store.getters.token);
+const form = reactive({
+  nickName: "",
+  realName: "",
+});
 
-    // 表单
-    const infoForm = ref();
+// 表单规则
+const rules = reactive({
+  nickName: [{ required: true, message: "请输入昵称", trigger: "blur" }],
+  realName: [{ required: true, message: "请输入真实姓名", trigger: "blur" }],
+});
 
-    const form = reactive({
-      nickName: "",
-      realName: "",
-    });
+const submitLoading = ref(false);
 
-    // 表单规则
-    const rules = reactive({
-      nickName: [{ required: true, message: "请输入昵称", trigger: "blur" }],
-      realName: [{ required: true, message: "请输入真实姓名", trigger: "blur" }],
-    });
+const infoLoading = ref(false);
 
-    const submitLoading = ref(false);
+onMounted(() => {
+  resetForm();
+  getProfile();
+});
 
-    const infoLoading = ref(false);
+// 重置表单
+const resetForm = () => {
+  form.nickName = user.value.nickName;
+  form.realName = user.value.realName;
+};
 
-    onMounted(() => {
-      resetForm();
-      getProfile();
-    });
+// 保存修改
+const onSubmit = async () => {
+  const valid = await validForm(infoForm.value, "信息填写有误，请检查");
 
-    // 重置表单
-    const resetForm = () => {
-      form.nickName = user.value.nickName;
-      form.realName = user.value.realName;
-    };
+  if (valid) {
+    submitLoading.value = true;
 
-    // 保存修改
-    const onSubmit = async () => {
-      const valid = await validForm(infoForm.value, "信息填写有误，请检查");
+    const params = toRaw(form);
+    Api.EditProfile(params, user.value.userId)
+      .then(async (res) => {
+        const { code, msg } = res;
+        if (code == 200) {
+          getProfile();
+          ElMessage.success("信息保存成功");
+        } else {
+          ElMessage.success("信息保存失败");
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => (submitLoading.value = false));
+  }
+};
 
-      if (valid) {
-        submitLoading.value = true;
+// 获取个人资料
+const getProfile = () => {
+  infoLoading.value = true;
 
-        const params = toRaw(form);
-        Api.EditProfile(params, user.value.userId)
-          .then(async (res) => {
-            const { code, msg } = res;
-            if (code == 200) {
-              getProfile();
-              ElMessage.success("信息保存成功");
-            } else {
-              ElMessage.success("信息保存失败");
-            }
-          })
-          .catch((err) => console.log(err))
-          .finally(() => (submitLoading.value = false));
+  Api.GetUser(token.value)
+    .then((res) => {
+      const { code, data } = res;
+      // 获取到数据
+      if (code == 200) {
+        const { username, userFace, nickName, realName, gender, objectId, role } = data;
+
+        form.nickName = nickName;
+        form.realName = realName;
+
+        // 更新用户信息
+        store.commit("user/SET_USER", {
+          avatar: userFace,
+          gender,
+          username,
+          realName,
+          nickName,
+          userId: objectId,
+          roles: role ? strToArr(role, ",") : null,
+        });
+      } else {
+        ElMessage.error("无法获取用户数据");
+        console.log("无该用户");
       }
-    };
-
-    // 获取个人资料
-    const getProfile = () => {
-      infoLoading.value = true;
-
-      Api.GetUser(token.value)
-        .then((res) => {
-          const { code, data } = res;
-          // 获取到数据
-          if (code == 200) {
-            const {
-              username,
-              userFace,
-              nickName,
-              realName,
-              gender,
-              objectId,
-              role,
-            } = data;
-
-            form.nickName = nickName;
-            form.realName = realName;
-
-            // 更新用户信息
-            store.commit("user/SET_USER", {
-              avatar: userFace,
-              gender,
-              username,
-              realName,
-              nickName,
-              userId: objectId,
-              roles: role ? strToArr(role, ",") : null,
-            });
-          } else {
-            ElMessage.error("无法获取用户数据");
-            console.log("无该用户");
-          }
-        })
-        .catch((err) => console.log(err))
-        .finally(() => (infoLoading.value = false));
-    };
-
-    return {
-      user,
-      infoForm,
-      form,
-      rules,
-      submitLoading,
-      infoLoading,
-      isNull,
-      onSubmit,
-    };
-  },
+    })
+    .catch((err) => console.log(err))
+    .finally(() => (infoLoading.value = false));
 };
 </script>
 <style lang="scss">

@@ -1,51 +1,51 @@
 <template>
   <div class="map-index-container">
-    <arc-gis-map
+    <ArcGisMap
       ref="mapRef"
       :map-operate-panel="mapOperatePanel"
       @close-screenshot="onCloseScreenshot"
-    ></arc-gis-map>
-    <map-info
+    ></ArcGisMap>
+    <MapInfo
       v-if="mapInfoPanel"
       :fold-map-info-panel="foldMapInfoPanel"
       :map-bottom-coord="mapBottomCoord"
       @click-fold="onFoldMapInfoPanel"
       @map-set-view-scale="onMapSetView"
     />
-    <!-- <res-panel
+    <!-- <ResPanel
       v-if="mapInfoPanel"
       :fold-map-info-panel="foldMapInfoPanel"
       :map-bottom-coord="mapBottomCoord"
       @click-fold="onFoldMapInfoPanel"
     /> -->
-    <switch-map
+    <SwitchMap
       v-if="switchMap"
       :map-operate-panel="mapOperatePanel"
       :map-bottom-coord="mapBottomCoord"
       @change-basemap="changeBasemap"
       @map-set-view-scale="onMapSetView"
     />
-    <utils-panel v-if="mapUtilsPanel" />
-    <bottom-coord v-if="mapBottomCoord" :companyName="companyName" />
-    <operate-panel v-if="mapOperatePanel" :map-bottom-coord="mapBottomCoord" />
+    <UtilsPanel v-if="mapUtilsPanel" />
+    <BottomCoord v-if="mapBottomCoord" :companyName="companyName" />
+    <OperatePanel v-if="mapOperatePanel" :map-bottom-coord="mapBottomCoord" />
 
-    <account-info-popover
+    <AccountInfoPopover
       v-if="!fixedHeader"
       @on-account-setting="setAccountSettingVisible(true)"
     >
       <span class="user-avatar">
-        <img :src="user.avatar ? user.avatar : defaultAvatar" />
+        <img :src="user.avatar ? user.avatar : defaultAvatarImg" />
       </span>
-    </account-info-popover>
+    </AccountInfoPopover>
     <bottom-coord v-if="mapBottomCoord" :companyName="companyName" />
-    <account-setting
+    <AccountSetting
       :visible="accountSettingVisible"
       @close="setAccountSettingVisible(false)"
     />
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, reactive, ref, provide } from "@vue/runtime-core";
 import { useStore } from "vuex";
 // 组件
@@ -59,126 +59,87 @@ import BottomCoord from "components/map/BottomCoord/index.vue";
 import AccountSetting from "components/user/AccountSetting/index.vue";
 import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
 // 图片
-import defaultAvatar from "assets/images/default-avatar.png";
+import defaultAvatarImg from "assets/images/default-avatar.png";
 
-export default {
-  name: "Home",
+const store = useStore();
 
-  components: {
-    ArcGisMap,
-    // ResPanel,
-    MapInfo,
-    SwitchMap,
-    UtilsPanel,
-    OperatePanel,
-    BottomCoord,
-    AccountSetting,
-    AccountInfoPopover,
-  },
+// 当前地图视图为2D或者3D
+const mapViewType = ref("3D");
 
-  setup() {
-    const store = useStore();
+// 当前地图底图类型
+const basemap = ref("hybrid");
 
-    // 当前地图视图为2D或者3D
-    const mapViewType = ref("3D");
+// 摄像机信息
+const cameraInfo = ref({
+  tilt: 45,
+  heading: 44,
+});
 
-    // 当前地图底图类型
-    const basemap = ref("hybrid");
+// 坐标信息
+const coordInfo = reactive({
+  // 会展中心坐标
+  lon: 108.37586,
+  lat: 22.81221,
+  tilt: 0,
+  heading: 0,
+  scale: 50000000,
+  locate: "",
+});
 
-    // 摄像机信息
-    const cameraInfo = ref({
-      tilt: 45,
-      heading: 44,
-    });
+// 开启截图
+const startScreenshot = ref(false);
 
-    // 坐标信息
-    const coordInfo = reactive({
-      // 会展中心坐标
-      lon: 108.37586,
-      lat: 22.81221,
-      tilt: 0,
-      heading: 0,
-      scale: 50000000,
-      locate: "",
-    });
+const user = computed(() => store.getters.user);
+const fixedHeader = computed(() => store.getters.fixedHeader);
+const mapInfoPanel = computed(() => store.getters.mapInfoPanel);
+const switchMap = computed(() => store.getters.switchMap);
+const mapUtilsPanel = computed(() => store.getters.mapUtilsPanel);
+const mapOperatePanel = computed(() => store.getters.mapOperatePanel);
+const mapBottomCoord = computed(() => store.getters.mapBottomCoord);
+const companyName = computed(() => store.getters.companyName);
 
-    // 开启截图
-    const startScreenshot = ref(false);
+// 顶级组件通过provide传递给子孙组件
+provide("getMapViewType", mapViewType);
+provide("getCameraInfo", cameraInfo);
+provide("getCoordInfo", coordInfo);
+provide("getFixedHeader", fixedHeader);
+provide("getStartScreenshot", startScreenshot);
+provide("getBasemap", basemap);
 
-    const user = computed(() => store.getters.user);
-    const fixedHeader = computed(() => store.getters.fixedHeader);
-    const mapInfoPanel = computed(() => store.getters.mapInfoPanel);
-    const switchMap = computed(() => store.getters.switchMap);
-    const mapUtilsPanel = computed(() => store.getters.mapUtilsPanel);
-    const mapOperatePanel = computed(() => store.getters.mapOperatePanel);
-    const mapBottomCoord = computed(() => store.getters.mapBottomCoord);
-    const companyName = computed(() => store.getters.companyName);
+// 是否显示账户设置
+const accountSettingVisible = ref(false);
 
-    // 顶级组件通过provide传递给子孙组件
-    provide("getMapViewType", mapViewType);
-    provide("getCameraInfo", cameraInfo);
-    provide("getCoordInfo", coordInfo);
-    provide("getFixedHeader", fixedHeader);
-    provide("getStartScreenshot", startScreenshot);
-    provide("getBasemap", basemap);
+// 地图实例
+const mapRef = ref();
 
-    // 是否显示账户设置
-    const accountSettingVisible = ref(false);
+// 是否折叠地图资源面板
+const foldMapInfoPanel = ref(false);
 
-    // 地图实例
-    const mapRef = ref();
+// 显示账户设置
+const setAccountSettingVisible = (val) => {
+  accountSettingVisible.value = val;
+};
 
-    // 是否折叠地图资源面板
-    const foldMapInfoPanel = ref(false);
+// 监听通过地图信息设置地图比例
+const onMapSetView = ({ scale }) => {
+  coordInfo.scale = scale;
+  // 调用子组件方法
+  mapRef.value.onSetScale(scale);
+};
 
-    // 显示账户设置
-    const setAccountSettingVisible = (val) => {
-      accountSettingVisible.value = val;
-    };
+// 折叠地图资源面板
+const onFoldMapInfoPanel = (val) => {
+  foldMapInfoPanel.value = val;
+};
 
-    // 监听通过地图信息设置地图比例
-    const onMapSetView = ({ scale }) => {
-      coordInfo.scale = scale;
-      // 调用子组件方法
-      mapRef.value.onSetScale(scale);
-    };
+// 改变地图底图
+const changeBasemap = (val) => {
+  basemap.value = val;
+};
 
-    // 折叠地图资源面板
-    const onFoldMapInfoPanel = (val) => {
-      foldMapInfoPanel.value = val;
-    };
-
-    // 改变地图底图
-    const changeBasemap = (val) => {
-      basemap.value = val;
-    };
-
-    // 关闭截图
-    const onCloseScreenshot = () => {
-      startScreenshot.value = false;
-    };
-
-    return {
-      user,
-      fixedHeader,
-      mapInfoPanel,
-      switchMap,
-      mapUtilsPanel,
-      mapOperatePanel,
-      mapBottomCoord,
-      foldMapInfoPanel,
-      companyName,
-      accountSettingVisible,
-      coordInfo,
-      mapRef,
-      defaultAvatar,
-      setAccountSettingVisible,
-      onMapSetView,
-      onFoldMapInfoPanel,
-      changeBasemap,
-      onCloseScreenshot,
-    };
-  },
+// 关闭截图
+const onCloseScreenshot = () => {
+  startScreenshot.value = false;
 };
 </script>
 <style lang="scss" scoped>

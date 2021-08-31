@@ -20,32 +20,24 @@
   </div>
 </template>
 
-<script>
-import { ref } from "@vue/reactivity";
+<script setup>
+import { ref, defineEmits } from "@vue/runtime-core";
 
-export default {
-  name: "Screenshot",
+const emit = defineEmits(["close"]);
 
-  setup(props, { emit }) {
-    const text = ref("");
+const text = ref("");
 
-    // 关闭
-    const onClose = () => {
-      text.value = "";
+// 关闭
+const onClose = () => {
+  text.value = "";
 
-      const screenshotContainer = document.getElementById("screenshotContainer");
-      screenshotContainer.classList.add("hide");
+  const screenshotContainer = document.getElementById("screenshotContainer");
+  screenshotContainer.classList.add("hide");
 
-      emit("close");
-    };
-
-    return {
-      text,
-      onClose,
-    };
-  },
+  emit("close");
 };
 </script>
+
 <style lang="scss" scoped>
 #screenshotContainer {
   z-index: 1000;
@@ -92,7 +84,7 @@ export default {
     width: 70%;
     margin: 0 auto;
 
-    .text{
+    .text {
       margin-right: 10px;
       color: #ffffff;
     }

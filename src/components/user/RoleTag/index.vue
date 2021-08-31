@@ -8,22 +8,13 @@
   >
 </template>
 
-<script>
+<script setup>
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 
-export default {
-  name: "RoleTag",
+const store = useStore();
 
-  setup() {
-    const store = useStore();
-
-    // 用户信息
-    const user = computed(() => store.getters.user);
-    return {
-      user,
-    };
-  },
-};
+// 用户信息
+const user = computed(() => store.getters.user);
 </script>
 <style lang="scss"></style>

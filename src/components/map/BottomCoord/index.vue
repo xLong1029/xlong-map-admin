@@ -33,7 +33,7 @@
           >
         </template>
         <div class="qrcode-container">
-          <img class="qrcode__img" :src="QRCode" />
+          <img class="qrcode__img" :src="QRCodeImg" />
           <span class="qrcode__title">扫一扫，关注xLong设计</span>
         </div>
       </el-popover>
@@ -41,32 +41,22 @@
   </div>
 </template>
 
-<script>
-import { inject } from "@vue/runtime-core";
+<script setup>
+import { inject, defineProps } from "@vue/runtime-core";
 // 图片
-import QRCode from "assets/images/qrcode.jpg";
+import QRCodeImg from "assets/images/qrcode.jpg";
 
-export default {
-  name: "BottomCoord",
-
-  props: {
-    companyName: {
-      type: String,
-      default: "",
-    },
+const props = defineProps({
+  companyName: {
+    type: String,
+    default: "",
   },
+});
 
-  setup() {
-    // 地图底图
-    const basemap = inject("getBasemap");
-
-    return {
-      QRCode,
-      basemap,
-    };
-  },
-};
+// 地图底图
+const basemap = inject("getBasemap");
 </script>
+
 <style lang="scss" scoped>
 .bottom-coord {
   height: 20px;

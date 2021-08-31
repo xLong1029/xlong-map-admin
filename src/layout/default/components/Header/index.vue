@@ -1,27 +1,24 @@
 <template>
   <div class="header-content flex">
     <div class="header-content-left">
-      <img class="logo" :src="logo" />
+      <img class="logo" :src="logoImg" />
       <span class="title">{{ title }}</span>
     </div>
     <div v-if="user && user.realName" class="header-content-right">
-      <account-info-popover @on-account-setting="setAccountSettingVisible(true)">
+      <AccountInfoPopover @on-account-setting="setAccountSettingVisible(true)">
         <div class="user-info">
           <span class="user-avatar">
-            <img :src="user.avatar ? user.avatar : defaultAvatar" />
+            <img :src="user.avatar ? user.avatar : defaultAvatarImg" />
           </span>
           <span>{{ isNull(user.nickName) }}</span>
         </div>
-      </account-info-popover>
+      </AccountInfoPopover>
     </div>
-    <account-setting
-      :visible="accountSettingVisible"
-      @close="setAccountSettingVisible(false)"
-    />
+    <AccountSetting :visible="accountSettingVisible" @close="setAccountSettingVisible(false)" />
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from "@vue/runtime-core";
 import { useStore } from "vuex";
 // 过滤器
@@ -30,47 +27,27 @@ import filter from "common/filter";
 import AccountSetting from "components/user/AccountSetting/index.vue";
 import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
 // 图片
-import logo from "assets/images/logo.png";
-import defaultAvatar from "assets/images/default-avatar.png";
+import logoImg from "assets/images/logo.png";
+import defaultAvatarImg from "assets/images/default-avatar.png";
 
-export default {
-  name: "AppHeader",
+const store = useStore();
 
-  components: {
-    AccountInfoPopover,
-    AccountSetting,
-  },
+const { isNull } = filter();
 
-  setup() {
-    const store = useStore();
+// 标题
+const title = computed(() => store.getters.sysTitle);
 
-    const { isNull } = filter();
+// 用户信息
+const user = computed(() => store.getters.user);
 
-    // 标题
-    const title = computed(() => store.getters.sysTitle);
+// 是否显示账户设置
+const accountSettingVisible = ref(false);
 
-    // 用户信息
-    const user = computed(() => store.getters.user);
-
-    // 是否显示账户设置
-    const accountSettingVisible = ref(false);
-
-    // 显示账户设置
-    const setAccountSettingVisible = (val) => {
-      accountSettingVisible.value = val;
-    };
-
-    return {
-      logo,
-      title,
-      user,
-      isNull,
-      accountSettingVisible,
-      defaultAvatar,
-      setAccountSettingVisible,
-    };
-  },
+// 显示账户设置
+const setAccountSettingVisible = (val) => {
+  accountSettingVisible.value = val;
 };
+
 </script>
 
 <style lang="scss" scoped>
