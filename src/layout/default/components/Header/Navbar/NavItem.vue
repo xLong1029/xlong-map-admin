@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import path from "path";
+const path = require('path');
 import { isExternal } from "@/utils/validate";
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
@@ -108,7 +108,7 @@ const resolvePath = (routePath, isSub, item) => {
     return basePath;
   }
 
-  if (isSub && item.redirect) {
+  if (isSub && item && item.redirect) {
     return path.resolve(basePath, item.redirect);
   }
 

@@ -25,11 +25,22 @@
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">抱歉！找不到该页面</div>
-        <a href="/map" class="bullshit__return-home">返回首页</a>
+        <el-button
+          class="bullshit__return-home"
+          type="primary"
+          @click="toPage('/home')"
+          >返回首页</el-button
+        >
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+// 通用模块
+import common from "common";
+const { toPage } = common();
+</script>
 
 <style lang="scss" scoped>
 .http404-container {
@@ -197,18 +208,7 @@
       animation-fill-mode: forwards;
     }
     &__return-home {
-      display: block;
-      float: left;
-      width: 110px;
-      height: 36px;
-      background: $primary-color;
-      border-radius: 100px;
-      text-align: center;
-      color: #ffffff;
       opacity: 0;
-      font-size: 14px;
-      line-height: 36px;
-      cursor: pointer;
       animation-name: slideUp;
       animation-duration: 0.5s;
       animation-delay: 0.3s;

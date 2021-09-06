@@ -26,7 +26,7 @@ export default function() {
    *
    * @param {String} val 加载值
    */
-  function setPageLoding(val) {
+  function setPageLoading(val) {
     store.dispatch("app/setPageLoading", val);
   }
 
@@ -111,7 +111,7 @@ export default function() {
     store,
     pageLoading,
     mapData,
-    setPageLoding,
+    setPageLoading,
     showDevMessage,
     goBack,
     toPage,

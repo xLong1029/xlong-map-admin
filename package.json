@@ -13,13 +13,14 @@
     "hydrogen-js-sdk": "^2.2.4",
     "js-cookie": "^2.2.1",
     "sass-resources-loader": "^2.2.3",
+    "vite-plugin-commonjs-externals": "^0.1.1",
     "vue": "^3.1.2",
     "vue-router": "^4.0.4",
     "vuedraggable": "^4.0.3",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
-    "@types/node": "^16.4.1",
+    "@types/node": "^4.0.22-alpha",
     "@vitejs/plugin-vue": "^1.2.5",
     "@vue/compiler-sfc": "^3.0.5",
     "sass": "^1.35.1",
