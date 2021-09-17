@@ -22,7 +22,6 @@
       v-else
       ref="subMenu"
       :index="resolvePath(item.path, true, item)"
-      popper-append-to-body
       @click="toPath(item)"
       class="nav-list-menu__item"
       :class="{ right: item.right }"
@@ -44,7 +43,7 @@
 </template>
 
 <script setup>
-const path = require('path');
+import path from "path";
 import { isExternal } from "@/utils/validate";
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
@@ -99,8 +98,11 @@ const hasOneShowingChild = (children = [], parent) => {
 
 // 解析路径
 const resolvePath = (routePath, isSub, item) => {
-  console.log(item);
+  
   const { basePath } = props;
+
+  // console.log(props.basePath, routePath);
+  
   if (isExternal(routePath)) {
     return routePath;
   }
@@ -109,7 +111,8 @@ const resolvePath = (routePath, isSub, item) => {
   }
 
   if (isSub && item && item.redirect) {
-    return path.resolve(basePath, item.redirect);
+    console.log(basePath, item.redirect);
+    // return path.resolve(basePath, item.redirect);
   }
 
   console.log(path.resolve(basePath, routePath));

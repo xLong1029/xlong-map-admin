@@ -4,10 +4,7 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "Describe"
-};
+<script setup>
 </script>
 
 <style lang="scss" scoped>
