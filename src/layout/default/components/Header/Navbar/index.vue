@@ -70,6 +70,7 @@ console.log(permissionRoutes);
   &-container {
     position: relative;
     margin-top: 8px;
+    min-width: 500px;
 
     :deep(.el-menu) {
       background: transparent;
