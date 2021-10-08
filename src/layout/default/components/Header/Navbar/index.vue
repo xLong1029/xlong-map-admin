@@ -10,13 +10,13 @@
         :text-color="variables.menuText"
         :active-text-color="variables.menuActiveText"
       >
-        <!-- <NavItem
+        <NavItem
           class="nav-list-menu"
           v-for="(route, index) in permissionRoutes"
           :key="'route.path' + index"
           :item="route"
           :base-path="route.path"
-        /> -->
+        />
       </el-menu>
     </div>
   </div>
@@ -69,7 +69,6 @@ console.log(permissionRoutes);
 .nav-list {
   &-container {
     position: relative;
-    float: right;
     margin-top: 8px;
 
     :deep(.el-menu) {

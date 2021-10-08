@@ -5,16 +5,19 @@ import { createRouter, createWebHashHistory } from "vue-router";
  * 静态路由
  */
 export const constantRoutes = [
+  
   {
     path: "/404",
     name: "Err404",
+    hidden: true,
     component: () => import("@/views/error-page/404.vue"),
   },
   {
     path: "/login",
     name: "Login",
+    hidden: true,
     component: () => import("@/views/login/index.vue"),
-  },
+  },  
   {
     path: "/",
     component: LayoutDefault,
@@ -26,11 +29,18 @@ export const constantRoutes = [
         component: () => import("@/views/map/index.vue"),
         meta: { title: "GIS地图", icon: "el-icon-s-home" },
       },
+    ],
+  },
+  {
+    path: "/describe",
+    component: LayoutDefault,
+    redirect: "/describe/index",
+    children: [
       {
-        path: "describe",
-        component: () => import("@/views/describe/index.vue"),
-        name: "Describe",
-        meta: { title: "系统说明", icon: "el-icon-s-home" },
+        path: "index",
+    component: () => import("@/views/describe/index.vue"),
+    name: "Describe",
+    meta: { title: "系统说明", icon: "el-icon-s-home" },
       },
     ],
   },

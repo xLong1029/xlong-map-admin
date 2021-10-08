@@ -20,9 +20,9 @@ import {
   ElMessageBox,
   ElNotification,
 } from "element-plus";
-// import "element-plus/packages/theme-chalk/src/index.scss";
-// import "element-plus/packages/theme-chalk/src/base.scss";
 import "@/styles/element-variables.scss";
+// 基于断点的隐藏类样式
+import 'element-plus/theme-chalk/display.css';
 
 const components = [
   ElMenu,

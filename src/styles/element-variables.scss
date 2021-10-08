@@ -13,12 +13,13 @@ $--colors: (
     "base": #db2828,
   ),
   "info": (
-    "base": #1E1E1E,
+    "base": #1e1e1e,
   ),
 );
 
 /* 改变 icon 字体路径变量，必需 */
-$--font-path: "node_modules/element-plus/dist/fonts";
+// $--font-path: "node_modules/element-plus/dist/fonts";
+$--font-path: "./fonts"; // 拷贝element-plus字体到styles目录下，可防止字体丢失
 
 @import "node_modules/element-plus/packages/theme-chalk/src/index";
 

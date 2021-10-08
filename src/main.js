@@ -2,6 +2,8 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import path from "path";
+console.log(path);
 
 // 初始化ElementPlus
 import initElementPlus from "./element-plus";

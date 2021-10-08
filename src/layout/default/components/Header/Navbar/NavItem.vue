@@ -28,7 +28,8 @@
     >
       <template #title>
         <span>{{ item.meta.title }}</span
-        ><i class="el-icon-caret-bottom"></i>
+        >
+        <i class="el-icon-caret-bottom"></i>
       </template>
       <nav-item
         v-for="child in item.children"
@@ -43,7 +44,8 @@
 </template>
 
 <script setup>
-import path from "path";
+// 解决vite无法使用Path的问题
+import path from "path-browserify";
 import { isExternal } from "@/utils/validate";
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
@@ -111,8 +113,8 @@ const resolvePath = (routePath, isSub, item) => {
   }
 
   if (isSub && item && item.redirect) {
-    console.log(basePath, item.redirect);
-    // return path.resolve(basePath, item.redirect);
+    // console.log(basePath, item.redirect);
+    return path.resolve(basePath, item.redirect);
   }
 
   console.log(path.resolve(basePath, routePath));
