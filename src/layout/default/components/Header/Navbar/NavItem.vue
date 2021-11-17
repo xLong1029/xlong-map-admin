@@ -135,7 +135,6 @@ const handleLink = (item) => {
   }
 
   const url = resolvePath(path);
-  console.log(111, url);
   router.push({ path: url });
 };
 </script>

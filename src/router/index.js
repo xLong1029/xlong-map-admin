@@ -30,33 +30,7 @@ export const constantRoutes = [
         meta: { title: "GIS地图", icon: "el-icon-s-home" },
       },
     ],
-  },
-  {
-    path: "/describe",
-    component: LayoutDefault,
-    redirect: "/describe/index",
-    children: [
-      {
-        path: "index",
-    component: () => import("@/views/describe/index.vue"),
-    name: "Describe",
-    meta: { title: "系统说明", icon: "el-icon-s-home" },
-      },
-    ],
-  },
-  // {
-  //   path: "/account-manage",
-  //   component: LayoutDefault,
-  //   redirect: "/account-manage/index",
-  //   children: [
-  //     {
-  //       path: "index",
-  //       component: () => import("@/views/account-manage/index.vue"),
-  //       name: "AccountManage",
-  //       meta: { title: "账户管理", icon: "el-icon-s-custom", roles: ["admin"] },
-  //     },
-  //   ],
-  // },
+  }
 ];
 
 /**
@@ -65,7 +39,6 @@ export const constantRoutes = [
 export const asyncRoutes = [];
 const routesModules = import.meta.globEager("./modules/*.js");
 Object.keys(routesModules).forEach((modulePath) => {
-  console.log(routesModules, modulePath, routesModules[modulePath].default);
   asyncRoutes.push(...routesModules[modulePath].default);
 });
 

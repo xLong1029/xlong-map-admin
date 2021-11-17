@@ -13,7 +13,7 @@ const router = [
         meta: { title: "账户管理", icon: "el-icon-s-custom", roles: ["admin"] },
       },
     ],
-  },
+  }
 ];
 
 export default router;
