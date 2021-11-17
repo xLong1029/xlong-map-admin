@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, inject, watch, defineProps } from "@vue/runtime-core";
+import { ref, inject, watch, defineProps, defineEmits } from "@vue/runtime-core";
 
 const props = defineProps({
   // 是否折叠地图信息面板
@@ -68,6 +68,8 @@ const coordInfo = inject("getCoordInfo");
 const basemap = inject("getBasemap");
 // 最佳比例
 const bastScale = ref(2000);
+
+const emit = defineEmits(["click-fold", "map-set-view-scale"]);
 
 watch(
   () => basemap.value,

@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { onMounted, watch, inject, nextTick, defineEmits } from "@vue/runtime-core";
+import { onMounted, watch, inject, nextTick, defineEmits, defineExpose } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // Arcgis
 import Map from "@arcgis/core/Map";
@@ -335,6 +335,9 @@ const onCloseScreenshot = () => {
   currentMapConfig.view.container.classList.remove("screenshotCursor");
   emit("close-screenshot");
 };
+
+// 暴露方法给父组件调用
+defineExpose({ onSetScale })
 </script>
 <style lang="scss" scoped>
 .map-container {

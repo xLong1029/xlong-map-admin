@@ -49,8 +49,6 @@ const activeMenu = computed(() => {
 });
 
 const permissionRoutes = computed(() => store.getters.permissionRoutes);
-
-console.log(permissionRoutes);
 </script>
 
 <style lang="scss" scoped>

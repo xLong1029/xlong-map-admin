@@ -110,7 +110,7 @@ provide("getBasemap", basemap);
 const accountSettingVisible = ref(false);
 
 // 地图实例
-const mapRef = ref();
+const mapRef = ref(null);
 
 // 是否折叠地图资源面板
 const foldMapInfoPanel = ref(false);

@@ -4,22 +4,17 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "TabMyFavorites",
+<script setup>
+import { defineProps } from "@vue/runtime-core";
 
-  props: {
-    title: {
-      type: String,
-      default: "我的收藏",
-    },
+const props = defineProps({
+  title: {
+    type: String,
+    default: "我的收藏",
   },
-
-  setup() {
-    return {};
-  },
-};
+});
 </script>
+
 <style lang="scss" scoped>
 .tab-my-favorites-content {
   padding: 0 10px 10px 10px;

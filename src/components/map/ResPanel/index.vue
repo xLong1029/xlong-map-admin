@@ -23,67 +23,58 @@
   </div>
 </template>
 
+<script setup>
+import { defineProps } from "@vue/runtime-core";
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: "资源列表",
+  },
+});
+</script>
+
 <script>
 import { ref, inject } from "@vue/runtime-core";
+import { defineProps, defineEmits } from "@vue/runtime-core";
 // 组件
 import List from "./List/index.vue";
 import MyFavorites from "./MyFavorites/index.vue";
 
-export default {
-  name: "ResPanel",
-
-  props: {
-    // 是否折叠地图资源面板
-    foldMapInfoPanel: {
-      type: Boolean,
-      default: false,
-    },
-    // 是否显示地图底部信息
-    mapBottomCoord: {
-      type: Boolean,
-      default: true,
-    },
+const props = defineProps({
+  title: {
+    type: String,
+    default: "我的收藏",
   },
+});
 
-  components: {
-    List,
-    MyFavorites,
+const emit = defineEmits(["click-fold"]);
+
+// 是否显示系统固定头部
+const fixedHeader = inject("getFixedHeader");
+
+// 当前激活Tab的name
+const activeName = ref("list");
+
+const tabs = [
+  {
+    name: "list",
+    label: "资源列表",
+    component: List,
   },
-
-  setup(props, { emit }) {
-    // 是否显示系统固定头部
-    const fixedHeader = inject("getFixedHeader");
-
-    // 当前激活Tab的name
-    const activeName = ref("list");
-
-    const tabs = ref([
-      {
-        name: "list",
-        label: "资源列表",
-        component: "List",
-      },
-      {
-        name: "myFavorites",
-        label: "我的收藏",
-        component: "MyFavorites",
-      },
-    ]);
-
-    // 收起面板
-    const setContentVisible = (val) => {
-      emit("click-fold", val);
-    };
-
-    return {
-      fixedHeader,
-      activeName,
-      tabs,
-      setContentVisible,
-    };
+  {
+    name: "myFavorites",
+    label: "我的收藏",
+    component: MyFavorites,
   },
+];
+
+// 收起面板
+const setContentVisible = (val) => {
+  emit("click-fold", val);
 };
 </script>
+
 <style lang="scss" scoped>
 .map-res-panel {
   position: absolute;
