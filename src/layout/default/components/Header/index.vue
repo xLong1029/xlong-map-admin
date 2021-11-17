@@ -108,7 +108,7 @@ const onFullExit = () => {
     .logo-container {
       display: flex;
       align-items: center;
-      min-width: 200px;
+      min-width: 100px;
     }
 
     .logo {

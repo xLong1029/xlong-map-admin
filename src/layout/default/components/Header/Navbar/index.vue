@@ -60,7 +60,7 @@ console.log(permissionRoutes);
 }
 
 .navbar-container {
-  background: #ffffff;
+  background: transparent;
   width: 100%;
   overflow: hidden;
 }
@@ -69,73 +69,7 @@ console.log(permissionRoutes);
 .nav-list {
   &-container {
     position: relative;
-    margin-top: 8px;
     min-width: 500px;
-
-    :deep(.el-menu) {
-      background: transparent;
-    }
-
-    :deep(.el-menu-item) {
-      font-size: 16px;
-      color: $menuText;
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-
-      &:focus {
-        background: transparent !important;
-      }
-
-      &:hover {
-        @include nav-list-item-hover;
-      }
-
-      // 一级菜单高亮设置
-      &.is-active {
-        color: $menuActiveText !important;
-      }
-    }
-
-    :deep(.el-sub-menu) {
-      font-size: 16px;
-      font-weight: bold;
-
-      // 二级菜单高亮设置
-      &.is-active {
-        .el-sub-menu__title {
-          color: $menuActiveText !important;
-        }
-      }
-    }
-
-    :deep(.el-sub-menu__title) {
-      font-size: 16px;
-    }
-
-    :deep(.el-menu--horizontal) {
-      border-bottom: none;
-    }
-
-    :deep(.el-sub-menu__title) {
-      color: $menuText;
-
-      &:focus {
-        background: transparent !important;
-      }
-
-      &:hover {
-        @include nav-list-item-hover;
-      }
-
-      span {
-        margin-right: 5px;
-      }
-    }
-
-    :deep(.el-sub-menu__icon-arrow) {
-      display: none;
-    }
   }
 }
 </style>

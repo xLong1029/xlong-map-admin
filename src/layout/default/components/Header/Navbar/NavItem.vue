@@ -3,8 +3,8 @@
     <div
       v-if="
         hasOneShowingChild(item.children, item) &&
-          (!onlyOneChild.children || onlyOneChild.noShowingChildren) &&
-          !item.alwaysShow
+        (!onlyOneChild.children || onlyOneChild.noShowingChildren) &&
+        !item.alwaysShow
       "
       class="nav-list-menu__item"
       :class="{ right: item.right }"
@@ -27,8 +27,7 @@
       :class="{ right: item.right }"
     >
       <template #title>
-        <span>{{ item.meta.title }}</span
-        >
+        <span>{{ item.meta.title }}</span>
         <i class="el-icon-caret-bottom"></i>
       </template>
       <nav-item
@@ -54,16 +53,16 @@ import { defineProps } from "vue";
 const props = defineProps({
   item: {
     type: Object,
-    required: true
+    required: true,
   },
   isNest: {
     type: Boolean,
-    default: false
+    default: false,
   },
   basePath: {
     type: String,
-    default: ""
-  }
+    default: "",
+  },
 });
 
 const router = useRouter();
@@ -77,7 +76,7 @@ const hasOneShowingChild = (children = [], parent) => {
     return true;
   }
 
-  const showingChildren = children.filter(item => {
+  const showingChildren = children.filter((item) => {
     if (item.hidden) {
       return false;
     } else {
@@ -100,11 +99,10 @@ const hasOneShowingChild = (children = [], parent) => {
 
 // 解析路径
 const resolvePath = (routePath, isSub, item) => {
-  
   const { basePath } = props;
 
   // console.log(props.basePath, routePath);
-  
+
   if (isExternal(routePath)) {
     return routePath;
   }
@@ -117,20 +115,18 @@ const resolvePath = (routePath, isSub, item) => {
     return path.resolve(basePath, item.redirect);
   }
 
-  console.log(path.resolve(basePath, routePath));
-
   return path.resolve(basePath, routePath);
 };
 
 // 二级菜单父级直接跳转链接
-const toPath = item => {
+const toPath = (item) => {
   const { meta, path } = item;
   if (!meta.directLink) return;
   router.push({ path });
 };
 
 // 处理链接跳转
-const handleLink = item => {
+const handleLink = (item) => {
   const { externalUrl, path } = item;
 
   if (externalUrl) {
@@ -139,6 +135,7 @@ const handleLink = item => {
   }
 
   const url = resolvePath(path);
+  console.log(111, url);
   router.push({ path: url });
 };
 </script>
@@ -146,47 +143,22 @@ const handleLink = item => {
 <style lang="scss">
 .nav-list {
   &-container {
-    .nav-list {
-      > div {
-        float: left;
-      }
-      &__item {
-        float: left;
+    .el-menu-item {
+      height: 40px !important;
+      line-height: 40px !important;
 
-        &.right {
-          float: right;
-        }
+      &.is-active{
+        font-weight: bold;
       }
     }
-  }
 
-  &-menu__item {
-    .el-icon-caret-bottom {
-      margin-top: -5px;
-      margin-left: -5px;
-      color: $menuText;
+    .el-menu--horizontal {
+      border-bottom: none;
     }
-  }
 
-  // 二级菜单样式设置
-  &-submenu {
-    .nav-list-menu__item {
-      .el-menu-item {
-        &.is-active {
-          color: $subMenuActiveText !important;
-        }
-
-        &:hover {
-          background: #f8f8f8;
-        }
-      }
-
-      // 二级菜单高亮
-      &.is-active {
-        .el-submenu__title {
-          color: $subMenuActiveText !important;
-        }
-      }
+    .el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover{
+      background: transparent;
+      color: $primary-color;
     }
   }
 }
