@@ -54,7 +54,7 @@ import { strToArr } from "utils";
 import Api from "api/user/index.js";
 
 const { store } = common();
-const { validForm } = formJs();
+const { validForm, validateRealName } = formJs();
 const { isNull } = filter();
 
 const user = computed(() => store.getters.user);
@@ -71,7 +71,7 @@ const form = reactive({
 // 表单规则
 const rules = reactive({
   nickName: [{ required: true, message: "请输入昵称", trigger: "blur" }],
-  realName: [{ required: true, message: "请输入真实姓名", trigger: "blur" }],
+  realName: [{ required: true, validator: validateRealName, trigger: "blur" }],
 });
 
 const submitLoading = ref(false);
