@@ -1,4 +1,5 @@
 import {
+  ElCard,
   ElMenu,
   ElAlert,
   ElConfigProvider,
@@ -25,6 +26,7 @@ import "@/styles/element-variables.scss";
 import 'element-plus/theme-chalk/display.css';
 
 const components = [
+  ElCard,
   ElMenu,
   ElAlert,
   ElConfigProvider,
