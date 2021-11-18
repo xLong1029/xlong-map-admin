@@ -27,7 +27,6 @@ const fixedHeader = computed(() => store.getters.fixedHeader);
 <style lang="scss" scoped>
 .app-main{
   height: 100vh;
-  overflow-y: auto;
 
   &.show-header {
     height: calc(100vh - #{$header-height});
