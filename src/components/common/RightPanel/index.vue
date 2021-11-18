@@ -7,7 +7,7 @@
         :style="{ 'background-color': theme }"
         @click="show = !show"
       >
-        <i :class="show ? 'el-icon-close' : 'el-icon-setting'" />
+        <i :class="show ? 'el-icon-close' : 'el-icon-s-tools'" />
       </div>
       <div class="rightPanel-items">
         <slot />

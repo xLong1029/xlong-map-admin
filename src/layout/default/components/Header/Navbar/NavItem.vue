@@ -14,7 +14,7 @@
         :index="resolvePath(onlyOneChild.path)"
         :class="{ 'submenu-title-noDropdown': !isNest }"
       >
-        {{ onlyOneChild.meta.title }}
+        <i v-if="onlyOneChild.meta.icon" :class="onlyOneChild.meta.icon"></i><span>{{ onlyOneChild.meta.title }}</span>
       </el-menu-item>
     </div>
 

@@ -10,7 +10,7 @@ const router = [
         path: "index",
         component: () => import("@/views/describe/index.vue"),
         name: "Describe",
-        meta: { title: "系统说明", icon: "el-icon-s-home" },
+        meta: { title: "系统说明", icon: "el-icon-s-order" },
       },
     ],
   },
