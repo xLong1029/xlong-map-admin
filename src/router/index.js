@@ -27,7 +27,7 @@ export const constantRoutes = [
         path: "map",
         name: "Map",
         component: () => import("@/views/map/index.vue"),
-        meta: { title: "GIS地图", icon: "el-icon-s-home" },
+        meta: { title: "GIS地图", icon: "iconfont icon-map-b-o mr-5" },
       },
     ],
   }

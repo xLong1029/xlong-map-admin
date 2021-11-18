@@ -1,11 +1,11 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2659669 */
-  src: url('iconfont.eot?t=1630381578033'); /* IE9 */
-  src: url('iconfont.eot?t=1630381578033#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('iconfont.woff2?t=1630381578033') format('woff2'),
-       url('iconfont.woff?t=1630381578033') format('woff'),
-       url('iconfont.ttf?t=1630381578033') format('truetype'),
-       url('iconfont.svg?t=1630381578033#iconfont') format('svg');
+  src: url('iconfont.eot?t=1637220215051'); /* IE9 */
+  src: url('iconfont.eot?t=1637220215051#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('iconfont.woff2?t=1637220215051') format('woff2'),
+       url('iconfont.woff?t=1637220215051') format('woff'),
+       url('iconfont.ttf?t=1637220215051') format('truetype'),
+       url('iconfont.svg?t=1637220215051#iconfont') format('svg');
 }
 
 .iconfont {
@@ -14,6 +14,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-home:before {
+  content: "\e630";
+}
+
+.icon-map-b-o:before {
+  content: "\e7ea";
+}
+
+.icon-shiyongwendang:before {
+  content: "\eb66";
+}
+
+.icon-zhanghuguanli:before {
+  content: "\e62d";
 }
 
 .icon-quanping:before {

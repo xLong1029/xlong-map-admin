@@ -145,10 +145,15 @@ const handleLink = (item) => {
     .el-menu-item {
       height: 40px !important;
       line-height: 40px !important;
+      font-size: 16px;
 
-      &.is-active{
-        font-weight: bold;
+      .iconfont{
+        font-size: 18px;
       }
+
+      // &.is-active{
+      //   font-weight: bold;
+      // }
     }
 
     .el-menu--horizontal {

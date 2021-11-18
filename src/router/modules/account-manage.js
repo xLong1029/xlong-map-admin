@@ -10,7 +10,7 @@ const router = [
         path: "index",
         component: () => import("@/views/account-manage/index.vue"),
         name: "AccountManage",
-        meta: { title: "账户管理", icon: "el-icon-s-custom", roles: ["admin"] },
+        meta: { title: "账户管理", icon: "iconfont icon-zhanghuguanli mr-5", roles: ["admin"] },
       },
     ],
   }
