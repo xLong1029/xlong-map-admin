@@ -1,6 +1,6 @@
 <template>
   <div class="describe-container">
-    <el-card shadow="never"
+    <el-card class="overspread-page" shadow="never"
       ><p>
         xlong-map-element-plus 是一套基于 Vite + Vue3 + Element Plus + Bmob
         开发的单页面客户端渲染地图信息系统示例。
@@ -23,11 +23,7 @@ import qrcodeImg from "@/assets/images/qrcode.jpg";
 
 <style lang="scss" scoped>
 .describe-container {
-  display: flex; 
-  padding: 15px;
-
   :deep(.el-card){
-    width: 100%;
     text-align: center;
   }
 }

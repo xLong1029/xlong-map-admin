@@ -1,10 +1,10 @@
-@import './variables.scss';
-@import './mixin.scss';
-@import './transition.scss';
+@import "./variables.scss";
+@import "./mixin.scss";
+@import "./transition.scss";
 // 覆盖element-plus样式
-@import './element-plus.scss';
+@import "./element-plus.scss";
 // 覆盖esri样式
-@import './esri.scss';
+@import "./esri.scss";
 
 body {
   margin: 0;
@@ -15,11 +15,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
 }
 
 textarea {
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
+    Microsoft YaHei, Arial, sans-serif;
 }
 
 ul,
@@ -89,26 +91,8 @@ div:focus {
   color: $red;
 }
 
-$num: 5,
-10,
-15,
-20,
-25,
-30,
-35,
-40,
-45,
-50,
-55,
-60,
-65,
-70,
-75,
-80,
-85,
-90,
-95,
-100;
+$num: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95,
+  100;
 
 @each $n in $num {
   .pl-#{$n} {
@@ -152,9 +136,7 @@ $num: 5,
   margin-bottom: 0 !important;
 }
 
-$display: flex,
-block,
-inline;
+$display: flex, block, inline;
 
 @each $d in $display {
   .#{$d} {
@@ -162,16 +144,7 @@ inline;
   }
 }
 
-$fontSzie: 12,
-14,
-16,
-18,
-20,
-22,
-24,
-26,
-28,
-30;
+$fontSzie: 12, 14, 16, 18, 20, 22, 24, 26, 28, 30;
 
 @each $f in $fontSzie {
   .font-#{$f} {
@@ -187,7 +160,7 @@ $fontSzie: 12,
   cursor: pointer;
 }
 
-.crosshair{
+.crosshair {
   cursor: crosshair;
 }
 
@@ -218,7 +191,8 @@ aside {
   display: block;
   line-height: 32px;
   font-size: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: #2c3e50;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -246,7 +220,13 @@ aside {
   text-align: right;
   padding-right: 20px;
   transition: 600ms ease position;
-  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(32, 182, 249, 1) 0%,
+    rgba(32, 182, 249, 1) 0%,
+    rgba(33, 120, 241, 1) 100%,
+    rgba(33, 120, 241, 1) 100%
+  );
 
   .subtitle {
     font-size: 20px;
@@ -314,9 +294,19 @@ aside {
   // background:rgba(255,0,0,0.4);
 }
 
-// 满屏页面
-.overspread-page {
-  min-height: calc(100vh - 417px);
+.app-main {
+  // 满屏页面
+  .overspread-page {
+    min-height: calc(100vh - 30px);
+    margin: 15px;
+  }
+
+  &.show-header {
+    // 满屏页面
+    .overspread-page {
+      min-height: calc(100vh - #{$header-height} - 30px);
+    }
+  }
 }
 
 // 满屏卡片
@@ -351,17 +341,5 @@ aside {
       border-color: #409eff;
       color: #fff;
     }
-  }
-}
-
-// pad和手机
-@media screen and (max-width: 980px) {
-  // 满屏页面
-  .overspread-page {
-    min-height: calc(100vh - 599px);
-  }
-
-  .overspread-card {
-    min-height: calc(100vh - 639px);
   }
 }
