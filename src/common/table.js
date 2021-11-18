@@ -44,9 +44,9 @@ export default function() {
    * @param {Object} data 数据
    */
   const setPage = data => {
-    page.total = data.TotalCount;
-    page.pageNo = data.PageIndex;
-    page.pageSize = data.PageSize;
+    page.total = data.count;
+    page.pageNo = data.page;
+    page.pageSize = data.size;
   };
 
   /**

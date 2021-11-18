@@ -1,4 +1,6 @@
 import {
+  ElPagination,
+  ElTable,
   ElCard,
   ElMenu,
   ElAlert,
@@ -26,6 +28,8 @@ import "@/styles/element-variables.scss";
 import 'element-plus/theme-chalk/display.css';
 
 const components = [
+  ElPagination,
+  ElTable,
   ElCard,
   ElMenu,
   ElAlert,

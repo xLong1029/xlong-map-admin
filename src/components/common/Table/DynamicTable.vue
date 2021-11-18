@@ -44,7 +44,7 @@
 
 <script setup>
 import { defineProps, defineEmits, computed } from "vue";
-import Pagination from "components/common/Pagination";
+import Pagination from "components/common/Pagination/index.vue";
 
 const props = defineProps({
   // 表格表头, 必须保留一个值，否则无法形成滚动
@@ -52,8 +52,8 @@ const props = defineProps({
     type: Array,
     default: () => [
       {
-        prop: "text",
-        label: "表头",
+        prop: "objectId",
+        label: "用户编号",
         fixed: true
       }
     ]
