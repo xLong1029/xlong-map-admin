@@ -17,7 +17,7 @@ export const constantRoutes = [
     name: "Login",
     hidden: true,
     component: () => import("@/views/login/index.vue"),
-  },  
+  },
   {
     path: "/",
     component: LayoutDefault,
@@ -28,7 +28,7 @@ export const constantRoutes = [
         name: "Map",
         component: () => import("@/views/map/index.vue"),
         meta: { title: "GIS地图", icon: "iconfont icon-map-b-o mr-5" },
-      },
+      }
     ],
   }
 ];
