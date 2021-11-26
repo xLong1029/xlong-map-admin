@@ -1,4 +1,7 @@
 import {
+  ElRadio,
+  ElRow,
+  ElCol,
   ElPagination,
   ElTable,
   ElCard,
@@ -28,6 +31,9 @@ import "@/styles/element-variables.scss";
 import 'element-plus/theme-chalk/display.css';
 
 const components = [
+  ElRadio,
+  ElRow,
+  ElCol,
   ElPagination,
   ElTable,
   ElCard,

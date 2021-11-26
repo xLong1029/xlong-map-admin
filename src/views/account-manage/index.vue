@@ -3,7 +3,7 @@
     <el-card class="overspread-page" shadow="never">
       <el-alert
         class="mb-20"
-        title="这里只做功能演示，并非此系统登录账户管理"
+        title="这里只做功能演示，并非此系统登录用户管理"
         type="info"
         show-icon
       >
@@ -119,6 +119,12 @@
         </template>
       </DynamicTable>
     </el-card>
+    <!-- 新增/编辑 -->
+    <StoreDialog
+      :visible="storeDialog.visible"
+      :row="storeDialog.row"
+      @close="storeDialog.visible = false"
+    />
   </div>
 </template>
 
@@ -127,6 +133,7 @@ import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 组件
 import DynamicTable from "components/common/Table/DynamicTable.vue";
+import StoreDialog from "./store.vue";
 // 通用模块
 import table from "common/table.js";
 import common from "common";
@@ -198,6 +205,12 @@ const filterParamsForm = reactive({
 // 批量删除loading
 const delLoading = ref(false);
 
+//  新增/编辑弹窗
+const storeDialog = reactive({
+  visigle: false,
+  row: null,
+});
+
 onMounted(() => {
   getList(1, 10);
 });
@@ -209,7 +222,6 @@ const getList = (pageNo, pageSize) => {
   Api.GetAccList(filterParamsForm, pageNo, pageSize)
     .then((res) => {
       const { code, data, page, message } = res;
-      console.log(res);
       if (code === 200) {
         listData.value = data;
         setPage({ ...page });
@@ -227,11 +239,14 @@ const onSearch = () => {
 };
 
 // 新增
-const onAdd = () => {};
+const onAdd = () => {
+  storeDialog.visible = true;
+  storeDialog.row = null;
+};
 
 // 删除
 const onDel = (showLoading = true) => {
-  const ids = selectList.value.map(e => e.objectId);
+  const ids = selectList.value.map((e) => e.objectId);
 
   delLoading.value = true;
   Api.DeleteAcc(ids)
@@ -250,7 +265,10 @@ const onDel = (showLoading = true) => {
 };
 
 // 编辑
-const onEdit = (row, index) => {};
+const onEdit = (row, index) => {
+  storeDialog.visible = true;
+  storeDialog.row = row;
+};
 
 // 删除一行
 const onDelRow = (row, index) => {

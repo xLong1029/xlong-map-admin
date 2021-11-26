@@ -6,7 +6,7 @@
         <span class="title">{{ title }}</span>
       </div>
       <div class="login__content">
-        <el-form :model="form" :rules="rules" ref="formRef" label-width="0">
+        <el-form :model="form" :rules="rules" ref="lofinForm" label-width="0">
           <el-form-item prop="username">
             <el-input
               class="login__input"
@@ -86,7 +86,7 @@ const year = "2021";
 const companyName = computed(() => store.getters.companyName);
 
 // 表单
-const formRef = ref();
+const lofinForm = ref();
 
 const form = reactive({
   username: "",
@@ -127,7 +127,7 @@ onMounted(() => {
 
 // 登录
 const onSubmit = async () => {
-  const valid = await validForm(formRef.value, "信息填写有误，请检查");
+  const valid = await validForm(lofinForm.value, "信息填写有误，请检查");
 
   if (valid) {
     try {
