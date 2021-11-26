@@ -124,6 +124,7 @@
       :visible="storeDialog.visible"
       :row="storeDialog.row"
       @close="storeDialog.visible = false"
+      @submit="getList(storeDialog.row ? page.pageNo : 1, page.pageSize)"
     />
   </div>
 </template>
@@ -217,6 +218,7 @@ onMounted(() => {
 
 // 获取列表内容
 const getList = (pageNo, pageSize) => {
+  console.log(123);
   listLoading.value = true;
 
   Api.GetAccList(filterParamsForm, pageNo, pageSize)

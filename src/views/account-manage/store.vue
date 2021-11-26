@@ -101,7 +101,7 @@
     <template #footer>
       <el-button @click="onClose()">取消</el-button>
       <el-button type="primary" @click="onSubmit()" :loading="submitLoading"
-        >确认{{ row ? "新增" : "编辑" }}</el-button
+        >确认{{ row ? "编辑" : "新增" }}</el-button
       >
     </template>
   </el-dialog>
@@ -112,16 +112,19 @@ import {
   ref,
   defineProps,
   defineEmits,
-  onMounted,
   reactive,
   nextTick,
   watch,
+  toRaw
 } from "@vue/runtime-core";
+import { ElMessage } from "element-plus";
 // 表单
 import formJs from "common/form.js";
 // Json数据
 import jobList from "mock/jobList.json";
 import professionList from "mock/professionList.json";
+// Api
+import Api from "api/account-manage/index.js";
 
 const props = defineProps({
   visible: {
@@ -144,7 +147,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "submit"]);
 
 const { validForm, validateMobile, validateEmail } = formJs();
 
@@ -232,6 +235,44 @@ watch(
 
 const onClose = () => {
   emit("close", false);
+};
+
+const onSubmit = async () => {
+  const valid = await validForm(storeForm.value, "信息填写有误，请检查");
+
+  if (valid) {
+    submitLoading.value = true;
+
+    let params = {...toRaw(form)};
+    params.profession = params.profession.join(",");
+    params.enabledState = params.enabledState ? 1 : -1;
+
+    const { row } = props;
+
+    if (row) {
+      Api.EditAccount(params, row.objectId)
+        .then((res) => {
+          if (res.code == 200) {
+            ElMessage.success("编辑成功");
+            emit("submit");
+            onClose();
+          } else ElMessage.error(res.msg);
+        })
+        .catch((err) => ElMessage.error("操作失败"))
+        .finally(() => (submitLoading.value = false));
+    } else {
+      Api.AddAccount(params)
+        .then((res) => {
+          if (res.code == 200) {
+            ElMessage.success("新增成功");
+            emit("submit");
+            onClose();
+          } else ElMessage.error(res.msg);
+        })
+        .catch((err) => ElMessage.error("操作失败"))
+        .finally(() => (submitLoading.value = false));
+    }
+  }
 };
 </script>
 <style lang="scss">

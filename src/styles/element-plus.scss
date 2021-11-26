@@ -1,12 +1,16 @@
 // cover some element-plus styles
-.el-dialog{
-    border-radius: 6px !important;
+.el-dialog {
+  border-radius: 6px !important;
 
-    &__headerbtn .el-dialog__close{
-        font-size: 20px;
-    }
+  &__headerbtn .el-dialog__close {
+    font-size: 20px;
+  }
 }
 
-.el-card{
-    border-radius: 4px;
+.el-card {
+  border-radius: 4px;
+}
+
+.el-pager li {
+  outline: none !important;
 }
