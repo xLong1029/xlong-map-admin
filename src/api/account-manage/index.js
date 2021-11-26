@@ -2,8 +2,8 @@
  * 功能 : 封装数据交互api接口(数据使用的是bmob云数据，请求方法使用bmob云规定方法)。
  * 用处 : 账户操作相关api
  * 作者 : 罗永梅（381612175@qq.com）
- * 日期 : 2020-11-19
- * 版本 : version 2.1
+ * 日期 : 2021-11-26
+ * 版本 : version 2.2
  */
 
 /* eslint-disable */
@@ -21,15 +21,18 @@ export default {
         let query = BmobServer.GetQuery('Account');
 
         if(params && Object.keys(params).length){
-            // 筛选查询
-            if(params.id) query.equalTo('objectId', '==', params.id);
-            if(params.mobile) query.equalTo('mobile', '==', params.mobile);
-            if(params.email) query.equalTo('email', '==', params.email);
-            if(params.job) query.equalTo('job', '==', params.job);
-            if(params.province) query.equalTo('province', '==', params.province);
-            if(params.enabledState) query.equalTo('enabledState', '==', parseInt(params.enabledState));
-            if(params.sTime) query.equalTo('createdAt', '>=', params.sTime);
-            if(params.eTime) query.equalTo('createdAt', '<=', params.eTime );
+            const { keyword, enabledState }  =params;
+            if(keyword){
+                const query1 = query.equalTo('objectId', '==', keyword);
+                const query2 = query.equalTo('realname', '==', keyword);
+                const query3 = query.equalTo('mobile', '==', keyword);
+                const query4 = query.equalTo('email', '==', keyword);
+                query.or(query1, query2, query3, query4);
+            }
+
+            if(enabledState){
+                query.equalTo('enabledState', '==', parseInt(enabledState));
+            }
         }
         return new Promise((resolve, reject) => {
             BmobServer.GetListData(query, pageNo, pageSize).then(res => resolve(res)).catch(err => reject(err));

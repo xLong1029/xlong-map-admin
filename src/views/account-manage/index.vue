@@ -1,8 +1,37 @@
 <template>
   <div class="account-manage-container">
     <el-card class="overspread-page" shadow="never">
+      <!-- 筛选 -->
+      <el-form :model="filterParamsForm" :inline="true" class="form-container">
+        <el-form-item>
+          <el-input
+            class="form-keyword"
+            v-model.trim="filterParamsForm.keyword"
+            clearable
+            placeholder="请输入用户编号/真实姓名/手机号码/邮箱进行搜索"
+            @clear="onSearch()"
+            @keyup.enter="onSearch()"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model="filterParamsForm.enabledState"
+            placeholder="请选择用户状态"
+            clearable
+            @clear="onSearch()"
+          >
+            <el-option label="启用" :value="1"></el-option>
+            <el-option label="禁用" :value="-1"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" @click="onSearch()"
+            >搜索</el-button
+          >
+        </el-form-item>
+      </el-form>
+      <!-- 表格 -->
       <DynamicTable
-        class="mt-20"
         v-loading="listLoading"
         element-loading-text="加载中，请稍等..."
         :table-header="tableHeader"
@@ -54,7 +83,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "@vue/runtime-core";
+import { onMounted, reactive, ref } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 组件
 import DynamicTable from "components/common/Table/DynamicTable.vue";
@@ -111,18 +140,21 @@ const tableHeader = [
   },
 ];
 
-// 搜索关键词
-const key = ref(null);
+// 筛选条件
+const filterParamsForm = reactive({
+  keyword: "",
+  enabledState: "",
+});
 
 onMounted(() => {
   getList(1, 10);
 });
 
 // 获取列表内容
-const getList = (pageNo, pageSize, Keyword = "") => {
+const getList = (pageNo, pageSize) => {
   listLoading.value = true;
 
-  Api.GetAccList(null, pageNo, pageSize)
+  Api.GetAccList(filterParamsForm, pageNo, pageSize)
     .then((res) => {
       const { code, data, page, message } = res;
       console.log(res);
@@ -139,7 +171,7 @@ const getList = (pageNo, pageSize, Keyword = "") => {
 
 // 搜索
 const onSearch = () => {
-  getList(1, 10, key.value);
+  getList(1, 10);
 };
 
 // 设置表格样式
@@ -153,6 +185,13 @@ const setTableRowClassName = ({ row }) => {
   :deep(.el-table tr.is-disabled) {
     background: #f2f2f2;
     color: #b5b5b5;
+  }
+}
+
+.form {
+
+  &-keyword {
+    min-width: 400px;
   }
 }
 </style>
