@@ -1,6 +1,13 @@
 <template>
   <div class="account-manage-container">
     <el-card class="overspread-page" shadow="never">
+      <el-alert
+        class="mb-20"
+        title="这里只做功能演示，并非此系统登录账户管理"
+        type="info"
+        show-icon
+      >
+      </el-alert>
       <!-- 筛选 -->
       <div class="operate-container">
         <el-form
@@ -39,7 +46,12 @@
           <el-button type="primary" icon="el-icon-plus" @click="onAdd()"
             >新增账户</el-button
           >
-          <el-button type="danger" icon="el-icon-delete" @click="onDel()"
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            :disabled="!selectList.length"
+            :loading="delLoading"
+            @click="onDel()"
             >批量删除</el-button
           >
         </div>
@@ -57,9 +69,11 @@
         :page-no="page.pageNo"
         :page-size="page.pageSize"
         :page-sizes="page.pageSizes"
+        @selection-change="getSelectList"
         @pagination="getList"
       >
         <template #before>
+          <el-table-column type="selection" width="55"></el-table-column>
           <el-table-column width="50" label="序号" fixed="" align="center">
             <template v-slot="{ $index }">{{
               $index + 1 + page.pageSize * (page.pageNo - 1)
@@ -76,18 +90,30 @@
           >
             <template #default="{ row }">
               <el-tag v-if="row.enabledState === 1" type="success">启用</el-tag>
-              <el-tag v-else type="danger">禁用</el-tag>
+              <el-tag v-else type="info">禁用</el-tag>
             </template>
           </el-table-column>
           <el-table-column
             prop="action"
             label="操作"
             fixed="right"
-            width="100"
+            width="150"
             align="center"
           >
-            <template #default="{ row }">
-              <el-button type="text" icon="el-icon-edit">编辑</el-button>
+            <template #default="{ row, $index }">
+              <el-button
+                type="text"
+                icon="el-icon-edit"
+                @click="onEdit(row, $index)"
+                >编辑</el-button
+              >
+              <el-button
+                class="delete-btn"
+                type="text"
+                icon="el-icon-delete"
+                @click="onDelRow(row, $index)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </template>
@@ -108,7 +134,16 @@ import common from "common";
 import Api from "api/account-manage/index.js";
 
 const { store, toPage } = common();
-const { tableProps, listData, listLoading, page, setPage } = table();
+const {
+  tableProps,
+  listData,
+  listLoading,
+  page,
+  setPage,
+  selectList,
+  getSelectList,
+  clearSelect,
+} = table();
 
 const tableHeader = [
   {
@@ -160,6 +195,9 @@ const filterParamsForm = reactive({
   enabledState: "",
 });
 
+// 批量删除loading
+const delLoading = ref(false);
+
 onMounted(() => {
   getList(1, 10);
 });
@@ -188,16 +226,38 @@ const onSearch = () => {
   getList(1, 10);
 };
 
-
 // 新增
-const onAdd = () => {
-
-}
+const onAdd = () => {};
 
 // 删除
-const onDel = () => {
+const onDel = (showLoading = true) => {
+  const ids = selectList.value.map(e => e.objectId);
 
-}
+  delLoading.value = true;
+  Api.DeleteAcc(ids)
+    .then((res) => {
+      const { code, data, page, message } = res;
+      if (code === 200) {
+        ElMessage.success("删除成功");
+        getList(1, 10);
+        clearSelect();
+      } else {
+        ElMessage.error(message);
+      }
+    })
+    .catch((err) => console.log(err))
+    .finally(() => (delLoading.value = false));
+};
+
+// 编辑
+const onEdit = (row, index) => {};
+
+// 删除一行
+const onDelRow = (row, index) => {
+  clearSelect();
+  selectList.value.push(row);
+  onDel(false);
+};
 
 // 设置表格样式
 const setTableRowClassName = ({ row }) => {
@@ -210,6 +270,19 @@ const setTableRowClassName = ({ row }) => {
   :deep(.el-table tr.is-disabled) {
     background: #f2f2f2;
     color: #b5b5b5;
+  }
+
+  :deep(.el-alert) {
+    background: #e0f0ff;
+    color: $primary-color;
+  }
+
+  :deep(.el-alert__closebtn) {
+    color: $primary-color;
+  }
+
+  .delete-btn {
+    color: $red;
   }
 }
 

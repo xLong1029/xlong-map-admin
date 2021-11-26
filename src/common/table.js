@@ -65,14 +65,7 @@ export default function() {
    * @param {Array} selection 选项
    */
   const getSelectList = selection => {
-    // 清空选项列表
-    clearSelect();
-
-    if (!selection.length) return false;
-
-    for (let i = 0; i < selection.length; i++) {
-      selectList.value.push(selection[i].ID);
-    }
+    selectList.value = [...selection];
   };
 
   /**
@@ -93,6 +86,7 @@ export default function() {
     defaultParams,
     setPage,
     setTableHeight,
-    getSelectList
+    getSelectList,
+    clearSelect
   };
 }
