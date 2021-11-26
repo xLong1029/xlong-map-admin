@@ -2,34 +2,48 @@
   <div class="account-manage-container">
     <el-card class="overspread-page" shadow="never">
       <!-- 筛选 -->
-      <el-form :model="filterParamsForm" :inline="true" class="form-container">
-        <el-form-item>
-          <el-input
-            class="form-keyword"
-            v-model.trim="filterParamsForm.keyword"
-            clearable
-            placeholder="请输入用户编号/真实姓名/手机号码/邮箱进行搜索"
-            @clear="onSearch()"
-            @keyup.enter="onSearch()"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-select
-            v-model="filterParamsForm.enabledState"
-            placeholder="请选择用户状态"
-            clearable
-            @clear="onSearch()"
+      <div class="operate-container">
+        <el-form
+          :model="filterParamsForm"
+          :inline="true"
+          class="form-container"
+        >
+          <el-form-item>
+            <el-input
+              class="form-keyword"
+              v-model.trim="filterParamsForm.keyword"
+              clearable
+              placeholder="请输入用户编号/真实姓名/手机号码/邮箱进行搜索"
+              @clear="onSearch()"
+              @keyup.enter="onSearch()"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-select
+              v-model="filterParamsForm.enabledState"
+              placeholder="请选择用户状态"
+              clearable
+              @clear="onSearch()"
+            >
+              <el-option label="启用" :value="1"></el-option>
+              <el-option label="禁用" :value="-1"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" @click="onSearch()"
+              >搜索</el-button
+            >
+          </el-form-item>
+        </el-form>
+        <div>
+          <el-button type="primary" icon="el-icon-plus" @click="onAdd()"
+            >新增账户</el-button
           >
-            <el-option label="启用" :value="1"></el-option>
-            <el-option label="禁用" :value="-1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-search" @click="onSearch()"
-            >搜索</el-button
+          <el-button type="danger" icon="el-icon-delete" @click="onDel()"
+            >批量删除</el-button
           >
-        </el-form-item>
-      </el-form>
+        </div>
+      </div>
       <!-- 表格 -->
       <DynamicTable
         v-loading="listLoading"
@@ -174,6 +188,17 @@ const onSearch = () => {
   getList(1, 10);
 };
 
+
+// 新增
+const onAdd = () => {
+
+}
+
+// 删除
+const onDel = () => {
+
+}
+
 // 设置表格样式
 const setTableRowClassName = ({ row }) => {
   return row.enabledState === -1 ? "is-disabled" : null;
@@ -188,10 +213,12 @@ const setTableRowClassName = ({ row }) => {
   }
 }
 
-.form {
+.form-keyword {
+  min-width: 400px;
+}
 
-  &-keyword {
-    min-width: 400px;
-  }
+.operate-container {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

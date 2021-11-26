@@ -52,12 +52,16 @@
 
 <script setup>
 import ThemePicker from "components/common/ThemePicker/index.vue";
-import { computed, ref, watch } from "@vue/runtime-core";
+import { computed, ref, watch, onMounted } from "@vue/runtime-core";
 import common from "common";
 
 const { store, router, changeSettings } = common();
 
 const showMapSetting = ref(true);
+
+onMounted(() => {
+  showMapSetting.value = router.currentRoute.value.name === "Map";
+})
 
 const fixedHeader = computed({
   get() {
