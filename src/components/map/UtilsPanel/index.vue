@@ -39,7 +39,10 @@
 
       <!-- 工具面板 -->
       <template v-if="panelList.length">
-        <template v-for="(item, index) in panelList" :key="'util-panel' + index">
+        <template
+          v-for="(item, index) in panelList"
+          :key="'util-panel' + index"
+        >
           <template v-if="item.utilActive">
             <component
               :is="item.component"
@@ -98,12 +101,23 @@ export default defineComponent({
 </script>
 
 <script setup>
-import { ref, reactive, onMounted, inject, nextTick } from "@vue/runtime-core";
+import {
+  defineEmits,
+  defineExpose,
+  ref,
+  reactive,
+  onMounted,
+  inject,
+  nextTick,
+} from "@vue/runtime-core";
 // 通用模块
 import common from "common";
 import utilsPanel from "common/utilsPanel.js";
 // 工具
 import { getLocalS } from "utils";
+
+const emit = defineEmits(["open-full-screen-window"]);
+
 const { dispatchMapEvent, showDevMessage } = common();
 const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
 
@@ -155,7 +169,9 @@ const panelList = ref([
   //   // 2D模式下是否可用
   //   enable2D: true,
   //   // 3D模式下是否可用
-  //   enable3D: true
+  //   enable3D: true,
+  //   // 工具是否满屏展示
+  //   fullScreen: false
   // }
 ]);
 
@@ -202,31 +218,25 @@ onMounted(() => {
 const onClickUtil = (panel, eventSuffix, panelID) => {
   // console.log(panel, eventSuffix, panelID);
 
+  const { enable2D, enable3D, fullScreen, component } = panel;
+
   // 禁止操作
-  const { enable2D, enable3D } = panel;
   if (isUtilDisabled(enable2D, enable3D, mapViewType.value)) {
     return false;
   }
 
-  const { component } = panel;
-
-  // 分屏
-  if (
-    component === "SplitScreen" ||
-    component === "SwipePanel" ||
-    component === "LocatePanel"
-  ) {
-    // emit("open-full-screen-window", {
-    //   visible: panelList.value[index].utilActive,
-    //   panel,
-    //   index,
-    // });
-    showDevMessage();
-    return;
-  }
-
   const index = panelList.value.findIndex((e) => e.component === component);
   setPanelVisble(panel, index, !panelList.value[index].utilActive);
+
+  // 全屏工具
+  if (fullScreen) {
+    emit("open-full-screen-window", {
+      visible: panelList.value[index].utilActive,
+      panel,
+      index,
+    });
+    return;
+  }
 
   handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
 };
@@ -281,7 +291,9 @@ const setPanelVisble = (panel, index, active) => {
  * @param {*} utilActive 面板激活状态
  */
 const handleHighlightPanels = (panel, utilActive) => {
-  const index = highlightPanels.value.findIndex((e) => e.component === panel.component);
+  const index = highlightPanels.value.findIndex(
+    (e) => e.component === panel.component
+  );
 
   if (utilActive && index < 0) {
     highlightPanels.value.push(panel);
@@ -292,7 +304,9 @@ const handleHighlightPanels = (panel, utilActive) => {
 
 // 当前面板是否高亮
 const isHighlightPanel = (panel) => {
-  const index = highlightPanels.value.findIndex((e) => e.component === panel.component);
+  const index = highlightPanels.value.findIndex(
+    (e) => e.component === panel.component
+  );
   return index >= 0;
 };
 
@@ -345,6 +359,10 @@ const onClosePanel = ({ panel, index, active, eventSuffix, panelID }) => {
   setPanelVisble(panel, index, active);
   handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
 };
+
+
+// 暴露方法给父组件调用
+defineExpose({ setPanelVisble })
 </script>
 
 <style lang="scss" scoped>

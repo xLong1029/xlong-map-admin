@@ -3,7 +3,7 @@
     <el-card class="overspread-page" shadow="never">
       <el-alert
         class="mb-20"
-        title="这里只做功能演示，并非此系统登录用户管理"
+        title="这里只做功能演示，并非此系统登录的账户管理，如果要测试删除功能，请自行新增后再删除，请保留我原有的测试数据"
         type="info"
         show-icon
       >

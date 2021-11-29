@@ -11,7 +11,8 @@
           "eventSuffix": "Measure",
           "panelID": null,
           "enable2D": true,
-          "enable3D": true
+          "enable3D": true,
+          "fullScreen": false
         },
         {
           "component": "DrawPanel",
@@ -21,7 +22,8 @@
           "eventSuffix": "Draw",
           "panelID": "drawPanel",
           "enable2D": true,
-          "enable3D": true
+          "enable3D": true,
+          "fullScreen": false
         },
         {
           "component": "ScreenshotPanel",
@@ -31,7 +33,8 @@
           "eventSuffix": "ScreenShot",
           "panelID": null,
           "enable2D": true,
-          "enable3D": true
+          "enable3D": true,
+          "fullScreen": false
         },
         {
           "component": "LocatePanel",
@@ -41,7 +44,8 @@
           "eventSuffix": "Locate",
           "panelID": "locatePanel",
           "enable2D": true,
-          "enable3D": true
+          "enable3D": true,
+          "fullScreen": false
         }
       ]
     },
@@ -56,7 +60,8 @@
           "eventSuffix": "LineOfSight",
           "panelID": "lineOfSightPanel",
           "enable2D": false,
-          "enable3D": true
+          "enable3D": true,
+          "fullScreen": false
         },
         {
           "component": "SlicePanel",
@@ -66,7 +71,8 @@
           "eventSuffix": "Slice",
           "panelID": "slicePanel",
           "enable2D": false,
-          "enable3D": true
+          "enable3D": true,
+          "fullScreen": false
         },
         {
           "component": "ElevationProfilePanel",
@@ -76,7 +82,8 @@
           "eventSuffix": "ElevationProfile",
           "panelID": "elevationProfilePanel",
           "enable2D": false,
-          "enable3D": true
+          "enable3D": true,
+          "fullScreen": false
         },
         {
           "component": "DayLightPanel",
@@ -86,7 +93,8 @@
           "eventSuffix": "DayLight",
           "panelID": "dayLightPanel",
           "enable2D": false,
-          "enable3D": true
+          "enable3D": true,
+          "fullScreen": false
         }
       ]
     },
@@ -101,7 +109,8 @@
           "eventSuffix": "Swipe",
           "panelID": "swipePanel",
           "enable2D": true,
-          "enable3D": false
+          "enable3D": true,
+          "fullScreen": true
         },
         {
           "component": "SplitScreen",
@@ -111,7 +120,8 @@
           "eventSuffix": null,
           "panelID": null,
           "enable2D": true,
-          "enable3D": true
+          "enable3D": true,
+          "fullScreen": true
         }
       ]
     }

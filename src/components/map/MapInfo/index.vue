@@ -112,7 +112,7 @@ const setScale = (scale) => {
   }
 
   &__title {
-    background: #f5f5f5;
+    background: #eceef3;
     padding: 0 10px;
     height: 40px;
     line-height: 40px;

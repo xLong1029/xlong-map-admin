@@ -241,7 +241,7 @@ const initCamera = (view, animation = true, duration = 5000) => {
  */
 const onTransformView = (type) => {
   nextTick(() => {
-    console.log(cameraInfo, map2D, map3D);
+    // console.log(cameraInfo, map2D, map3D);
 
     const currentViewCenter = currentMapConfig.view.center;
 
@@ -339,6 +339,7 @@ const onCloseScreenshot = () => {
 // 暴露方法给父组件调用
 defineExpose({ onSetScale })
 </script>
+
 <style lang="scss" scoped>
 .map-container {
   position: relative;
