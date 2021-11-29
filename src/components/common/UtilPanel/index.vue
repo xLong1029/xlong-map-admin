@@ -1,5 +1,5 @@
 <template>
-  <div v-drag class="util-panel" :style="{ width }">
+  <div v-drag class="util-panel" :style="{ width, top, right }">
     <div class="util-panel__header drag-move">
       <span
         ><span>{{ title }}</span>
@@ -10,14 +10,22 @@
           @click="onClickHelp"
         ></i
       ></span>
-      <i
-        v-if="showCloseIcon"
-        class="el-icon-close"
-        title="关闭窗口"
-        @click="onClickClose"
-      ></i>
+      <span>
+        <i
+          v-if="showMaxIcon"
+          class="iconfont icon-zuidahua mr-10"
+          title="窗口最大化"
+          @click="onClickMax"
+        ></i>
+        <i
+          v-if="showCloseIcon"
+          class="el-icon-close"
+          title="关闭窗口"
+          @click="onClickClose"
+        ></i>
+      </span>
     </div>
-    <div :id="panelId" class="util-panel__content">
+    <div v-if="showContent" :id="panelId" class="util-panel__content">
       <slot></slot>
     </div>
   </div>
@@ -39,11 +47,33 @@ const props = defineProps({
     type: String,
     default: "300px",
   },
+  // 初始位置top
+  top: {
+    type: String,
+    default: "48px",
+  },
+  // 初始位置right
+  right: {
+    type: String,
+    default: "0",
+  },
+  // 是否显示“帮助”按钮
   showHelpIcon: {
     type: Boolean,
     default: true,
   },
+  // 是否显示“关闭”按钮
   showCloseIcon: {
+    type: Boolean,
+    default: true,
+  },
+  // 是否显示“窗口最大化”按钮
+  showMaxIcon: {
+    type: Boolean,
+    default: false,
+  },
+  // 是否显示工具内容
+  showContent: {
     type: Boolean,
     default: true,
   },
@@ -59,6 +89,11 @@ const onClickHelp = () => {
 // 点击“关闭”按钮
 const onClickClose = () => {
   emit("on-click-close");
+};
+
+// 点击“窗口最大化”按钮
+const onClickMax = () => {
+  emit("on-click-max");
 };
 </script>
 

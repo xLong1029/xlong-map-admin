@@ -15,18 +15,25 @@
     >
   </max-screen-panel>
   <!-- 窗口最小化 -->
-  <draggable-mini-panel
+  <UtilPanel
     v-else
-    :title="`${panel.utilName}工具`"
-    @close="onClose"
-    @maximize="onMaximize"
-  />
+    width="260px"
+    top="63px"
+    right="15px"
+    :title="`${panel.utilName}分析工具`"
+    :show-help-icon="false"
+    :show-max-icon="true"
+    :show-content="false"
+    @on-click-close="onClose"
+    @on-click-max="onMaximize"
+  >
+  </UtilPanel>
 </template>
 
 <script setup>
 import { defineProps, defineEmits, inject } from "@vue/runtime-core";
 import MaxScreenPanel from "components/common/MaxScreenPanel/index.vue";
-import DraggableMiniPanel from "components/common/DraggableMiniPanel/index.vue";
+import UtilPanel from "components/common/UtilPanel/index.vue";
 import maxScreenPanel from "common/maxScreenPanel.js";
 
 const props = defineProps({
