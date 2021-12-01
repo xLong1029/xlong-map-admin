@@ -5,9 +5,9 @@
       <span class="text">切换</span>
       <span>{{ mapViewType === "2D" ? "3D" : "2D" }}</span>
     </div>
-    <!-- <div class="map-locate">
+    <div class="map-locate">
       <i class="iconfont icon-zoom-inbeifen" @click="onLocate()"></i>
-    </div> -->
+    </div>
     <div class="map-zoom">
       <i
         class="iconfont icon-fangda"
@@ -60,7 +60,7 @@ const onTransform = () => {
 
 // 定位
 const onLocate = () => {
-  showDevMessage();
+  dispatchMapEvent("onLocate", null);
 };
 
 // 放大

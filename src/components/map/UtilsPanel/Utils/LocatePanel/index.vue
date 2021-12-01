@@ -7,27 +7,12 @@
     @on-click-close="onClose"
   >
     <div class="locate-panel__content">
-      <el-form label-width="55px">
-        <el-form-item label="坐标系" class="mb-15">
-          <el-select
-            v-model="coord"
-            placeholder="请选择坐标系"
-            style="width: 100%"
-          >
-            <el-option
-              v-for="item in coords"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
+      <el-form label-width="50px">
+        <el-form-item label="经度" class="mb-15">
+          <el-input v-model="posLon"></el-input>
         </el-form-item>
-        <el-form-item label="X坐标" class="mb-15">
-          <el-input v-model="posX"></el-input>
-        </el-form-item>
-        <el-form-item label="Y坐标" class="mb-15">
-          <el-input v-model="posY"></el-input>
+        <el-form-item label="纬度" class="mb-15">
+          <el-input v-model="posLat"></el-input>
         </el-form-item>
         <el-form-item class="button-container mb-0">
           <el-button type="primary" @click="locateTo">定位到该点</el-button>
@@ -78,46 +63,14 @@ const locateData = computed(() => store.getters.locateData);
 // 当前面板ID
 const panelID = "locatePanel";
 
-const posX = ref(0);
-const posY = ref(0);
-const coord = ref(4490);
-
-const coords = ref([
-  {
-    label: "2000地理坐标系（4490）",
-    value: 4490,
-  },
-  {
-    label: "2000平面坐标系_有带号（4524）",
-    value: 4524,
-  },
-  {
-    label: "2000平面坐标系_无带号（4545）",
-    value: 4545,
-  },
-  {
-    label: "WGS84地理坐标系（4326）",
-    value: 4326,
-  },
-  {
-    label: "墨卡托投影（3857）",
-    value: 3857,
-  },
-  {
-    label: "西安80坐标系（2381）",
-    value: 2381,
-  },
-  {
-    label: "北京54坐标系（2433）",
-    value: 2433,
-  },
-]);
+const posLon = ref(0);
+const posLat = ref(0);
 
 watch(
   () => store.getters.locateData,
   (val) => {
-    posX.value = parseFloat(val.x).toFixed(5);
-    posY.value = parseFloat(val.y).toFixed(5);
+    posLon.value = parseFloat(val.lon).toFixed(5);
+    posLat.value = parseFloat(val.lat).toFixed(5);
   }
 );
 
@@ -136,9 +89,8 @@ const locateTo = () => {
   nextTick(() => {
     dispatchMapEvent("onLocateToCoordAndMarket", {
       title: "",
-      x: posX.value,
-      y: posY.value,
-      wkid: coord.value,
+      lon: posLon.value,
+      lat: posLat.value,
     });
   });
 };
@@ -146,7 +98,6 @@ const locateTo = () => {
 const getLocate = () => {
   nextTick(() => {
     dispatchMapEvent("onGetLocateCoord", {
-      spatialReference: { wkid: coord.value },
       store,
     });
   });

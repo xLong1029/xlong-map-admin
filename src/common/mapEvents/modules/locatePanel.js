@@ -29,36 +29,21 @@ export default {
     console.log("收起定位工具面板");
     //console.log(view);
   },
+  
   /**
    * 定位并标记坐标
    * @param {*} view 视图
    * @param {*} data 坐标数据
    */
   onLocateToCoordAndMarket: (view, data) => {
-    if (!data["wkid"] || !wkids[data.wkid]) {
-      ElMessage.warning("无法识别当前的坐标系，请重新选择");
+    const { lon, lat } = data;
+
+    if (!lon || !lat) {
+      ElMessage.warning("请输入完整的非0坐标数值");
       return;
-    }
+    }    
 
-    if (data.x == 0 || data.y == 0) {
-      ElMessage.warning("请输入完整的坐标数值");
-      return;
-    }
-
-    let coord = new Array();
-    if (data.wkid != 4490) {
-      coord = convertCoord(
-        data.wkid,
-        4490,
-        parseFloat(data.x),
-        parseFloat(data.y)
-      );
-    } else {
-      coord[0] = data.x;
-      coord[1] = data.y;
-    }
-
-    const target = [parseFloat(coord[0]), parseFloat(coord[1])];
+    const target = [parseFloat(lon), parseFloat(lat)];
 
     view
       .goTo(
@@ -83,60 +68,19 @@ export default {
    */
   onGetLocateCoord: (view, data) => {
     const draw = new Draw({
-      view: view,
+      view,
     });
 
-    const { store, spatialReference } = data;
-
-    console.log(store);
-    const { wkid } = spatialReference;
+    const { store } = data;
 
     let createPoint = function (event) {
       // 获取所有顶点
       const coordinates = event.coordinates;
-      if (!wkids[wkid]) {
-        ElMessage.warning("无法识别当前的坐标系，请重新选择");
-        return;
-      }
 
-      if (wkid != 4490) {
-        let point = new Point(
-          parseFloat(coordinates[0]),
-          parseFloat(coordinates[1]),
-          new SpatialReference(4490)
-        );
-
-        if (!projection.isSupported()) {
-          console.log("projection is not supported");
-          return;
-        }
-
-        projection.load().then(function () {
-          let res = projection.project(
-            point,
-            new SpatialReference({
-              wkid,
-            })
-          );
-
-          const locateData ={
-            x: res.x,
-            y: res.y,
-            wkid,
-          }
-
-          store.dispatch("map/setLocateData", locateData);
-        });
-      } else {
-
-        const locateData ={
-          x: coordinates[0],
-          y: coordinates[1],
-          wkid,
-        }
-
-        store.dispatch("map/setLocateData", locateData);
-      }
+      store.dispatch("map/setLocateData", {
+        lon: coordinates[0],
+        lat: coordinates[1]
+      });
     };
 
     var action = draw.create("point", {

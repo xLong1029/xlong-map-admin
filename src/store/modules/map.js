@@ -10,9 +10,8 @@ const state = {
   ],
   // 定位数据
   locateData: {
-    x: 0,
-    y: 0,
-    wkid: 4490
+    lon: 0,
+    lat: 0
   },
 };
 
@@ -31,7 +30,6 @@ const actions = {
     commit("CHANGE_MAP_EVENT", mapEvent);
   },
   setLocateData({ commit }, locateData) {
-    console.log(124);
     commit("SET_LOCATE_DATA", locateData);
   },
 };
