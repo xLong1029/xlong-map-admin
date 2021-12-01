@@ -2,7 +2,7 @@
 
 ## 介绍
 
-xlong-map-vue3 是一套基于 Vue3 + View + Bmob + ArcGis 开发的单页面客户端渲染的信息化管理系统示例。
+xlong-map-vue3 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面客户端渲染的信息化管理系统示例。
 
 温馨提示：
 
@@ -24,4 +24,4 @@ github：https://github.com/xLong1029/
 
 UI 中国：http://i.ui.cn/ucenter/358591.html
 
-- 此项目做学习 Vue3 测试使用，有什么问题可联系我讨论
+- 此项目做学习 Vue3 + Vite 测试使用，ArcGis 我只是外行
