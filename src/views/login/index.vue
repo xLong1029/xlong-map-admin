@@ -48,7 +48,7 @@
       <a
         class="link"
         target="blank"
-        href="https://github.com/xLong1029/xlong-map-vue3"
+        href="https://github.com/xLong1029/xlong-map-element-plus"
       >
         {{
           companyName
