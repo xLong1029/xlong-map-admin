@@ -73,7 +73,6 @@ watch(
   () => mapEvent.value,
   (events) => {
     if (events.length) {
-      console.log(events);
       return events.forEach((e) => {
         const { event, data } = e;
         // console.log(event, data);
