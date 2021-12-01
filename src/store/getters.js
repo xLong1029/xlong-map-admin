@@ -20,9 +20,9 @@ const getters = {
   mapOperatePanel:(state) => state.settings.mapOperatePanel,
   switchMap:(state) => state.settings.switchMap,
   mapBottomCoord:(state) => state.settings.mapBottomCoord,
-  // map
-  foldMapInfoPanel:(state) => state.map.foldMapInfoPanel,
-  mapEvent:(state) => state.map.mapEvent
+  // map  
+  mapEvent:(state) => state.map.mapEvent,
+  locateData: (state) => state.map.locateData,
 };
 
 export default getters;
