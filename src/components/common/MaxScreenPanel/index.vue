@@ -66,16 +66,16 @@ const onMinimize = () => {
 </script>
 
 <style lang="scss" scoped>
-$maxScreenPanelHeight: 30px;
-$maxScreenPanelPadding: 10px;
+$max-screen-pane-height: 30px;
+$max-screen-pane-padding: 10px;
 
 .max-screen-panel {
   position: fixed;
   width: 100vw;
   height: 100vh;
   background: #eceef3;
-  padding: 0 $maxScreenPanelPadding $maxScreenPanelPadding
-    $maxScreenPanelPadding;
+  padding: 0 $max-screen-pane-padding $max-screen-pane-padding
+    $max-screen-pane-padding;
   top: 0;
   left: 0;
   right: 0;
@@ -96,14 +96,14 @@ $maxScreenPanelPadding: 10px;
 
     .max-screen-panel__content {
       height: calc(
-        100vh - #{$maxScreenPanelHeight} - #{$maxScreenPanelPadding} - #{$header-height}
+        100vh - #{$max-screen-pane-height} - #{$max-screen-pane-padding} - #{$header-height}
       );
     }
   }
 
   &__header {
     background: #eceef3;
-    height: $maxScreenPanelHeight;
+    height: $max-screen-pane-height;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -112,7 +112,7 @@ $maxScreenPanelPadding: 10px;
   &__content {
     background: #fff;
     width: 100%;
-    height: calc(100vh - #{$maxScreenPanelHeight} - #{$maxScreenPanelPadding});
+    height: calc(100vh - #{$max-screen-pane-height} - #{$max-screen-pane-padding});
   }
 
   &__title {

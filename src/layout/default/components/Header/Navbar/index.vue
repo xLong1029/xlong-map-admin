@@ -53,7 +53,7 @@ const permissionRoutes = computed(() => store.getters.permissionRoutes);
 
 <style lang="scss" scoped>
 @mixin nav-list-item-hover {
-  color: $menuActiveText !important;
+  color: $primary-color !important;
   background: transparent !important;
 }
 

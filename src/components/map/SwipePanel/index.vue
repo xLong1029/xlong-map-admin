@@ -10,9 +10,9 @@
     @close="onClose"
     class="swipe-panel"
   >
-    <template v-slot:content
-      ><div class="swipe-panel-content">功能建设中，敬请期待...</div></template
-    >
+    <template v-slot:content>
+      <CollapsePanel />
+    </template>
   </max-screen-panel>
   <!-- 窗口最小化 -->
   <UtilPanel
@@ -34,6 +34,7 @@
 import { defineProps, defineEmits, inject } from "@vue/runtime-core";
 import MaxScreenPanel from "components/common/MaxScreenPanel/index.vue";
 import UtilPanel from "components/common/UtilPanel/index.vue";
+import CollapsePanel from "components/common/CollapsePanel/index.vue";
 import maxScreenPanel from "common/maxScreenPanel.js";
 
 const props = defineProps({
@@ -80,4 +81,12 @@ const onMaximize = () => {
 .swipe-panel-content {
   padding: 10px;
 }
+
+// .collapse-panel__left {
+//   padding-top: 0;
+// }
+
+// .collapse-panel__right {
+//   text-align: center;
+// }
 </style>
