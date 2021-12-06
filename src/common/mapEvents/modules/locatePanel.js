@@ -4,7 +4,6 @@
 
 import { ElMessage } from "element-plus";
 import wkids from "mock/wkids.json";
-import { convertCoord } from "utils/map";
 import Draw from "@arcgis/core/views/draw/Draw";
 import Point from "@arcgis/core/geometry/Point";
 import SpatialReference from "@arcgis/core/geometry/SpatialReference";

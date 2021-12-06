@@ -150,7 +150,7 @@ const swipePanel = ref({
   visible: false,
   panel: null,
   index: -1,
-  minimize: false
+  minimize: false,
 });
 
 // 分屏工具
@@ -158,7 +158,7 @@ const splitScreen = ref({
   visible: false,
   panel: null,
   index: -1,
-  minimize: false
+  minimize: false,
 });
 
 // 显示账户设置
@@ -235,8 +235,6 @@ const onMinimizeFullscreenWindow = (e) => {
 const onMaximizeFullscreenWindow = (e) => {
   console.log("全屏窗口最大化");
   e.minimize = false;
-
-  console.log(e);
 };
 </script>
 

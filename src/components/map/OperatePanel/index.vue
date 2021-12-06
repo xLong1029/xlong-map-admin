@@ -1,20 +1,22 @@
 <template>
   <div class="operate-panel">
-    <Compass />
-    <div class="map-transform" @click="onTransform()">
+    <Compass v-if="showCompassBtn" />
+    <div v-if="showTransformBtn" class="map-transform" @click="onTransform()">
       <span class="text">切换</span>
       <span>{{ mapViewType === "2D" ? "3D" : "2D" }}</span>
     </div>
-    <div class="map-locate">
+    <div v-if="showLocateBtn" class="map-locate">
       <i class="iconfont icon-zoom-inbeifen" @click="onLocate()"></i>
     </div>
-    <div class="map-zoom">
+    <div v-if="showZoomInBtn || showZoomOutBtn" class="map-zoom">
       <i
+        v-if="showZoomInBtn"
         class="iconfont icon-fangda"
         :class="{ 'is-disabled': coordInfo.scale <= minScale }"
         @click="onZoomIn()"
       ></i>
       <i
+        v-if="showZoomOutBtn"
         class="iconfont icon-suoxiao"
         :class="{ 'is-disabled': coordInfo.scale >= maxScale }"
         @click="onZoomOut()"
@@ -29,13 +31,29 @@ import common from "common";
 import Compass from "./Compass.vue";
 
 const props = defineProps({
-  placement: {
-    type: String,
-    default: "bottom",
+  showCompassBtn: {
+    type: Boolean,
+    default: true,
   },
-  trigger: {
-    type: String,
-    default: "hover",
+  showTransformBtn: {
+    type: Boolean,
+    default: true,
+  },
+  showLocateBtn: {
+    type: Boolean,
+    default: true,
+  },
+  showZoomOutBtn: {
+    type: Boolean,
+    default: true,
+  },
+  showZoomInBtn: {
+    type: Boolean,
+    default: true,
+  },
+  showZoomOutBtn: {
+    type: Boolean,
+    default: true,
   },
 });
 

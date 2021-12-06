@@ -147,12 +147,12 @@ export function param2Obj(url) {
   }
   return JSON.parse(
     '{"' +
-      decodeURIComponent(search)
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"')
-        .replace(/\+/g, " ") +
-      '"}'
+    decodeURIComponent(search)
+      .replace(/"/g, '\\"')
+      .replace(/&/g, '","')
+      .replace(/=/g, '":"')
+      .replace(/\+/g, " ") +
+    '"}'
   );
 }
 
@@ -205,7 +205,7 @@ export function objectMerge(target, source) {
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result;
 
-  const later = function() {
+  const later = function () {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp;
 
@@ -222,7 +222,7 @@ export function debounce(func, wait, immediate) {
     }
   };
 
-  return function(...args) {
+  return function (...args) {
     context = this;
     timestamp = +new Date();
     const callNow = immediate && !timeout;
@@ -416,7 +416,7 @@ export function dataURLtoBlob(dataurl) {
 export function blobToDataURI(blob, callback) {
   let reader = new FileReader();
   reader.readAsDataURL(blob);
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     console.log(e);
     callback(e.target.result);
   };
@@ -638,7 +638,7 @@ export function getPageTitle(pageTitle) {
  * @param {*} key 字段名
  * @returns index
  */
- export const findDataIndex = (data, value, key = "id") => {
+export function findDataIndex(data, value, key = "id") {
   return data.findIndex((e) => e[key] === value);
 };
 
@@ -647,6 +647,6 @@ export function getPageTitle(pageTitle) {
  * @param {*} itemName 名称
  * @returns array 返回数组
  */
-export const getCacheArray = (itemName) => {
+export function getCacheArray(itemName) {
   return getLocalS(itemName) ? JSON.parse(getLocalS(itemName)) : [];
 };

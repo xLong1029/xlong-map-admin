@@ -13,7 +13,14 @@
 </template>
 
 <script setup>
-import { onMounted, watch, inject, nextTick, defineEmits, defineExpose } from "@vue/runtime-core";
+import {
+  onMounted,
+  watch,
+  inject,
+  nextTick,
+  defineEmits,
+  defineExpose,
+} from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // Arcgis
 import Map from "@arcgis/core/Map";
@@ -109,7 +116,7 @@ onMounted(() => {
  * @param {*} mapConfig 地图配置
  */
 const initMap = (mapConfig) => {
-  arcgisMap = createMap(mapConfig.id);
+  arcgisMap = createMap();
 
   map2D.view = createView(
     {
@@ -126,8 +133,6 @@ const initMap = (mapConfig) => {
     },
     "3D"
   );
-
-  // initCamera(mapConfig.view);
 };
 
 /**
@@ -320,7 +325,8 @@ const changeViewScale = (scale) => {
 
 // 修改坐标摄像机位置
 const changeCoordInfoTiltHeading = (tilt, heading) => {
-  coordInfo.tilt = mapViewType.value === "2D" ? "0.00" : parseFloat(tilt).toFixed(2);
+  coordInfo.tilt =
+    mapViewType.value === "2D" ? "0.00" : parseFloat(tilt).toFixed(2);
   coordInfo.heading =
     mapViewType.value === "2D" ? "0.00" : parseFloat(heading).toFixed(2);
 };
@@ -337,7 +343,7 @@ const onCloseScreenshot = () => {
 };
 
 // 暴露方法给父组件调用
-defineExpose({ onSetScale })
+defineExpose({ onSetScale });
 </script>
 
 <style lang="scss" scoped>

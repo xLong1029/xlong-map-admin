@@ -3,7 +3,9 @@
     <div
       id="app"
       v-loading="sysLoading"
-      element-loading-text="系统初始化，请稍后..."
+      :element-loading-text="
+        innerIframe ? '窗口初始化，请稍后...' : '系统初始化，请稍后...'
+      "
     >
       <router-view />
     </div>
@@ -11,9 +13,9 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "@vue/runtime-core";
+import { ref, computed, onMounted } from "@vue/runtime-core";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import { logInfo, getLocalS } from "utils";
+import { logInfo, getLocalS, getUrlQuery } from "utils";
 import common from "common";
 import themeJs from "common/theme.js";
 
@@ -23,6 +25,7 @@ const { changeTheme } = themeJs();
 // 通过计算属性获取store的值
 const currentEnv = computed(() => store.getters.currentEnv);
 const sysLoading = computed(() => store.getters.sysLoading);
+const innerIframe = ref(getUrlQuery("innerIframe", window.location.href));
 
 const locale = zhCn;
 
