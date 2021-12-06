@@ -1,20 +1,30 @@
 <template>
-  <!-- 右侧地图 -->
-  <div class="collapse-panel__right" :class="{ 'show-left': leftPanelVisible }">
-    test123
-  </div>
-  <!-- 左侧面板 -->
-  <div class="collapse-panel__left" :class="{ 'hide-left': !leftPanelVisible }">
-    <div class="collapse-panel__left-content">test456</div>
-    <!-- 折叠按钮 -->
-    <div class="fold-btn" @click="leftPanelVisible = !leftPanelVisible">
-      <div v-html="leftPanelVisible ? '收<br/>起' : '展<br/>开'"></div>
-      <i
-        class="mt-5"
-        :class="
-          leftPanelVisible ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right'
-        "
-      ></i>
+  <div class="collapse-panel">
+    <!-- 右侧地图 -->
+    <div
+      class="collapse-panel__right"
+      :class="{ 'show-left': leftPanelVisible }"
+    >
+      <slot name="right"></slot>
+    </div>
+    <!-- 左侧面板 -->
+    <div
+      class="collapse-panel__left"
+      :class="{ 'hide-left': !leftPanelVisible }"
+    >
+      <div class="collapse-panel__left-content">
+        <slot name="left"></slot>
+      </div>
+      <!-- 折叠按钮 -->
+      <div class="fold-btn" @click="leftPanelVisible = !leftPanelVisible">
+        <div v-html="leftPanelVisible ? '收<br/>起' : '展<br/>开'"></div>
+        <i
+          class="mt-5"
+          :class="
+            leftPanelVisible ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right'
+          "
+        ></i>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +37,14 @@ const leftPanelVisible = ref(true);
 <style lang="scss" scoped>
 $left-panel-width: 400px;
 
+.collapse-panel {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 .full-height {
   height: 100%;
 }
@@ -36,7 +54,8 @@ $left-panel-width: 400px;
 }
 
 .fixed-div {
-  position: fixed;
+  // position: fixed;
+  position: absolute;
   @extend .full-height;
   @extend .transition;
 }

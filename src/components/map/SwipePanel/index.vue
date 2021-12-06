@@ -10,8 +10,11 @@
     @close="onClose"
     class="swipe-panel"
   >
-    <template v-slot:content>
-      <CollapsePanel />
+    <template #content>
+      <CollapsePanel>
+        <template #left>功能建设中...</template>
+        <template #right>功能建设中...</template>
+      </CollapsePanel>
     </template>
   </max-screen-panel>
   <!-- 窗口最小化 -->
@@ -78,15 +81,4 @@ const onMaximize = () => {
 </script>
 
 <style lang="scss" scoped>
-.swipe-panel-content {
-  padding: 10px;
-}
-
-// .collapse-panel__left {
-//   padding-top: 0;
-// }
-
-// .collapse-panel__right {
-//   text-align: center;
-// }
 </style>
