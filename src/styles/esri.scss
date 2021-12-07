@@ -148,3 +148,10 @@
 .esri-daylight .esri-daylight__container .esri-daylight__play-pause-button {
   min-height: 35px;
 }
+
+.esri-swipe--vertical,
+.esri-swipe--horizontal {
+  .esri-swipe__container {
+    outline: none;
+  }
+}

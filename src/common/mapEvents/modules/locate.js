@@ -39,6 +39,7 @@ export default {
         console.log(`已成功定位至${target}`);
       });
   },
+
   /**
    * 显示坐标点标记物
    * @param {*} view 视图
@@ -69,6 +70,7 @@ export default {
       layer.graphics.add(picGraphic);
     }
   },
+
   /**
    * 获取拾取坐标
    * @param {*} view 视图
@@ -106,6 +108,7 @@ export default {
     action.on("vertex-remove", createPoint);
     action.on("draw-complete", createPoint);
   },
+
   /**
    * 清除所有坐标标记
    * @param {*} view 视图
@@ -118,6 +121,7 @@ export default {
       layer.graphics.removeAll();
     }
   },
+
   /**
    * 获取当前位置，定位并显示标记物
    * @param {*} view 视图
@@ -200,6 +204,7 @@ export default {
       return;
     }
   },
+
   /**
    * 定位到指定坐标
    * @param {*} view 视图
@@ -208,6 +213,7 @@ export default {
   onLocateToCoord: (view, data) => {
     view.goTo(data);
   },
+  
   /**
    * 定位到指定范围
    * @param {*} view 视图
