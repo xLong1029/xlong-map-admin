@@ -33,6 +33,7 @@
   background: $primary-color;
   border-color: $primary-color;
   border-radius: $map-border-radius;
+  min-height: 40px;
 
   &:hover {
     background: $primary-color;
@@ -50,6 +51,8 @@
 
 .esri-select {
   border-radius: $map-border-radius;
+  min-height: 40px;
+  padding-left: 10px !important;
 }
 
 .esri-sketch {
@@ -140,4 +143,9 @@
       }
     }
   }
+}
+
+
+.esri-daylight .esri-daylight__container .esri-daylight__play-pause-button{
+  min-height: 35px;
 }

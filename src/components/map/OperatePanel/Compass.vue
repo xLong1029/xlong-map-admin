@@ -168,7 +168,8 @@ const setCompassStyles = (angle, duration = "0.2s") => {
       }
 
       &:hover {
-        background: url("./../../../assets/images/arrow-left-active.png") no-repeat;
+        background: url("./../../../assets/images/arrow-left-active.png")
+          no-repeat;
         background-size: 100% 100%;
       }
     }
@@ -186,7 +187,8 @@ const setCompassStyles = (angle, duration = "0.2s") => {
       }
 
       &:hover {
-        background: url("./../../../assets/images/arrow-right-active.png") no-repeat;
+        background: url("./../../../assets/images/arrow-right-active.png")
+          no-repeat;
         background-size: 100% 100%;
       }
     }

@@ -1,22 +1,31 @@
 <template>
   <UtilPanel
-    width="330px"
+    width="305px"
     :title="`${panel.utilName}工具`"
     :panel-id="panelID"
     :show-help-icon="false"
     @on-click-close="onClose"
   >
     <div class="locate-panel__content">
-      <el-form label-width="50px">
+      <div class="operate-button">
+        <el-button type="primary" @click="onGetLocate"
+          >从图上拾取坐标</el-button
+        >
+        <el-button type="default" @click="onClearCoordMarker"
+          >清除所有标记</el-button
+        >
+      </div>
+      <el-form label-width="50px" class="mt-15">
         <el-form-item label="经度" class="mb-15">
           <el-input v-model="posLon"></el-input>
         </el-form-item>
         <el-form-item label="纬度" class="mb-15">
           <el-input v-model="posLat"></el-input>
         </el-form-item>
-        <el-form-item class="button-container mb-0">
-          <el-button type="primary" @click="locateTo">定位到该点</el-button>
-          <el-button type="primary" @click="getLocate">从图上拾取</el-button>
+        <el-form-item class="mb-0">
+          <el-button type="primary" @click="onLocateTo"
+            >定位到该点</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
@@ -28,12 +37,12 @@ import {
   ref,
   defineProps,
   defineEmits,
-  nextTick,
   computed,
   watch,
 } from "@vue/runtime-core";
 import UtilPanel from "components/common/UtilPanel/index.vue";
 import common from "common";
+import locateImg from "@/assets/images/locate.png";
 
 const props = defineProps({
   // 面板
@@ -85,22 +94,43 @@ const onClose = () => {
   });
 };
 
-const locateTo = () => {
-  nextTick(() => {
-    dispatchMapEvent("onLocateToCoordAndMarket", {
-      title: "",
-      lon: posLon.value,
-      lat: posLat.value,
-    });
+// 定位
+const onLocateTo = () => {
+  let events = [];
+  const data = {
+    title: "定位坐标",
+    lon: posLon.value,
+    lat: posLat.value,
+    symbol: {
+      type: "picture-marker",
+      url: locateImg,
+      width: "40px",
+      height: "40px",
+    },
+  };
+
+  dispatchMapEvent([
+    {
+      event: "onLocateToCoordAndMark",
+      data,
+    },
+    {
+      event: "onShowCoordMaker",
+      data,
+    },
+  ]);
+};
+
+// 拾取坐标
+const onGetLocate = () => {
+  dispatchMapEvent("onGetLocateCoord", {
+    store,
   });
 };
 
-const getLocate = () => {
-  nextTick(() => {
-    dispatchMapEvent("onGetLocateCoord", {
-      store,
-    });
-  });
+// 清除所有坐标标记
+const onClearCoordMarker = () => {
+  dispatchMapEvent("onClearCoordMarker");
 };
 </script>
 
@@ -108,17 +138,14 @@ const getLocate = () => {
 @import "~@/styles/util-panel.scss";
 .locate-panel {
   &__content {
-    padding: 10px;
-    .button-container {
-      :deep(.el-form-item__content) {
-        display: flex;
-        justify-content: space-between;
-      }
-
-      // :deep(.el-button--mini){
-      //   min-height: 32px;
-      // }
-    }
+    padding: 2px;
   }
+}
+
+.operate-button {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: $border;
+  padding-bottom: 15px;
 }
 </style>

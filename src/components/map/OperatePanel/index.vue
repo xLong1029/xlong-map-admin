@@ -1,24 +1,26 @@
 <template>
   <div class="operate-panel">
     <Compass v-if="showCompassBtn" />
-    <div v-if="showTransformBtn" class="map-transform" @click="onTransform()">
+    <div v-if="showTransformBtn" class="map-transform" @click="onTransform()"  title="2/3D切换">
       <span class="text">切换</span>
       <span>{{ mapViewType === "2D" ? "3D" : "2D" }}</span>
     </div>
     <div v-if="showLocateBtn" class="map-locate">
-      <i class="iconfont icon-zoom-inbeifen" @click="onLocate()"></i>
+      <i class="iconfont icon-zoom-inbeifen" @click="onLocate()" title="定位"></i>
     </div>
     <div v-if="showZoomInBtn || showZoomOutBtn" class="map-zoom">
       <i
         v-if="showZoomInBtn"
         class="iconfont icon-fangda"
         :class="{ 'is-disabled': coordInfo.scale <= minScale }"
+        title="放大"
         @click="onZoomIn()"
       ></i>
       <i
         v-if="showZoomOutBtn"
         class="iconfont icon-suoxiao"
         :class="{ 'is-disabled': coordInfo.scale >= maxScale }"
+        title="缩小"
         @click="onZoomOut()"
       ></i>
     </div>
