@@ -40,7 +40,11 @@ export default defineConfig({
     // 使用IP启动项目
     host: "0.0.0.0",
     // 配置启用的端口号
-    port: 8080
+    port: 8080,
+    // 是否开启https
+    https: false,
+    // 服务端渲染
+    ssr: false,
   },
   resolve: {
     // 设置别名

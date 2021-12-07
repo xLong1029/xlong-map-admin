@@ -23,9 +23,7 @@
           <el-input v-model="posLat"></el-input>
         </el-form-item>
         <el-form-item class="mb-0">
-          <el-button type="primary" @click="onLocateTo"
-            >定位到该点</el-button
-          >
+          <el-button type="primary" @click="onLocateTo">定位到该点</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -40,6 +38,7 @@ import {
   computed,
   watch,
 } from "@vue/runtime-core";
+import { ElMessage } from "element-plus";
 import UtilPanel from "components/common/UtilPanel/index.vue";
 import common from "common";
 import locateImg from "@/assets/images/locate.png";
@@ -96,6 +95,11 @@ const onClose = () => {
 
 // 定位
 const onLocateTo = () => {
+  if (!posLon.value || !posLat.value || posLon.value == "0" || posLat.value == "0") {
+    ElMessage.warning("请输入完整的非0坐标数值");
+    return;
+  }
+
   let events = [];
   const data = {
     title: "定位坐标",
