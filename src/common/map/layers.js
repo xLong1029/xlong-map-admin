@@ -14,6 +14,7 @@ import {
   MAP_VECTOR_BASEMAP_GROUP_LAYER,
   MAP_IMAGE_BASEMAP_LAYER,
   MAP_IMAGE_BASEMAP_NOTE_LAYER,
+  MAP_IMAGE_BASEMAP_GROUP_LAYER,
   MAP_TERRAIN_BASEMAP_LAYER,
   MAP_TERRAIN_BASEMAP_NOTE_LAYER,
   MAP_TERRAIN_BASEMAP_GROUP_LAYER,
@@ -170,7 +171,7 @@ export default function () {
 
   // 天地图配置
   const tdtConfig = {
-    subDomains: ['t0','t1','t2','t3','t4','t5','t6','t7'],
+    subDomains: ['t0', 't1', 't2', 't3', 't4', 't5', 't6', 't7'],
     tileInfo,
     spatialReference,
     fullExtent: {
@@ -183,7 +184,6 @@ export default function () {
   };
 
   // 天地图影像底图
-
   const imageBasemapLayer = new WebTileLayer(
     `${tdtBaseUrl}/img_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=c&TileMatrix={level}&TileRow={row}&TileCol={col}&style=default&format=tiles&tk=${TDT_TOKEN}`,
     {
@@ -201,8 +201,21 @@ export default function () {
       id: MAP_IMAGE_BASEMAP_NOTE_LAYER,
       title: "天地图影像注记图层",
       ...tdtConfig,
+      visible: true,
     }
   );
+
+  // 天地图影像地图群组
+  const imageBasemapGroupLayer = new GroupLayer({
+    id: MAP_IMAGE_BASEMAP_GROUP_LAYER,
+    title: "天地图矢量底图群组",
+    layers: [imageBasemapLayer, imageBasemapNoteLayer],
+    opacity: 1,
+    elevationInfo: {
+      mode: "relative-to-ground",
+    },
+    visible: true,
+  });
 
   // 天地图矢量底图
   const vectorBasemapLayer = new WebTileLayer(
@@ -220,7 +233,7 @@ export default function () {
     `${tdtBaseUrl}/DataServer?T=cva_c&x={col}&y={row}&l={level}&tk=${TDT_TOKEN}`,
     {
       id: MAP_VECTOR_BASEMAP_NOTE_LAYER,
-      title: "天地矢量底图图层",
+      title: "天地矢量注记图层",
       ...tdtConfig,
       visible: true,
     }
@@ -286,6 +299,7 @@ export default function () {
     tdtBaseUrl,
     imageBasemapLayer,
     imageBasemapNoteLayer,
+    imageBasemapGroupLayer,
     vectorBasemapLayer,
     vectorBasemapNoteLayer,
     vectorBasemapGroupLayer,

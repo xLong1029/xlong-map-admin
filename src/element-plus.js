@@ -1,4 +1,5 @@
 import {
+  ElTransfer,
   ElRadio,
   ElRow,
   ElCol,
@@ -31,6 +32,7 @@ import "@/styles/element-variables.scss";
 import 'element-plus/theme-chalk/display.css';
 
 const components = [
+  ElTransfer,
   ElRadio,
   ElRow,
   ElCol,

@@ -13,38 +13,44 @@
     <template #content>
       <CollapsePanel>
         <template #left>
-          <div class="swipe-panel-setting">
-            <el-form label-width="70px" class="mt-15">
-              <el-form-item label="启用卷帘" class="mb-15">
-                <el-switch v-model="openSwipe" size="mini"> </el-switch>
-              </el-form-item>
-              <el-form-item label="卷帘方向">
-                <el-radio-group v-model="swipeDirection" @change="onChangeSwipeType">
-                  <el-radio label="vertical">垂直</el-radio>
-                  <el-radio label="horizontal">水平</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-form>
-          </div>
-          <!-- <div
-            class="layer-transfer"
-            v-loading="transferLoading"
-            element-loading-text="正在加载数据..."
-          >
-            <el-transfer
-              size="mini"
-              v-model="transferValue"
-              :data="transferLayers"
-              :titles="transferTitles"
-              @left-check-change="leftCheckChange"
-              @right-check-change="rightCheckChange"
-              :props="{
-                key: 'id',
-                label: 'text',
-              }"
-              @change="onChangeLayer"
-            ></el-transfer>
-          </div> -->
+          <el-tabs v-model="activeTabName">
+            <el-tab-pane label="图层资源" name="layers">
+              <div
+                class="layer-transfer"
+                v-loading="transferLoading"
+                element-loading-text="正在加载数据..."
+              >
+                <el-transfer
+                  v-model="transferValue"
+                  :data="transferLayers"
+                  :titles="transferTitles"
+                  @change="onChangeLayer"
+                  :props="{
+                    key: 'id',
+                    label: 'label',
+                  }"
+                ></el-transfer>
+              </div>
+            </el-tab-pane>
+            <el-tab-pane label="卷帘设置" name="settings">
+              <div class="swipe-panel-setting">
+                <el-form label-width="70px">
+                  <el-form-item label="启用卷帘" class="mb-15">
+                    <el-switch v-model="openSwipe" size="mini"> </el-switch>
+                  </el-form-item>
+                  <el-form-item label="卷帘方向">
+                    <el-radio-group
+                      v-model="swipeDirection"
+                      @change="onChangeSwipeType"
+                    >
+                      <el-radio label="vertical">垂直</el-radio>
+                      <el-radio label="horizontal">水平</el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+            </el-tab-pane>
+          </el-tabs>
         </template>
         <template #right>
           <div :id="mapID" :class="{ 'show-header': fixedHeader }"></div>
@@ -81,6 +87,7 @@ import {
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
 import Basemap from "@arcgis/core/Basemap";
+import TileLayer from "@arcgis/core/layers/TileLayer";
 // 组件
 import MaxScreenPanel from "components/common/MaxScreenPanel/index.vue";
 import UtilPanel from "components/common/UtilPanel/index.vue";
@@ -92,6 +99,8 @@ import mapEvents from "common/mapEvents/index.js";
 // 地图
 import map from "common/map/index.js";
 import layers from "common/map/layers.js";
+// 配置
+import { TDT_TOKEN } from "config/index.js";
 
 const props = defineProps({
   // 面板
@@ -117,7 +126,7 @@ const { onClosePanel, onMinimizePanel, onMaximizePanel } = maxScreenPanel();
 
 const { mapViewConfig } = map();
 
-const { imageBasemapLayer } = layers();
+const { tdtBaseUrl, imageBasemapGroupLayer, imageBasemapLayer } = layers();
 
 // 是否显示系统固定头部
 const fixedHeader = inject("getFixedHeader");
@@ -129,9 +138,22 @@ let swipeMapView = null;
 // 地图ID
 const mapID = "swipeMap";
 
+const activeTabName = ref("layers");
+
 // 穿梭框配置
-const transferValue = ref([1]);
-const transferLayers = ref([]);
+const transferValue = ref(["image"]);
+const transferLayers = ref([
+  {
+    id: "image",
+    label: "天地图影像",
+    url: `${tdtBaseUrl}/img_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=c&TileMatrix={level}&TileRow={row}&TileCol={col}&style=default&format=tiles&tk=${TDT_TOKEN}`,
+  },
+  {
+    id: "terrain",
+    label: "天地图地形晕渲",
+    url: `${tdtBaseUrl}/ter_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=ter&tileMatrixSet=c&TileMatrix={level}&TileRow={row}&TileCol={col}&style=default&format=tiles&tk=${TDT_TOKEN}`,
+  },
+]);
 const transferLoading = ref(false);
 const transferTitles = ref(["上方", "下方"]);
 
@@ -160,13 +182,26 @@ onMounted(() => {
 
 // 初始化
 const init = () => {
-  let map = new Map({
-    basemap: new Basemap({
-      baseMapLayers: [imageBasemapLayer],
-    }),
+
+  const basemap = new Basemap({
+    baseMapLayers: [imageBasemapGroupLayer],
   });
 
-  map.add(imageBasemapLayer);
+  let map = new Map({
+    basemap,
+  });
+
+  map.add(imageBasemapGroupLayer);
+
+  transferLayers.value.forEach((e) => {
+    const { id, url } = e;
+    const layer = new TileLayer({
+      id,
+      url,
+    });
+
+    map.add(layer);
+  });
 
   let view = new MapView({
     map,
@@ -182,7 +217,7 @@ const init = () => {
 
   swipeMap = map;
   swipeMapView = view;
-  
+
   openSwipe.value = true;
 };
 
@@ -204,6 +239,34 @@ const onChangeSwipeType = (val) => {
       direction: val,
     });
   }
+};
+
+// 改变图层
+const onChangeLayer = () => {
+  const data = {
+    leadingLayers: [],
+    trailingLayers: [],
+  };
+
+  //左侧数据
+  transferValue.value.forEach((layer, index) => {
+    if (index > 0) {
+      data.trailingLayers.push(layer);
+    }
+  });
+
+  //右侧数据
+  transferLayers.value.forEach((layer) => {
+    if (data.trailingLayers.indexOf(layer.id) === -1) {
+      data.leadingLayers.push(layer.id);
+    }
+  });
+
+  // if (openSwipe.value) {
+  //   setTimeout(function () {
+  //     dispatchMapEvent("onChangeSwipeLayer", data);
+  //   }, 1000);
+  // }
 };
 
 // 关闭面板
@@ -234,8 +297,6 @@ const onMaximize = () => {
 }
 
 .layer-transfer {
-  margin-top: 20px;
-
   :deep(.el-transfer) {
     display: flex;
   }
