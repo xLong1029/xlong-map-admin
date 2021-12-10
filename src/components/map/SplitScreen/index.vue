@@ -73,7 +73,7 @@ const emit = defineEmits(["close", "minimize", "maximize"]);
 
 const { onClosePanel, onMinimizePanel, onMaximizePanel } = maxScreenPanel();
 
-const { mapViewConfig } = map();
+const { mapCenterPoint, mapViewConfig } = map();
 
 const { imageBasemapLayer } = layers();
 
@@ -105,7 +105,7 @@ const initMap = () => {
   let view = new MapView({
     map,
     ...mapViewConfig(mapID),
-    center: [108.37586, 22.81221],
+    center:mapCenterPoint,
     zoom: 14,
   });
 

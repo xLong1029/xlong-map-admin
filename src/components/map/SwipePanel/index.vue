@@ -39,10 +39,7 @@
                     <el-switch v-model="openSwipe" size="mini"> </el-switch>
                   </el-form-item>
                   <el-form-item label="卷帘方向">
-                    <el-radio-group
-                      v-model="swipeDirection"
-                      @change="onChangeSwipeType"
-                    >
+                    <el-radio-group v-model="swipeDirection" @change="onChangeSwipeType">
                       <el-radio label="vertical">垂直</el-radio>
                       <el-radio label="horizontal">水平</el-radio>
                     </el-radio-group>
@@ -82,6 +79,7 @@ import {
   inject,
   onMounted,
   watch,
+  nextTick,
 } from "@vue/runtime-core";
 // Arcgis
 import Map from "@arcgis/core/Map";
@@ -124,9 +122,9 @@ const emit = defineEmits(["close", "minimize", "maximize"]);
 
 const { onClosePanel, onMinimizePanel, onMaximizePanel } = maxScreenPanel();
 
-const { mapViewConfig } = map();
+const { mapCenterPoint, mapViewConfig } = map();
 
-const { tdtBaseUrl, imageBasemapGroupLayer, imageBasemapLayer } = layers();
+const { tdtBaseUrl, imageBasemapLayer, imageBasemapNoteLayer } = layers();
 
 // 是否显示系统固定头部
 const fixedHeader = inject("getFixedHeader");
@@ -177,36 +175,41 @@ watch(
 );
 
 onMounted(() => {
-  init();
+  nextTick(() => {
+    init();
+  });
 });
 
 // 初始化
 const init = () => {
+  const layerList = [imageBasemapLayer, imageBasemapNoteLayer];
 
   const basemap = new Basemap({
-    baseMapLayers: [imageBasemapGroupLayer],
+    baseMapLayers: layerList,
   });
 
   let map = new Map({
     basemap,
   });
 
-  map.add(imageBasemapGroupLayer);
-
-  transferLayers.value.forEach((e) => {
-    const { id, url } = e;
-    const layer = new TileLayer({
-      id,
-      url,
-    });
-
-    map.add(layer);
+  layerList.forEach((e) => {
+    map.add(e);
   });
+
+  // transferLayers.value.forEach((e) => {
+  //   const { id, url } = e;
+  //   const layer = new TileLayer({
+  //     id,
+  //     url,
+  //   });
+
+  //   map.add(layer);
+  // });
 
   let view = new MapView({
     map,
     ...mapViewConfig(mapID),
-    center: [108.37586, 22.81221],
+    center: mapCenterPoint,
     zoom: 14,
   });
 
@@ -214,6 +217,17 @@ const init = () => {
 
   // 移除powered by
   view.ui._removeComponents(["attribution"]);
+
+  // 定位到南宁全域范围
+  mapEvents()["onLocateToExtent"](view, {
+    extent: {
+      center: mapCenterPoint,
+      tilt: 0,
+      heading: 0,
+      zoom: 10,
+    },
+    params: { duration: 3000 },
+  });
 
   swipeMap = map;
   swipeMapView = view;

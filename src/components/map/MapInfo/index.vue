@@ -33,10 +33,20 @@
           >地图比例 <span class="normal">1:{{ coordInfo.scale }}</span></span
         >
       </div>
-      <div class="content scle-content">
-        <el-button type="primary" size="mini" @click="setScale(bastScale)"
-          >以最佳比例1:{{ bastScale }}显示</el-button
-        >
+      <div class="content scale-content">
+        <div>
+          <el-button type="primary" size="mini" @click="onLocateToNanning()"
+            ><i class="iconfont icon-quanfuxianshi mr-5"></i
+            ><span>定位到南宁市全幅</span></el-button
+          >
+        </div>
+        <div class="mt-15">
+          <el-button type="primary" size="mini" @click="setScale(bastScale)"
+            ><i class="iconfont icon-bili mr-5"></i
+            ><span>以最佳比例1:{{ bastScale }}显示</span></el-button
+          >
+        </div>
+        
       </div>
     </div>
   </div>
@@ -44,6 +54,10 @@
 
 <script setup>
 import { ref, inject, watch, defineProps, defineEmits } from "@vue/runtime-core";
+// 通用模块
+import common from "common";
+// 地图
+import map from "common/map/index.js";
 
 const props = defineProps({
   // 是否折叠地图信息面板
@@ -71,6 +85,9 @@ const bastScale = ref(2000);
 
 const emit = defineEmits(["click-fold", "map-set-view-scale"]);
 
+const { dispatchMapEvent } = common();
+const { mapCenterPoint } = map();
+
 watch(
   () => basemap.value,
   (val) => {
@@ -87,6 +104,18 @@ const setContentVisible = (val) => {
 const setScale = (scale) => {
   emit("map-set-view-scale", { scale: Math.round(scale) });
 };
+
+const onLocateToNanning = () => {
+  dispatchMapEvent("onLocateToExtent", {
+    extent: {
+      center: mapCenterPoint,
+      tilt: 0,
+      heading: 0,
+      zoom: 10,
+    },
+    params: { duration: 3000 },
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -144,11 +173,14 @@ const setScale = (scale) => {
       font-weight: normal;
       color: #333;
     }
+  }
+}
 
-    .scle-content {
+.scale-content {
+  :deep(.el-button--primary) {
+    > span {
       display: flex;
       align-items: center;
-      justify-content: space-between;
     }
   }
 }

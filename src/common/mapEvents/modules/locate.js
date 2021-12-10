@@ -221,6 +221,7 @@ export default {
    */
   onLocateToExtent: (view, data) => {
     try {
+      console.log(view);
       const { extent, params } = data;
       view.goTo(extent, params);
     } catch (e) {

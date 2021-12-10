@@ -16,6 +16,9 @@ export default function () {
   // 地图事件传递
   const mapEvent = computed(() => store.getters.mapEvent);
 
+  // 地图中心坐标
+  const mapCenterPoint = [108.37586, 22.81221];
+
   // 地图视图参数配置
   const mapViewConfig = (container) => {
     return {
@@ -45,6 +48,7 @@ export default function () {
   return {
     store,
     mapEvent,
+    mapCenterPoint,
     mapViewConfig,
   };
 }

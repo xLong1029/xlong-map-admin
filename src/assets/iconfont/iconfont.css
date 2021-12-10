@@ -1,11 +1,11 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2659669 */
-  src: url('iconfont.eot?t=1638153510383'); /* IE9 */
-  src: url('iconfont.eot?t=1638153510383#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('iconfont.woff2?t=1638153510383') format('woff2'),
-       url('iconfont.woff?t=1638153510383') format('woff'),
-       url('iconfont.ttf?t=1638153510383') format('truetype'),
-       url('iconfont.svg?t=1638153510383#iconfont') format('svg');
+  src: url('iconfont.eot?t=1639125775312'); /* IE9 */
+  src: url('iconfont.eot?t=1639125775312#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('iconfont.woff2?t=1639125775312') format('woff2'),
+       url('iconfont.woff?t=1639125775312') format('woff'),
+       url('iconfont.ttf?t=1639125775312') format('truetype'),
+       url('iconfont.svg?t=1639125775312#iconfont') format('svg');
 }
 
 .iconfont {
@@ -14,6 +14,14 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bili:before {
+  content: "\e634";
+}
+
+.icon-quanfuxianshi:before {
+  content: "\e609";
 }
 
 .icon-zuidahua:before {

@@ -37,7 +37,7 @@ import layers from "common/map/layers.js";
 
 const emit = defineEmits(["close-screenshot"]);
 
-const { mapEvent, mapViewConfig } = map();
+const { mapEvent, mapCenterPoint, mapViewConfig } = map();
 
 const {
   imageBasemapLayer,
@@ -107,16 +107,20 @@ watch(
 
 onMounted(() => {
   currentMapConfig = mapViewType.value === "2D" ? map2D : map3D;
-  initMap(currentMapConfig, mapViewType.value);
+  initMap();
 });
 
 /**
  * 初始化地图
- *
- * @param {*} mapConfig 地图配置
  */
-const initMap = (mapConfig) => {
-  arcgisMap = createMap();
+const initMap = () => {
+  const layerList = [
+    imageBasemapLayer,
+    vectorBasemapGroupLayer,
+    terrainBasemapNoteGroupLayer,
+  ];
+
+  arcgisMap = createMap(layerList);
 
   map2D.view = createView(
     {
@@ -137,14 +141,10 @@ const initMap = (mapConfig) => {
 
 /**
  * 创建地图
+ * 
+ * @param {*} layerList 图层列表
  */
-const createMap = () => {
-  const layerList = [
-    imageBasemapLayer,
-    vectorBasemapGroupLayer,
-    terrainBasemapNoteGroupLayer,
-  ];
-
+const createMap = (layerList) => {
   const basemap = new Basemap({
     baseMapLayers: layerList,
   });
@@ -171,7 +171,7 @@ const createView = (params, type) => {
     type === "2D"
       ? new MapView({
           ...params,
-          center: [108.37586, 22.81221],
+          center: mapCenterPoint,
           zoom: finalViewZoom,
           scale: coordInfo.scale,
         })
