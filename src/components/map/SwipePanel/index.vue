@@ -27,7 +27,7 @@
                   @change="onChangeLayer"
                   :props="{
                     key: 'id',
-                    label: 'label',
+                    label: 'title',
                   }"
                 ></el-transfer>
               </div>
@@ -98,7 +98,7 @@ import mapEvents from "common/mapEvents/index.js";
 import map from "common/map/index.js";
 import layers from "common/map/layers.js";
 // 配置
-import { TDT_TOKEN } from "config/index.js";
+import { MAP_IMAGE_BASEMAP_LAYER } from "config/index.js";
 
 const props = defineProps({
   // 面板
@@ -124,14 +124,19 @@ const { onClosePanel, onMinimizePanel, onMaximizePanel } = maxScreenPanel();
 
 const { mapCenterPoint, mapViewConfig } = map();
 
-const { tdtBaseUrl, vectorBasemapLayer, vectorBasemapNoteLayer } = layers();
+const {
+  tdtBaseUrl,
+  vectorBasemapLayer,
+  vectorBasemapNoteLayer,
+  imageBasemapLayer,
+  terrainBasemapLayer,
+} = layers();
 
 // 是否显示系统固定头部
 const fixedHeader = inject("getFixedHeader");
 // 坐标信息
 const coordInfo = inject("getCoordInfo");
 
-let swipeMap = null;
 let swipeMapView = null;
 // 地图ID
 const mapID = "swipeMap";
@@ -139,17 +144,13 @@ const mapID = "swipeMap";
 const activeTabName = ref("layers");
 
 // 穿梭框配置
-const transferValue = ref(["image"]);
+const transferValue = ref(["test1"]);
 const transferLayers = ref([
   {
-    id: "image",
-    label: "天地图影像",
-    url: `https://console.tianditu.gov.cn/data/center-data/publish/1ce7f182791c4e889a6d73e91d0e32bf`,
-  },
-  {
-    id: "terrain",
-    label: "天地图地形晕渲",
-    url: `${tdtBaseUrl}/ter_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=ter&tileMatrixSet=c&TileMatrix={level}&TileRow={row}&TileCol={col}&style=default&format=tiles&tk=${TDT_TOKEN}`,
+    id: "test1",
+    title: "蓝黑色中文不含兴趣点版中国基础地图",
+    url:
+    "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/WV03_Kilauea_20180519_NearInfrared/MapServer",
   },
 ]);
 const transferLoading = ref(false);
@@ -165,9 +166,31 @@ watch(
   (val) => {
     if (swipeMapView) {
       const eventName = val ? "onOpenSwipe" : "onRemoveSwipe";
-      mapEvents()[eventName](swipeMapView, {
+      let data = {
         direction: swipeDirection.value,
+        leadingLayers: [],
+        trailingLayers: [],
+      };
+      // 左侧数据
+      transferValue.value.forEach((item) => {
+        const layer = swipeMapView.map.findLayerById(item);
+        if (layer) {
+          data.trailingLayers.push(layer);
+        }
       });
+
+      // 右侧数据
+      transferLayers.value.forEach((item) => {
+        const index = data.trailingLayers.findIndex(e => e.id === item.id);
+        if (index < 0) {
+          const layer = swipeMapView.map.findLayerById(item.id);
+          if (layer) {
+            data.leadingLayers.push(layer);
+          }
+        }
+      });
+
+      mapEvents()[eventName](swipeMapView, data);
     } else {
       console.log("找不到可操作的地图视图");
     }
@@ -182,6 +205,8 @@ onMounted(() => {
 
 // 初始化
 const init = () => {
+  // console.log(transferLayers.value);
+
   const layerList = [vectorBasemapLayer, vectorBasemapNoteLayer];
 
   const basemap = new Basemap({
@@ -196,13 +221,14 @@ const init = () => {
     map.add(e);
   });
 
+  // 加载切片图层
   transferLayers.value.forEach((e) => {
-    const { id, url } = e;
+    const { id, title, url } = e;
     const layer = new TileLayer({
       id,
+      title,
       url,
     });
-
     map.add(layer);
   });
 
@@ -228,8 +254,6 @@ const init = () => {
     },
     params: { duration: 3000 },
   });
-
-  swipeMap = map;
   swipeMapView = view;
 
   openSwipe.value = true;

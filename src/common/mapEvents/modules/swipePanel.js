@@ -6,39 +6,49 @@ import { removeWidget } from "utils/map";
 let widget = null;
 
 export default {
-    /**
-      * 启用卷帘工具
-      * @param {*} view 视图
-      * @param {*} data 传递数据
-      */
-    onOpenSwipe: (view, data) => {
-        console.log("启用卷帘工具");
+  /**
+   * 启用卷帘工具
+   * @param {*} view 视图
+   * @param {*} data 传递数据
+   */
+  onOpenSwipe: (view, data) => {
+    console.log("启用卷帘工具");
 
-        widget = new Swipe({
-            id: "Swipe",
-            view,
-            position: 50,
-            direction: data.direction, //data.direction,
-        });
-        view.ui.add(widget);
-    },
+    try {
+      const { direction, leadingLayers, trailingLayers } = data;
 
-    /**
-     * 取消卷帘工具
-     * @param {*} view 视图
-     */
-    onRemoveSwipe: (view) => {
-        console.log("取消卷帘工具");
-        removeWidget(view, widget);
-    },
+      console.log(data);
 
-    /**
-     * 修改卷帘方向
-     * @param {*} data 方向
-     */
-    onChangeSwipeDirection: (view, data) => {
-        console.log(view);
-        console.log("修改卷帘方向");
-        view.ui.find("Swipe").direction = data.direction;
-    },
+      widget = new Swipe({
+        id: "Swipe",
+        view,
+        position: 50,
+        direction, //data.direction,
+        leadingLayers,
+        trailingLayers,
+      });
+      view.ui.add(widget);
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+  /**
+   * 取消卷帘工具
+   * @param {*} view 视图
+   */
+  onRemoveSwipe: (view) => {
+    console.log("取消卷帘工具");
+    removeWidget(view, widget);
+  },
+
+  /**
+   * 修改卷帘方向
+   * @param {*} data 方向
+   */
+  onChangeSwipeDirection: (view, data) => {
+    console.log(view);
+    console.log("修改卷帘方向");
+    view.ui.find("Swipe").direction = data.direction;
+  },
 };

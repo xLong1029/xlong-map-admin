@@ -213,7 +213,7 @@ export default {
   onLocateToCoord: (view, data) => {
     view.goTo(data);
   },
-  
+
   /**
    * 定位到指定范围
    * @param {*} view 视图
@@ -223,7 +223,9 @@ export default {
     try {
       const { extent, params } = data;
       view.goTo(extent, params).then(function () {
-        ElMessage.success("已将视图调整至南宁市全幅区域")
+        if (params.showMessage) {
+          ElMessage.success("已将视图调整至南宁市全幅区域")
+        }
       });
     } catch (e) {
       console.log(e);

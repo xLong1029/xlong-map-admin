@@ -108,7 +108,7 @@ const onLocateToNanning = () => {
       heading: 0,
       zoom: 10,
     },
-    params: { duration: 3000 },
+    params: { duration: 3000, showMessage: true },
   });
 };
 </script>
