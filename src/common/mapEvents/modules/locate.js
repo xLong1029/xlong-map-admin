@@ -221,9 +221,10 @@ export default {
    */
   onLocateToExtent: (view, data) => {
     try {
-      console.log(view);
       const { extent, params } = data;
-      view.goTo(extent, params);
+      view.goTo(extent, params).then(function () {
+        ElMessage.success("已将视图调整至南宁市全幅区域")
+      });
     } catch (e) {
       console.log(e);
     }

@@ -124,7 +124,7 @@ const { onClosePanel, onMinimizePanel, onMaximizePanel } = maxScreenPanel();
 
 const { mapCenterPoint, mapViewConfig } = map();
 
-const { tdtBaseUrl, imageBasemapLayer, imageBasemapNoteLayer } = layers();
+const { tdtBaseUrl, vectorBasemapLayer, vectorBasemapNoteLayer } = layers();
 
 // 是否显示系统固定头部
 const fixedHeader = inject("getFixedHeader");
@@ -144,7 +144,7 @@ const transferLayers = ref([
   {
     id: "image",
     label: "天地图影像",
-    url: `${tdtBaseUrl}/img_c/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=c&TileMatrix={level}&TileRow={row}&TileCol={col}&style=default&format=tiles&tk=${TDT_TOKEN}`,
+    url: `https://console.tianditu.gov.cn/data/center-data/publish/1ce7f182791c4e889a6d73e91d0e32bf`,
   },
   {
     id: "terrain",
@@ -182,7 +182,7 @@ onMounted(() => {
 
 // 初始化
 const init = () => {
-  const layerList = [imageBasemapLayer, imageBasemapNoteLayer];
+  const layerList = [vectorBasemapLayer, vectorBasemapNoteLayer];
 
   const basemap = new Basemap({
     baseMapLayers: layerList,
@@ -196,15 +196,15 @@ const init = () => {
     map.add(e);
   });
 
-  // transferLayers.value.forEach((e) => {
-  //   const { id, url } = e;
-  //   const layer = new TileLayer({
-  //     id,
-  //     url,
-  //   });
+  transferLayers.value.forEach((e) => {
+    const { id, url } = e;
+    const layer = new TileLayer({
+      id,
+      url,
+    });
 
-  //   map.add(layer);
-  // });
+    map.add(layer);
+  });
 
   let view = new MapView({
     map,

@@ -34,19 +34,14 @@
         >
       </div>
       <div class="content scale-content">
-        <div>
-          <el-button type="primary" size="mini" @click="onLocateToNanning()"
-            ><i class="iconfont icon-quanfuxianshi mr-5"></i
-            ><span>定位到南宁市全幅</span></el-button
-          >
-        </div>
-        <div class="mt-15">
-          <el-button type="primary" size="mini" @click="setScale(bastScale)"
-            ><i class="iconfont icon-bili mr-5"></i
-            ><span>以最佳比例1:{{ bastScale }}显示</span></el-button
-          >
-        </div>
-        
+        <el-button type="primary" size="mini" @click="onLocateToNanning()"
+          ><i class="iconfont icon-quanfuxianshi mr-5"></i
+          ><span>南宁市全幅</span></el-button
+        >
+        <el-button type="primary" size="mini" @click="setScale(bastScale)"
+          ><i class="iconfont icon-bili mr-5"></i
+          ><span>最佳比例1:{{ bastScale }}</span></el-button
+        >
       </div>
     </div>
   </div>
@@ -114,8 +109,8 @@ const onLocateToNanning = () => {
       zoom: 10,
     },
     params: { duration: 3000 },
-  })
-}
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -126,7 +121,7 @@ const onLocateToNanning = () => {
   left: 15px;
   background: #fff;
   border-radius: $map-border-radius;
-  width: 280px;
+  width: 285px;
   overflow: hidden;
   box-shadow: $map-box-shadow;
 
