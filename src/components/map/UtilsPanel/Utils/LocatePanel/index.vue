@@ -7,7 +7,7 @@
     @on-click-close="onClose"
   >
     <div class="locate-panel__content">
-      <div v-if="startGetLocateCoord" class="tip">通过单击地图以拾取坐标</div>
+      <div v-if="startGetLocateCoord" class="tip text-center">通过单击地图以拾取坐标</div>
       <div v-else>
         <div class="operate-button">
           <el-button type="primary" @click="onGetLocate">从图上拾取坐标</el-button>
