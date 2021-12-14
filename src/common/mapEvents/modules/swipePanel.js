@@ -47,8 +47,27 @@ export default {
    * @param {*} data 方向
    */
   onChangeSwipeDirection: (view, data) => {
-    console.log(view);
     console.log("修改卷帘方向");
     view.ui.find("Swipe").direction = data.direction;
+  },
+
+  /**
+   * 修改卷帘图层
+   * @param {*} view 视图
+   * @param {*} data 图层
+   */
+  onChangeSwipeLayer: (view, data) => {
+    console.log("修改卷帘图层");
+    if (widget) {
+
+      const { leadingLayers, trailingLayers } = data;
+
+      widget.leadingLayers.removeAll();
+      widget.leadingLayers.addMany(leadingLayers);
+
+      widget.trailingLayers.removeAll();
+      widget.trailingLayers.addMany(trailingLayers);
+
+    }
   },
 };

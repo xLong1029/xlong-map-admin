@@ -13,41 +13,47 @@
     <template #content>
       <CollapsePanel>
         <template #left>
-          <el-tabs v-model="activeTabName">
-            <el-tab-pane label="图层资源" name="layers">
-              <div
-                class="layer-transfer"
-                v-loading="transferLoading"
-                element-loading-text="正在加载数据..."
+          <div>
+            <div class="title">卷帘设置</div>
+            <div class="swipe-panel-setting" style="margin-top: -10px">
+              <el-form label-width="70px">
+                <el-form-item label="启用卷帘" class="mb-15">
+                  <el-switch v-model="openSwipe" size="mini"> </el-switch>
+                </el-form-item>
+                <el-form-item label="卷帘方向">
+                  <el-radio-group v-model="swipeDirection" @change="onChangeSwipeType">
+                    <el-radio label="vertical">垂直</el-radio>
+                    <el-radio label="horizontal">水平</el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-form>
+            </div>
+          </div>
+          <div>
+            <div class="title">图层资源</div>
+            <el-alert class="mb-20" title="这里只做简单的演示功能" type="info" show-icon>
+            </el-alert>
+            <div
+              class="layer-transfer"
+              v-loading="transferLoading"
+              element-loading-text="正在加载数据..."
+            >
+              <el-transfer
+                v-model="transferValue"
+                :data="transferLayers"
+                :titles="transferTitles"
+                @change="onChangeLayer"
+                :props="{
+                  key: 'id',
+                  label: 'title',
+                }"
               >
-                <el-transfer
-                  v-model="transferValue"
-                  :data="transferLayers"
-                  :titles="transferTitles"
-                  @change="onChangeLayer"
-                  :props="{
-                    key: 'id',
-                    label: 'title',
-                  }"
-                ></el-transfer>
-              </div>
-            </el-tab-pane>
-            <el-tab-pane label="卷帘设置" name="settings">
-              <div class="swipe-panel-setting">
-                <el-form label-width="70px">
-                  <el-form-item label="启用卷帘" class="mb-15">
-                    <el-switch v-model="openSwipe" size="mini"> </el-switch>
-                  </el-form-item>
-                  <el-form-item label="卷帘方向">
-                    <el-radio-group v-model="swipeDirection" @change="onChangeSwipeType">
-                      <el-radio label="vertical">垂直</el-radio>
-                      <el-radio label="horizontal">水平</el-radio>
-                    </el-radio-group>
-                  </el-form-item>
-                </el-form>
-              </div>
-            </el-tab-pane>
-          </el-tabs>
+                <template #default="{ option }">
+                  <span :title="option.title">{{ option.title }}</span>
+                </template>
+              </el-transfer>
+            </div>
+          </div>
         </template>
         <template #right>
           <div :id="mapID" :class="{ 'show-header': fixedHeader }"></div>
@@ -96,9 +102,6 @@ import maxScreenPanel from "common/maxScreenPanel.js";
 import mapEvents from "common/mapEvents/index.js";
 // 地图
 import map from "common/map/index.js";
-import layers from "common/map/layers.js";
-// 配置
-import { SPATIAL_REFERENCE_WKID } from "config/index.js";
 import Swipe from "@arcgis/core/widgets/Swipe";
 
 const props = defineProps({
@@ -123,7 +126,7 @@ const emit = defineEmits(["close", "minimize", "maximize"]);
 
 const { onClosePanel, onMinimizePanel, onMaximizePanel } = maxScreenPanel();
 
-const { mapCenterPoint, mapViewConfig } = map();
+const { mapCenterPoint } = map();
 
 // 是否显示系统固定头部
 const fixedHeader = inject("getFixedHeader");
@@ -134,28 +137,25 @@ let swipeMapView = null;
 // 地图ID
 const mapID = "swipeMap";
 
-const activeTabName = ref("layers");
-
 // 穿梭框配置
-const transferValue = ref(["test1"]);
+const transferValue = ref(["ChinaOnlineStreetPurplishBlue"]);
 const transferLayers = ref([
   {
-    id: "test1",
+    id: "ChinaOnlineStreetPurplishBlue",
     title: "蓝黑色中文不含兴趣点版中国基础地图",
     url:
-      "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/WV03_Kilauea_20180519_NearInfrared/MapServer",
+      "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
   },
+  // {
+  //   id: "ChinaBoundaryLine",
+  //   title: "中国边界线",
+  //   url:
+  //     "http://map.geoq.cn/arcgis/rest/services/SimpleFeature/ChinaBoundaryLine/MapServer",
+  // },
   {
     id: "ChinaOnlineCommunity",
     title: "彩色中文含兴趣点版中国基础地图",
-    url:
-      "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
-  },
-  {
-    id: "ChinaBoundaryLine",
-    title: "中国边界线",
-    url:
-      "http://map.geoq.cn/arcgis/rest/services/SimpleFeature/ChinaBoundaryLine/MapServer",
+    url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
   },
 ]);
 const transferLoading = ref(false);
@@ -163,8 +163,6 @@ const transferTitles = ref(["上方", "下方"]);
 
 // 卷帘配置
 const swipeDirection = ref("vertical");
-const leadingLayers = ref([]);
-const trailingLayers = ref([]);
 
 const openSwipe = ref(false);
 
@@ -174,32 +172,7 @@ watch(
   (val) => {
     if (swipeMapView) {
       const eventName = val ? "onOpenSwipe" : "onRemoveSwipe";
-      let data = {
-        direction: swipeDirection.value,
-        leadingLayers: [],
-        trailingLayers: [],
-      };
-
-      // 左侧数据
-      transferValue.value.forEach((item) => {
-        const layer = swipeMapView.map.findLayerById(item);
-        if (layer) {
-          data.trailingLayers.push(layer);
-        }
-      });
-
-      // 右侧数据
-      transferLayers.value.forEach((item) => {
-        const index = data.trailingLayers.findIndex((e) => e.id === item.id);
-        if (index < 0) {
-          const layer = swipeMapView.map.findLayerById(item.id);
-          if (layer) {
-            data.leadingLayers.push(layer);
-          }
-        }
-      });
-
-      mapEvents()[eventName](swipeMapView, data);
+      mapEvents()[eventName](swipeMapView, handleSwipeData());
     } else {
       console.log("找不到可操作的地图视图");
     }
@@ -217,21 +190,21 @@ const init = () => {
   let map = new Map({
     basemap: "satellite",
   });
+
   // 加载切片图层
-  // transferLayers.value.forEach((e) => {
-  //   const { id, title, url } = e;
-  //   const layer = new TileLayer({
-  //     id,
-  //     title,
-  //     url,
-  //   });
-  //   map.add(layer);
-  // });
+  transferLayers.value.forEach((e) => {
+    const { id, title, url } = e;
+    const layer = new TileLayer({
+      id,
+      title,
+      url,
+    });
+    map.add(layer);
+  });
 
   let view = new MapView({
     map,
     container: mapID,
-    // ...mapViewConfig(mapID),
     center: mapCenterPoint,
     zoom: 14,
   });
@@ -240,7 +213,6 @@ const init = () => {
 
   // 移除powered by
   view.ui._removeComponents(["attribution"]);
-  
 
   // 定位到南宁全域范围
   mapEvents()["onLocateToExtent"](view, {
@@ -255,34 +227,7 @@ const init = () => {
 
   swipeMapView = view;
 
-  const infrared = new TileLayer({
-    url:
-      "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
-  });
-  map.add(infrared);
-
-  const nearInfrared = new TileLayer({
-    url:
-      "http://map.geoq.cn/arcgis/rest/services/SimpleFeature/ChinaBoundaryLine/MapServer",
-  });
-  map.add(nearInfrared);
-
-  map.add(infrared);
-  // // map.add(imageBasemapLayer);
-  // map.add(terrainBasemapLayer);
-
-  const swipe = new Swipe({
-    leadingLayers: [infrared],
-    trailingLayers: [nearInfrared],
-    direction: swipeDirection.value,
-    // position: 35, // set position of widget to 35%
-    view: view,
-  });
-
-  // add the widget to the view
-  view.ui.add(swipe);
-
-  // openSwipe.value = true;
+  openSwipe.value = true;
 };
 
 // 改变卷帘方式
@@ -296,8 +241,6 @@ const onChangeSwipeType = (val) => {
     transferTitles.value = ["左侧", "右侧"];
   }
 
-  console.log(val);
-
   if (openSwipe.value) {
     mapEvents()["onChangeSwipeDirection"](swipeMapView, {
       direction: val,
@@ -305,32 +248,41 @@ const onChangeSwipeType = (val) => {
   }
 };
 
-// 改变图层
-const onChangeLayer = () => {
-  const data = {
+// 处理卷帘数据
+const handleSwipeData = () => {
+  let data = {
+    direction: swipeDirection.value,
     leadingLayers: [],
     trailingLayers: [],
   };
 
-  //左侧数据
-  transferValue.value.forEach((layer, index) => {
-    if (index > 0) {
+  // 左侧数据
+  transferValue.value.forEach((item) => {
+    const layer = swipeMapView.map.findLayerById(item);
+    if (layer) {
       data.trailingLayers.push(layer);
     }
   });
 
-  //右侧数据
-  transferLayers.value.forEach((layer) => {
-    if (data.trailingLayers.indexOf(layer.id) === -1) {
-      data.leadingLayers.push(layer.id);
+  // 右侧数据
+  transferLayers.value.forEach((item) => {
+    const index = data.trailingLayers.findIndex((e) => e.id === item.id);
+    if (index < 0) {
+      const layer = swipeMapView.map.findLayerById(item.id);
+      if (layer) {
+        data.leadingLayers.push(layer);
+      }
     }
   });
 
-  // if (openSwipe.value) {
-  //   setTimeout(function () {
-  //     dispatchMapEvent("onChangeSwipeLayer", data);
-  //   }, 1000);
-  // }
+  return data;
+};
+
+// 改变图层
+const onChangeLayer = () => {
+  if (openSwipe.value) {
+    mapEvents()["onChangeSwipeLayer"](swipeMapView, handleSwipeData());
+  }
 };
 
 // 关闭面板
@@ -355,6 +307,26 @@ const onMaximize = () => {
   height: 100%;
 }
 
+.swipe-panel {
+  .title {
+    font-size: 14px;
+    color: #666;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: $border;
+    margin-bottom: 15px;
+  }
+
+  :deep(.el-alert) {
+    background: #e0f0ff;
+    color: $primary-color;
+  }
+
+  :deep(.el-alert__closebtn) {
+    color: $primary-color;
+  }
+}
+
 .swipe-way {
   display: flex;
   align-items: center;
@@ -363,6 +335,21 @@ const onMaximize = () => {
 .layer-transfer {
   :deep(.el-transfer) {
     display: flex;
+  }
+
+  :deep(.el-transfer-panel__header) {
+    .el-checkbox {
+      display: flex;
+      align-items: center;
+    }
+
+    .el-checkbox__label {
+      font-size: 14px;
+
+      span {
+        top: 14px;
+      }
+    }
   }
 
   :deep(.el-transfer__buttons) {
@@ -378,10 +365,6 @@ const onMaximize = () => {
 
   :deep(.el-checkbox__label) {
     font-size: 14px;
-  }
-
-  :deep(.el-transfer-panel__header) {
-    margin-top: -5px;
   }
 }
 </style>
