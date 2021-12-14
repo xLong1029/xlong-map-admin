@@ -1,6 +1,6 @@
 <template>
   <UtilPanel
-    width="305px"
+    width="275px"
     :title="`${panel.utilName}工具`"
     :panel-id="panelID"
     :show-help-icon="false"
@@ -10,20 +10,22 @@
       <div v-if="startGetLocateCoord" class="tip">通过单击地图以拾取坐标</div>
       <div v-else>
         <div class="operate-button">
-        <el-button type="primary" @click="onGetLocate">从图上拾取坐标</el-button>
-        <el-button type="default" @click="onClearCoordMarker">清除所有标记</el-button>
-      </div>
-      <el-form label-width="50px" class="mt-15">
-        <el-form-item label="经度" class="mb-15">
-          <el-input v-model="posLon"></el-input>
-        </el-form-item>
-        <el-form-item label="纬度" class="mb-15">
-          <el-input v-model="posLat"></el-input>
-        </el-form-item>
-        <el-form-item class="mb-0">
-          <el-button type="primary" @click="onLocateTo">定位到该点</el-button>
-        </el-form-item>
-      </el-form>
+          <el-button type="primary" @click="onGetLocate">从图上拾取坐标</el-button>
+          <el-button type="default" @click="onClearCoordMarker">清除标记</el-button>
+        </div>
+        <el-form label-width="50px" class="mt-15">
+          <el-form-item label="经度" class="mb-15">
+            <el-input v-model="posLon" placeholder="请输入经度"></el-input>
+          </el-form-item>
+          <el-form-item label="纬度" class="mb-15">
+            <el-input v-model="posLat" placeholder="请输入纬度"></el-input>
+          </el-form-item>
+          <el-form-item class="mb-0">
+            <el-button type="primary" style="width: 100%" @click="onLocateTo"
+              >定位到该点</el-button
+            >
+          </el-form-item>
+        </el-form>
       </div>
     </div>
   </UtilPanel>
