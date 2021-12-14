@@ -14,7 +14,23 @@
       <CollapsePanel>
         <template #left>功能建设中...</template>
         <template #right>
-          <div :id="mapID" :class="{ 'show-header': fixedHeader }"></div>
+          <!-- <div :id="mapID" :class="{ 'show-header': fixedHeader }"></div> -->
+          <div
+            v-for="(item, index) in viewCount"
+            :key="index"
+            :id="`splitScreenMapView${index}`"
+            class="map-view"
+            ref="mapView"
+          >
+            <div
+              class="map-view__map"
+              :id="`splitScreenMapView${index}`"
+              v-show="viewVisibleNum >= index"
+            ></div>
+            <div class="map-view__title" :id="'mapviewtitle' + index">
+              {{ getViewTitle(index) }}
+            </div>
+          </div>
         </template>
       </CollapsePanel>
     </template>
@@ -25,7 +41,7 @@
     width="260px"
     top="63px"
     right="15px"
-    :title="`${panel.utilName}分析工具`"
+    :title="`${panel.utilName}工具`"
     :show-help-icon="false"
     :show-max-icon="true"
     :show-content="false"
@@ -36,7 +52,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, inject, onMounted } from "@vue/runtime-core";
+import { ref, defineProps, defineEmits, inject, onMounted } from "@vue/runtime-core";
 // Arcgis
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
@@ -82,13 +98,20 @@ const fixedHeader = inject("getFixedHeader");
 // 坐标信息
 const coordInfo = inject("getCoordInfo");
 
-let splitScreen = null;
-let splitScreenView = null;
 // 地图ID
-const mapID = "splitScreen";
+const mapID = "splitScreen0";
+let splitScreenView = null;
+// 地图视图
+const viewCount = ref(new Array(6).fill(0));
+const viewVisibleNum = ref(6);
+const viewWinOne = ref(false);
+const viewWinTwo = ref(false);
+const viewWinThree = ref(false);
+const viewWinFour = ref(false);
+const viewWinFive = ref(false);
+const viewWinSix = ref(false);
 
 onMounted(() => {
-  console.log(124);
   initMap();
 });
 
@@ -105,7 +128,7 @@ const initMap = () => {
   let view = new MapView({
     map,
     ...mapViewConfig(mapID),
-    center:mapCenterPoint,
+    center: mapCenterPoint,
     zoom: 14,
   });
 
@@ -113,9 +136,156 @@ const initMap = () => {
 
   // 移除powered by
   view.ui._removeComponents(["attribution"]);
-
-  splitScreen = map;
   splitScreenView = view;
+};
+
+// 获取视图标题
+const getViewTitle = (index) => {
+  // if (viewLayer.value[index]) {
+  //   return viewLayer.value[index].text ? viewLayer.value[index].text : "暂无标题";
+  // }
+  return "暂无标题";
+};
+
+// 改变视图数量
+const changeViewCount = (val) => {
+  viewVisibleNum.value = val;
+  changeLayOut(val); // 改布局
+
+  switch (Number(val)) {
+    case 1:
+      viewWinOne.value = true;
+      viewWinTwo.value = false;
+      viewWinThree.value = false;
+      viewWinFour.value = false;
+      viewWinFive.value = false;
+      viewWinSix.value = false;
+      break;
+    case 2:
+      viewWinOne.value = true;
+      viewWinTwo.value = true;
+      viewWinThree.value = false;
+      viewWinFour.value = false;
+      viewWinFive.value = false;
+      viewWinSix.value = false;
+      break;
+    case 3:
+      viewWinOne.value = true;
+      viewWinTwo.value = true;
+      viewWinThree.value = true;
+      viewWinFour.value = false;
+      viewWinFive.value = false;
+      viewWinSix.value = false;
+      break;
+    case 4:
+      viewWinOne.value = true;
+      viewWinTwo.value = true;
+      viewWinThree.value = true;
+      viewWinFour.value = true;
+      viewWinFive.value = false;
+      viewWinSix.value = false;
+      break;
+    case 5:
+      viewWinOne.value = true;
+      viewWinTwo.value = true;
+      viewWinThree.value = true;
+      viewWinFour.value = true;
+      viewWinFive.value = true;
+      viewWinSix.value = false;
+      break;
+    case 6:
+      viewWinOne.value = true;
+      viewWinTwo.value = true;
+      viewWinThree.value = true;
+      viewWinFour.value = true;
+      viewWinFive.value = true;
+      viewWinSix.value = true;
+      break;
+    default:
+      break;
+  }
+};
+
+// 改变布局
+const changeLayOut = (index) => {
+  const splitScreenMapView0 = document.getElementById("splitScreenMapView0");
+  const splitScreenMapView1 = document.getElementById("splitScreenMapView1");
+  const splitScreenMapView2 = document.getElementById("splitScreenMapView2");
+  const splitScreenMapView3 = document.getElementById("splitScreenMapView3");
+  const splitScreenMapView4 = document.getElementById("splitScreenMapView4");
+  const splitScreenMapView5 = document.getElementById("splitScreenMapView5");
+  const splitScreenMapView6 = document.getElementById("splitScreenMapView6");
+
+  switch (index) {
+    case 1:
+      nextTick(() => {
+        splitScreenMapView0.style.width = "100%";
+        splitScreenMapView0.style.height = "100%";
+      });
+      break;
+    case 2:
+      nextTick(() => {
+        splitScreenMapView0.style.width = "50%";
+        splitScreenMapView1.style.width = "50%";
+        splitScreenMapView0.style.height = "100%";
+        splitScreenMapView1.style.height = "100%";
+      });
+      break;
+    case 3:
+      nextTick(() => {
+        splitScreenMapView0.style.width = "100%";
+        splitScreenMapView1.style.width = "50%";
+        splitScreenMapView2.style.width = "50%";
+        splitScreenMapView0.style.height = "50%";
+        splitScreenMapView1.style.height = "50%";
+        splitScreenMapView2.style.height = "50%";
+      });
+      break;
+    case 4:
+      nextTick(() => {
+        splitScreenMapView0.style.width = "50%";
+        splitScreenMapView1.style.width = "50%";
+        splitScreenMapView2.style.width = "50%";
+        splitScreenMapView3.style.width = "50%";
+        splitScreenMapView0.style.height = "50%";
+        splitScreenMapView1.style.height = "50%";
+        splitScreenMapView2.style.height = "50%";
+        splitScreenMapView3.style.height = "50%";
+      });
+      break;
+    case 5:
+      nextTick(() => {
+        splitScreenMapView0.style.width = "50%";
+        splitScreenMapView1.style.width = "50%";
+        splitScreenMapView2.style.width = "33.3%";
+        splitScreenMapView3.style.width = "33.3%";
+        splitScreenMapView4.style.width = "33.3%";
+        splitScreenMapView0.style.height = "50%";
+        splitScreenMapView1.style.height = "50%";
+        splitScreenMapView2.style.height = "50%";
+        splitScreenMapView3.style.height = "50%";
+        splitScreenMapView4.style.height = "50%";
+      });
+      break;
+    case 6:
+      nextTick(() => {
+        splitScreenMapView0.style.width = "33.3%";
+        splitScreenMapView1.style.width = "33.3%";
+        splitScreenMapView2.style.width = "33.3%";
+        splitScreenMapView3.style.width = "33.3%";
+        splitScreenMapView4.style.width = "33.3%";
+        splitScreenMapView5.style.width = "33.3%";
+        splitScreenMapView0.style.height = "50%";
+        splitScreenMapView1.style.height = "50%";
+        splitScreenMapView2.style.height = "50%";
+        splitScreenMapView3.style.height = "50%";
+        splitScreenMapView4.style.height = "50%";
+        splitScreenMapView5.style.height = "50%";
+      });
+      break;
+    default:
+      break;
+  }
 };
 
 // 关闭面板
@@ -138,6 +308,21 @@ const onMaximize = () => {
 #splitScreen {
   width: 100%;
   height: 100%;
+}
 
+.map-view {
+  border: #eeeeee 2px solid;
+  display: none;
+  position: relative;
+
+  &__map {
+    height: calc(100% - 20px);
+  }
+
+  &__title {
+    background: #fff;
+    height: 20px;
+    text-align: center;
+  }
 }
 </style>

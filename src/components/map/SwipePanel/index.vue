@@ -67,7 +67,7 @@
     width="260px"
     top="63px"
     right="15px"
-    :title="`${panel.utilName}分析工具`"
+    :title="`${panel.utilName}工具`"
     :show-help-icon="false"
     :show-max-icon="true"
     :show-content="false"
