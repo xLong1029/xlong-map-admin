@@ -111,11 +111,15 @@ export default {
    */
   onRemoveScreenShot: (view, data) => {
     console.log("收起截图面板");
+
     isSelectedScreen = false;
     view.container.classList.remove("crosshair");
-    dragHandler.remove();
     setMaskPosition(null);
 
+    if(dragHandler){
+      dragHandler.remove();
+    }    
+    
     if (data.store) {
       const { store } = data;
       // 清除截图
