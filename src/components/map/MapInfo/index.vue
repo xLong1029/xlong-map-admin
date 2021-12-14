@@ -106,7 +106,7 @@ const onLocateToNanning = () => {
       center: mapCenterPoint,
       tilt: 0,
       heading: 0,
-      zoom: 10,
+      zoom: 11,
     },
     params: { duration: 3000, showMessage: true },
   });

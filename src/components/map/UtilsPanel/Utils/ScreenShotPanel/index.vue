@@ -6,7 +6,7 @@
     :show-help-icon="false"
     @on-click-close="onClose"
   >
-    <p v-if="startScreenshot" style="margin: 5px 0">通过单击场景以建立您的截图</p>
+    <p v-if="startScreenshot" style="margin: 5px 0">通过单击地图以建立您的截图</p>
     <button
       v-else
       class="esri-button esri-button--primary"
@@ -20,9 +20,7 @@
 
 <script setup>
 import common from "common";
-import { inject } from "@vue/runtime-core";
-
-import { defineProps, defineEmits } from "@vue/runtime-core";
+import { defineProps, defineEmits, computed } from "@vue/runtime-core";
 import UtilPanel from "components/common/UtilPanel/index.vue";
 
 const props = defineProps({
@@ -46,10 +44,10 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
-const { dispatchMapEvent } = common();
+const { store, dispatchMapEvent } = common();
 
-// 获取顶级组件传递的值：是否开启截图
-const startScreenshot = inject("getStartScreenshot");
+// // 获取顶级组件传递的值：是否开启截图
+const startScreenshot = computed(() => store.getters.startScreenshot);
 
 // 当前面板ID
 const panelID = "screenshotPanel";
@@ -67,7 +65,7 @@ const onClose = () => {
 
 // 开启截图
 const onStartScreenshot = () => {
-  startScreenshot.value = true;
+  store.dispatch("map/setStartScreenshot", true);
   dispatchMapEvent("onScreenShot");
 };
 </script>

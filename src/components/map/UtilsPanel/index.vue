@@ -39,10 +39,7 @@
 
       <!-- 工具面板 -->
       <template v-if="panelList.length">
-        <template
-          v-for="(item, index) in panelList"
-          :key="'util-panel' + index"
-        >
+        <template v-for="(item, index) in panelList" :key="'util-panel' + index">
           <template v-if="item.utilActive">
             <component
               :is="item.component"
@@ -118,7 +115,7 @@ import { getLocalS } from "utils";
 
 const emit = defineEmits(["open-full-screen-window"]);
 
-const { dispatchMapEvent, showDevMessage } = common();
+const { store, dispatchMapEvent, showDevMessage } = common();
 const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
 
 // 获取顶级组件传递的值：当前地图视图是2D或者3D
@@ -291,9 +288,7 @@ const setPanelVisble = (panel, index, active) => {
  * @param {*} utilActive 面板激活状态
  */
 const handleHighlightPanels = (panel, utilActive) => {
-  const index = highlightPanels.value.findIndex(
-    (e) => e.component === panel.component
-  );
+  const index = highlightPanels.value.findIndex((e) => e.component === panel.component);
 
   if (utilActive && index < 0) {
     highlightPanels.value.push(panel);
@@ -304,9 +299,7 @@ const handleHighlightPanels = (panel, utilActive) => {
 
 // 当前面板是否高亮
 const isHighlightPanel = (panel) => {
-  const index = highlightPanels.value.findIndex(
-    (e) => e.component === panel.component
-  );
+  const index = highlightPanels.value.findIndex((e) => e.component === panel.component);
   return index >= 0;
 };
 
@@ -319,14 +312,15 @@ const isHighlightPanel = (panel) => {
 const handleUtilPanelEvent = (utilActive, eventSuffix, panelID) => {
   if (eventSuffix) {
     nextTick(() => {
-      dispatchMapEvent(
-        utilActive ? `onOpen${eventSuffix}` : `onRemove${eventSuffix}`,
-        panelID
-          ? {
-              panelID,
-            }
-          : null
-      );
+      dispatchMapEvent([
+        {
+          event: utilActive ? `onOpen${eventSuffix}` : `onRemove${eventSuffix}`,
+          data: {
+            panelID,
+            store,
+          },
+        },
+      ]);
     });
   }
 };
@@ -334,17 +328,23 @@ const handleUtilPanelEvent = (utilActive, eventSuffix, panelID) => {
 // 清屏
 const onClearScreen = () => {
   const events = [];
-  const data = null;
+  const data = {
+    store,
+  };
 
   panelList.value.forEach((e) => {
-    if (e.utilActive) {
+    if (e.utilActive && e.eventSuffix) {
       e.utilActive = false;
       events.push({
         event: `onRemove${e.eventSuffix}`,
         data,
       });
+      // 取消高亮
+      handleHighlightPanels(e, false);
     }
   });
+
+  console.log(panelList.value);
 
   events.push({
     event: "onClearScreen",
@@ -360,9 +360,8 @@ const onClosePanel = ({ panel, index, active, eventSuffix, panelID }) => {
   handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
 };
 
-
 // 暴露方法给父组件调用
-defineExpose({ setPanelVisble })
+defineExpose({ setPanelVisble });
 </script>
 
 <style lang="scss" scoped>

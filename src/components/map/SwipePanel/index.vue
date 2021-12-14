@@ -98,7 +98,8 @@ import mapEvents from "common/mapEvents/index.js";
 import map from "common/map/index.js";
 import layers from "common/map/layers.js";
 // 配置
-import { MAP_IMAGE_BASEMAP_LAYER } from "config/index.js";
+import { SPATIAL_REFERENCE_WKID } from "config/index.js";
+import Swipe from "@arcgis/core/widgets/Swipe";
 
 const props = defineProps({
   // 面板
@@ -124,14 +125,6 @@ const { onClosePanel, onMinimizePanel, onMaximizePanel } = maxScreenPanel();
 
 const { mapCenterPoint, mapViewConfig } = map();
 
-const {
-  tdtBaseUrl,
-  vectorBasemapLayer,
-  vectorBasemapNoteLayer,
-  imageBasemapLayer,
-  terrainBasemapLayer,
-} = layers();
-
 // 是否显示系统固定头部
 const fixedHeader = inject("getFixedHeader");
 // 坐标信息
@@ -150,13 +143,28 @@ const transferLayers = ref([
     id: "test1",
     title: "蓝黑色中文不含兴趣点版中国基础地图",
     url:
-    "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/WV03_Kilauea_20180519_NearInfrared/MapServer",
+      "https://tiles.arcgis.com/tiles/P3ePLMYs2RVChkJx/arcgis/rest/services/WV03_Kilauea_20180519_NearInfrared/MapServer",
+  },
+  {
+    id: "ChinaOnlineCommunity",
+    title: "彩色中文含兴趣点版中国基础地图",
+    url:
+      "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
+  },
+  {
+    id: "ChinaBoundaryLine",
+    title: "中国边界线",
+    url:
+      "http://map.geoq.cn/arcgis/rest/services/SimpleFeature/ChinaBoundaryLine/MapServer",
   },
 ]);
 const transferLoading = ref(false);
 const transferTitles = ref(["上方", "下方"]);
 
+// 卷帘配置
 const swipeDirection = ref("vertical");
+const leadingLayers = ref([]);
+const trailingLayers = ref([]);
 
 const openSwipe = ref(false);
 
@@ -171,6 +179,7 @@ watch(
         leadingLayers: [],
         trailingLayers: [],
       };
+
       // 左侧数据
       transferValue.value.forEach((item) => {
         const layer = swipeMapView.map.findLayerById(item);
@@ -181,7 +190,7 @@ watch(
 
       // 右侧数据
       transferLayers.value.forEach((item) => {
-        const index = data.trailingLayers.findIndex(e => e.id === item.id);
+        const index = data.trailingLayers.findIndex((e) => e.id === item.id);
         if (index < 0) {
           const layer = swipeMapView.map.findLayerById(item.id);
           if (layer) {
@@ -205,36 +214,24 @@ onMounted(() => {
 
 // 初始化
 const init = () => {
-  // console.log(transferLayers.value);
-
-  const layerList = [vectorBasemapLayer, vectorBasemapNoteLayer];
-
-  const basemap = new Basemap({
-    baseMapLayers: layerList,
-  });
-
   let map = new Map({
-    basemap,
+    basemap: "satellite",
   });
-
-  layerList.forEach((e) => {
-    map.add(e);
-  });
-
   // 加载切片图层
-  transferLayers.value.forEach((e) => {
-    const { id, title, url } = e;
-    const layer = new TileLayer({
-      id,
-      title,
-      url,
-    });
-    map.add(layer);
-  });
+  // transferLayers.value.forEach((e) => {
+  //   const { id, title, url } = e;
+  //   const layer = new TileLayer({
+  //     id,
+  //     title,
+  //     url,
+  //   });
+  //   map.add(layer);
+  // });
 
   let view = new MapView({
     map,
-    ...mapViewConfig(mapID),
+    container: mapID,
+    // ...mapViewConfig(mapID),
     center: mapCenterPoint,
     zoom: 14,
   });
@@ -243,6 +240,7 @@ const init = () => {
 
   // 移除powered by
   view.ui._removeComponents(["attribution"]);
+  
 
   // 定位到南宁全域范围
   mapEvents()["onLocateToExtent"](view, {
@@ -250,13 +248,41 @@ const init = () => {
       center: mapCenterPoint,
       tilt: 0,
       heading: 0,
-      zoom: 10,
+      zoom: 11,
     },
     params: { duration: 3000 },
   });
+
   swipeMapView = view;
 
-  openSwipe.value = true;
+  const infrared = new TileLayer({
+    url:
+      "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
+  });
+  map.add(infrared);
+
+  const nearInfrared = new TileLayer({
+    url:
+      "http://map.geoq.cn/arcgis/rest/services/SimpleFeature/ChinaBoundaryLine/MapServer",
+  });
+  map.add(nearInfrared);
+
+  map.add(infrared);
+  // // map.add(imageBasemapLayer);
+  // map.add(terrainBasemapLayer);
+
+  const swipe = new Swipe({
+    leadingLayers: [infrared],
+    trailingLayers: [nearInfrared],
+    direction: swipeDirection.value,
+    // position: 35, // set position of widget to 35%
+    view: view,
+  });
+
+  // add the widget to the view
+  view.ui.add(swipe);
+
+  // openSwipe.value = true;
 };
 
 // 改变卷帘方式

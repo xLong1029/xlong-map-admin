@@ -5,9 +5,17 @@ export default {
   /**
    * 清除所有绘制图层
    * @param {*} view 视图
+   * @param {*} data 传递数据
    */
-  onClearScreen: (view) => {
-    console.log("点击了清屏按钮");
+  onClearScreen: (view, data) => {
+    console.log("点击了清屏按钮", data);
+
+    if (data.store) {
+      const { store } = data;
+      // 清除截图和坐标拾取
+      store.dispatch("map/setStartGetLocateCoord", false);
+      store.dispatch("map/setStartScreenshot", false);
+    }
 
     view.graphics.removeAll();
 

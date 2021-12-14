@@ -7,13 +7,11 @@
     @on-click-close="onClose"
   >
     <div class="locate-panel__content">
-      <div class="operate-button">
-        <el-button type="primary" @click="onGetLocate"
-          >从图上拾取坐标</el-button
-        >
-        <el-button type="default" @click="onClearCoordMarker"
-          >清除所有标记</el-button
-        >
+      <div v-if="startGetLocateCoord" class="tip">通过单击地图以拾取坐标</div>
+      <div v-else>
+        <div class="operate-button">
+        <el-button type="primary" @click="onGetLocate">从图上拾取坐标</el-button>
+        <el-button type="default" @click="onClearCoordMarker">清除所有标记</el-button>
       </div>
       <el-form label-width="50px" class="mt-15">
         <el-form-item label="经度" class="mb-15">
@@ -26,22 +24,19 @@
           <el-button type="primary" @click="onLocateTo">定位到该点</el-button>
         </el-form-item>
       </el-form>
+      </div>
     </div>
   </UtilPanel>
 </template>
 
 <script setup>
-import {
-  ref,
-  defineProps,
-  defineEmits,
-  computed,
-  watch,
-} from "@vue/runtime-core";
+import { ref, defineProps, defineEmits, computed, watch } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 import UtilPanel from "components/common/UtilPanel/index.vue";
 import common from "common";
 import locateImg from "@/assets/images/locate.png";
+// 工具
+import { getLocalS } from "utils";
 
 const props = defineProps({
   // 面板
@@ -66,7 +61,10 @@ const emit = defineEmits(["close"]);
 
 const { dispatchMapEvent, store } = common();
 
+// 坐标信息
 const locateData = computed(() => store.getters.locateData);
+// 开始拾取坐标
+const startGetLocateCoord = computed(() => store.getters.startGetLocateCoord);
 
 // 当前面板ID
 const panelID = "locatePanel";
@@ -100,7 +98,6 @@ const onLocateTo = () => {
     return;
   }
 
-  let events = [];
   const data = {
     title: "定位坐标",
     lon: posLon.value,
@@ -127,6 +124,8 @@ const onLocateTo = () => {
 
 // 拾取坐标
 const onGetLocate = () => {
+  store.dispatch("map/setStartGetLocateCoord", true);
+
   dispatchMapEvent("onGetLocateCoord", {
     store,
   });

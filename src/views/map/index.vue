@@ -4,7 +4,6 @@
     <ArcGisMap
       ref="mapRef"
       :map-operate-panel="mapOperatePanel"
-      @close-screenshot="onCloseScreenshot"
     ></ArcGisMap>
     <!-- 地图信息面板 -->
     <MapInfo
@@ -87,6 +86,7 @@ import SwipePanel from "components/map/SwipePanel/index.vue";
 import SplitScreen from "components/map/SplitScreen/index.vue";
 // 图片
 import defaultAvatarImg from "assets/images/default-avatar.png";
+import { ElMessage } from "element-plus";
 
 const store = useStore();
 
@@ -113,9 +113,6 @@ const coordInfo = reactive({
   locate: "",
 });
 
-// 开启截图
-const startScreenshot = ref(false);
-
 const user = computed(() => store.getters.user);
 const fixedHeader = computed(() => store.getters.fixedHeader);
 const mapInfoPanel = computed(() => store.getters.mapInfoPanel);
@@ -130,7 +127,6 @@ provide("getMapViewType", mapViewType);
 provide("getCameraInfo", cameraInfo);
 provide("getCoordInfo", coordInfo);
 provide("getFixedHeader", fixedHeader);
-provide("getStartScreenshot", startScreenshot);
 provide("getBasemap", basemap);
 
 // 是否显示账户设置
@@ -169,6 +165,7 @@ const setAccountSettingVisible = (val) => {
 // 监听通过地图信息设置地图比例
 const onMapSetView = ({ scale }) => {
   coordInfo.scale = scale;
+  ElMessage.success(`已将地图比例调整至1:${scale}`)
   // 调用子组件方法
   mapRef.value.onSetScale(scale);
 };
@@ -181,11 +178,6 @@ const onFoldMapInfoPanel = (val) => {
 // 改变地图底图
 const changeBasemap = (val) => {
   basemap.value = val;
-};
-
-// 关闭截图
-const onCloseScreenshot = () => {
-  startScreenshot.value = false;
 };
 
 // 打开全屏窗口

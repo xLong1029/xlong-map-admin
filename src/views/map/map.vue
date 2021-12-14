@@ -18,10 +18,10 @@ import {
   watch,
   inject,
   nextTick,
-  defineEmits,
   defineExpose,
 } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
+import { useStore } from "vuex";
 // Arcgis
 import Map from "@arcgis/core/Map";
 import SceneView from "@arcgis/core/views/SceneView";
@@ -35,7 +35,7 @@ import mapEvents from "common/mapEvents/index.js";
 import map from "common/map/index.js";
 import layers from "common/map/layers.js";
 
-const emit = defineEmits(["close-screenshot"]);
+const store = useStore();
 
 const { mapEvent, mapCenterPoint, mapViewConfig } = map();
 
@@ -339,7 +339,7 @@ const onSetScale = (scale) => {
 // 关闭截图功能
 const onCloseScreenshot = () => {
   currentMapConfig.view.container.classList.remove("screenshotCursor");
-  emit("close-screenshot");
+  store.dispatch("map/setStartScreenshot", false);
 };
 
 // 暴露方法给父组件调用

@@ -22,7 +22,9 @@ const getters = {
   mapBottomCoord:(state) => state.settings.mapBottomCoord,
   // map  
   mapEvent:(state) => state.map.mapEvent,
+  startGetLocateCoord: (state) => state.map.startGetLocateCoord,
   locateData: (state) => state.map.locateData,
+  startScreenshot: (state) => state.map.startScreenshot,
 };
 
 export default getters;

@@ -107,9 +107,20 @@ export default {
   /**
    * 取消打印
    * @param {*} view 视图
+   * @param {*} data 传递数据
    */
-  onRemoveScreenShot: (view) => {
+  onRemoveScreenShot: (view, data) => {
     console.log("收起截图面板");
+    isSelectedScreen = false;
+    view.container.classList.remove("crosshair");
+    dragHandler.remove();
+    setMaskPosition(null);
+
+    if (data.store) {
+      const { store } = data;
+      // 清除截图
+      store.dispatch("map/setStartScreenshot", false);
+    }
   },
   /**
    * 开启截图工具
@@ -182,7 +193,10 @@ export default {
         }
       });
     } else {
-      screenshotBtn.classList.remove("is-active");
+      if (screenshotBtn) {
+        screenshotBtn.classList.remove("is-active");
+      }
+
       dragHandler.remove();
       setMaskPosition(null);
       view.container.classList.remove("crosshair");

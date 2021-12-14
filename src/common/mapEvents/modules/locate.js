@@ -8,6 +8,8 @@ import Graphic from "@arcgis/core/Graphic";
 import SpatialReference from "@arcgis/core/geometry/SpatialReference";
 import PopupTemplate from "@arcgis/core/PopupTemplate";
 import locateImg from "@/assets/images/locate.png";
+// 工具
+import { setLocalS } from "utils";
 // 配置
 import { SPATIAL_REFERENCE_WKID } from "config/index.js";
 
@@ -20,6 +22,8 @@ export default {
    * @param {*} data 坐标数据
    */
   onLocateToCoordAndMark: (view, data) => {
+    setLocalS("startGetLocateCoord", false);
+
     const { lon, lat } = data;
 
     const target = [parseFloat(lon), parseFloat(lat)];
@@ -77,6 +81,8 @@ export default {
    * @param {*} data 坐标数据
    */
   onGetLocateCoord: (view, data) => {
+    console.log(123);
+
     const draw = new Draw({
       view,
     });
@@ -97,13 +103,17 @@ export default {
         lon: coordinates[0],
         lat: coordinates[1]
       });
+
+      store.dispatch("map/setStartGetLocateCoord", false);
+      
+      ElMessage.success("已成功获取坐标信息");
     };
 
-    var action = draw.create("point", {
+    const action = draw.create("point", {
       mode: "click",
     });
 
-    view.focus();
+    // view.focus();
     action.on("vertex-add", createPoint);
     action.on("vertex-remove", createPoint);
     action.on("draw-complete", createPoint);
@@ -173,6 +183,8 @@ export default {
               // 显示图标
               layer.graphics.add(picGraphic);
             }
+
+            ElMessage.success("已定位到当前位置");
           });
       }
 
