@@ -12,21 +12,67 @@
   >
     <template #content>
       <CollapsePanel>
-        <template #left>功能建设中...</template>
+        <template #left>
+          <div>
+            <div class="title">分屏选择</div>
+            <ul class="split-buttons">
+              <template
+                v-for="(splitButton, i) in splitButtons"
+                :key="'split-button' + i"
+              >
+                <li
+                  class="split-buttons-item"
+                  :class="splitButton.active ? 'active' : ''"
+                >
+                  <template v-for="(item, j) in i + 1" :key="'item' + j">
+                    <div
+                      class="button"
+                      :style="{
+                        width: getSplitScreenWidth(i + 1, j),
+                        height: getSplitScreenHeight(i + 1, j),
+                      }"
+                    >
+                      {{ j + 1 }}
+                    </div>
+                    <!-- 双数 -->
+                    <!-- <div
+                      v-if="(i + 1) % 2 === 0"
+                      class="button"
+                      :style="{
+                        width: `${(i + 1) % 3 === 0 ? '33.33%' : '50%'}`,
+                        height: `${i + 1 === 2 ? '100%' : '50%'}`,
+                      }"
+                    >
+                      {{ j + 1 }}
+                    </div> -->
+                    <!-- 单数 -->
+                    <!-- <div
+                      v-else
+                      class="button odd"
+                      :style="{
+                        width: `${(i + 1) % 3 === 0 ? '50%' : '33.33%'}`,
+                        height: i + 1 > 1 ? '50%' : '100%',
+                      }"
+                    >
+                      {{ j + 1 }}
+                    </div> -->
+                  </template>
+                </li>
+              </template>
+            </ul>
+          </div>
+        </template>
         <template #right>
           <!-- <div :id="mapID" :class="{ 'show-header': fixedHeader }"></div> -->
           <div
-            v-for="(item, index) in viewCount"
-            :key="index"
-            :id="`splitScreenMapView${index}`"
-            class="map-view"
             ref="mapView"
+            v-for="(item, index) in viewCount"
+            :key="'map-view' + index"
+            :id="`splitScreenMapView${index + 1}`"
+            class="map-view"
+            :style="getStyle(index + 1)"
           >
-            <div
-              class="map-view__map"
-              :id="`splitScreenMapView${index}`"
-              v-show="viewVisibleNum >= index"
-            ></div>
+            <div class="map-view__map" v-show="viewVisibleNum >= index"></div>
             <div class="map-view__title" :id="'mapviewtitle' + index">
               {{ getViewTitle(index) }}
             </div>
@@ -52,7 +98,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, inject, onMounted } from "@vue/runtime-core";
+import { ref, reactive, defineProps, defineEmits, inject } from "@vue/runtime-core";
 // Arcgis
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
@@ -95,28 +141,66 @@ const { imageBasemapLayer } = layers();
 
 // 是否显示系统固定头部
 const fixedHeader = inject("getFixedHeader");
-// 坐标信息
-const coordInfo = inject("getCoordInfo");
 
 // 地图ID
 const mapID = "splitScreen0";
 let splitScreenView = null;
 // 地图视图
 const viewCount = ref(new Array(6).fill(0));
+const viewLayer = ref([]);
 const viewVisibleNum = ref(6);
-const viewWinOne = ref(false);
+const viewWinOne = ref(true);
 const viewWinTwo = ref(false);
 const viewWinThree = ref(false);
 const viewWinFour = ref(false);
 const viewWinFive = ref(false);
 const viewWinSix = ref(false);
 
-onMounted(() => {
-  initMap();
-});
+// 分屏按钮
+const splitButtons = reactive(new Array(6).fill({ active: false }));
+
+// 是否第一次加载
+let firstLoad = true;
+
+const changeBg = (index) => {
+  if (treeRealSelect.value.length > 0) {
+    splitButtons.forEach((item) => (item.active = false));
+    splitButtons[index].active = true;
+  }
+};
+const getStyle = (index) => {
+  // console.log(index);
+
+  // if (index >= viewLayer.value.length + 1 && index != 1) {
+  //   return "dispay:none";
+  // }
+
+  // // 没有要显示图层时，第一个地图的图层清空
+  // if (viewLayer.value.length == 0) {
+  //   removeLayer(0);
+  // }
+
+  initMap(index);
+
+  // if (firstLoad) {
+  //   firstLoad = false;
+  //     loadMapView(index - 1);
+  // } else {
+  //   loadMapView(index - 1);
+  // }
+};
+
+// 清除图层
+const removeLayer = (index) => {
+  // let view = viewGroup[index];
+  // if (view) {
+  //   view.map.removeAll();
+  // }
+};
 
 // 初始化地图
-const initMap = () => {
+const initMap = (index) => {
+  console.log(index);
   let map = new Map({
     basemap: new Basemap({
       baseMapLayers: [imageBasemapLayer],
@@ -150,7 +234,6 @@ const getViewTitle = (index) => {
 // 改变视图数量
 const changeViewCount = (val) => {
   viewVisibleNum.value = val;
-  changeLayOut(val); // 改布局
 
   switch (Number(val)) {
     case 1:
@@ -205,86 +288,62 @@ const changeViewCount = (val) => {
       break;
   }
 };
+/**
+ * 获取分屏宽度
+ *
+ * @param {*} screenNum 分屏数量
+ * @param {*} index 当前分屏下标
+ */
+const getSplitScreenWidth = (screenNum, index) => {
+  // 单独处理
+  if (screenNum === 1 || screenNum === 2) {
+    return `${100 / screenNum}%`;
+  }
 
-// 改变布局
-const changeLayOut = (index) => {
-  const splitScreenMapView0 = document.getElementById("splitScreenMapView0");
-  const splitScreenMapView1 = document.getElementById("splitScreenMapView1");
-  const splitScreenMapView2 = document.getElementById("splitScreenMapView2");
-  const splitScreenMapView3 = document.getElementById("splitScreenMapView3");
-  const splitScreenMapView4 = document.getElementById("splitScreenMapView4");
-  const splitScreenMapView5 = document.getElementById("splitScreenMapView5");
-  const splitScreenMapView6 = document.getElementById("splitScreenMapView6");
+  // 双数
+  if (screenNum % 2 === 0) {
+    if (screenNum % 3 === 0) {
+      return `${100 / (screenNum / 3)}%`;
+    }
+    return `${100 / (screenNum / 2)}%`;
+  }
+  // 单数
+  else {
+    // 上面一排的数量
+    const topNum = (screenNum - 1) / 2;
+    const bottomNum = topNum + 1;
 
-  switch (index) {
-    case 1:
-      nextTick(() => {
-        splitScreenMapView0.style.width = "100%";
-        splitScreenMapView0.style.height = "100%";
-      });
-      break;
-    case 2:
-      nextTick(() => {
-        splitScreenMapView0.style.width = "50%";
-        splitScreenMapView1.style.width = "50%";
-        splitScreenMapView0.style.height = "100%";
-        splitScreenMapView1.style.height = "100%";
-      });
-      break;
-    case 3:
-      nextTick(() => {
-        splitScreenMapView0.style.width = "100%";
-        splitScreenMapView1.style.width = "50%";
-        splitScreenMapView2.style.width = "50%";
-        splitScreenMapView0.style.height = "50%";
-        splitScreenMapView1.style.height = "50%";
-        splitScreenMapView2.style.height = "50%";
-      });
-      break;
-    case 4:
-      nextTick(() => {
-        splitScreenMapView0.style.width = "50%";
-        splitScreenMapView1.style.width = "50%";
-        splitScreenMapView2.style.width = "50%";
-        splitScreenMapView3.style.width = "50%";
-        splitScreenMapView0.style.height = "50%";
-        splitScreenMapView1.style.height = "50%";
-        splitScreenMapView2.style.height = "50%";
-        splitScreenMapView3.style.height = "50%";
-      });
-      break;
-    case 5:
-      nextTick(() => {
-        splitScreenMapView0.style.width = "50%";
-        splitScreenMapView1.style.width = "50%";
-        splitScreenMapView2.style.width = "33.3%";
-        splitScreenMapView3.style.width = "33.3%";
-        splitScreenMapView4.style.width = "33.3%";
-        splitScreenMapView0.style.height = "50%";
-        splitScreenMapView1.style.height = "50%";
-        splitScreenMapView2.style.height = "50%";
-        splitScreenMapView3.style.height = "50%";
-        splitScreenMapView4.style.height = "50%";
-      });
-      break;
-    case 6:
-      nextTick(() => {
-        splitScreenMapView0.style.width = "33.3%";
-        splitScreenMapView1.style.width = "33.3%";
-        splitScreenMapView2.style.width = "33.3%";
-        splitScreenMapView3.style.width = "33.3%";
-        splitScreenMapView4.style.width = "33.3%";
-        splitScreenMapView5.style.width = "33.3%";
-        splitScreenMapView0.style.height = "50%";
-        splitScreenMapView1.style.height = "50%";
-        splitScreenMapView2.style.height = "50%";
-        splitScreenMapView3.style.height = "50%";
-        splitScreenMapView4.style.height = "50%";
-        splitScreenMapView5.style.height = "50%";
-      });
-      break;
-    default:
-      break;
+    if(index < topNum){
+      return `${100/ topNum}%`
+    }
+    else{
+      return `${100/ bottomNum}%`
+    }
+  }
+};
+
+/**
+ * 获取分屏宽度
+ *
+ * @param {*} screenNum 分屏数量
+ * @param {*} index 当前分屏下标
+ */
+const getSplitScreenHeight = (screenNum, index) => {
+  // 单独处理
+  if (screenNum === 1 || screenNum === 2) {
+    return "100%";
+  }
+
+  // 双数
+  else if (screenNum % 2 === 0) {
+    if (screenNum % 3 === 0) {
+      return `${100 / 3}%`;
+    }
+    return "50%";
+  }
+  // 单数
+  else {
+    return "50%";
   }
 };
 
@@ -305,10 +364,20 @@ const onMaximize = () => {
 </script>
 
 <style lang="scss" scoped>
-#splitScreen {
-  width: 100%;
-  height: 100%;
+.split-screen {
+  .title {
+    font-size: 14px;
+    color: #666;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: $border;
+    margin-bottom: 15px;
+  }
 }
+// #splitScreen {
+//   width: 100%;
+//   height: 100%;
+// }
 
 .map-view {
   border: #eeeeee 2px solid;
@@ -323,6 +392,92 @@ const onMaximize = () => {
     background: #fff;
     height: 20px;
     text-align: center;
+  }
+}
+
+.split-buttons {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+
+  &-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: $border;
+    margin: 5px;
+    width: 30.5%;
+    // border-radius: 4px;
+    height: 100px;
+    flex-wrap: wrap;
+    color: #888;
+    overflow: hidden;
+
+    .button {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: bold;
+      justify-content: center;
+      position: relative;
+      border: $border;
+
+      // &.odd {
+      //   &:nth-child(2n + 1) {
+      //     &::before {
+      //       border-left: none;
+      //     }
+      //   }
+      // }
+
+      // &:first-child {
+      //   &::before {
+      //     border-left: none;
+      //   }
+      //   &::after {
+      //     border-left: none;
+      //   }
+      // }
+
+      // // &:last-child{}
+
+      // &::before {
+      //   content: "";
+      //   display: block;
+      //   position: absolute;
+      //   height: 100%;
+      //   left: -1px;
+      //   border-left: $border;
+      // }
+
+      // &::after {
+      //   content: "";
+      //   display: block;
+      //   position: absolute;
+      //   width: 100%;
+      //   bottom: -1px;
+      //   border-bottom: $border;
+      // }
+    }
+
+    &:hover {
+      cursor: pointer;
+      border-color: $primary-color;
+      z-index: 2;
+
+      .button {
+        color: $primary-color;
+        border-color: $primary-color;
+
+        &::before {
+          border-color: $primary-color;
+        }
+
+        &::after {
+          border-color: $primary-color;
+        }
+      }
+    }
   }
 }
 </style>

@@ -130,8 +130,6 @@ const { mapCenterPoint } = map();
 
 // 是否显示系统固定头部
 const fixedHeader = inject("getFixedHeader");
-// 坐标信息
-const coordInfo = inject("getCoordInfo");
 
 let swipeMapView = null;
 // 地图ID
