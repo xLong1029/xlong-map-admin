@@ -83,7 +83,8 @@ $left-panel-width: 400px;
     }
 
     &-content {
-      // width: 100%;
+      width: 100%;
+      max-height: 100%;
       padding: 10px;
       overflow-y: auto;
 

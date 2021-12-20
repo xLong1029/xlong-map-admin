@@ -90,7 +90,6 @@ import {
 // Arcgis
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
-import Basemap from "@arcgis/core/Basemap";
 import TileLayer from "@arcgis/core/layers/TileLayer";
 // 组件
 import MaxScreenPanel from "components/common/MaxScreenPanel/index.vue";

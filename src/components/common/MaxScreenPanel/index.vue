@@ -82,12 +82,12 @@ $max-screen-pane-padding: 10px;
 
   &.maximize {
     display: block;
-    z-index: 9999;
+    z-index: 99;
   }
 
   &.minimize {
     display: none;
-    z-index: -999;
+    z-index: -99;
   }
 
   &.show-header {

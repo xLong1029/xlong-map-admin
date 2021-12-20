@@ -51,20 +51,25 @@
             </el-alert>
             <div>
               <el-form label-width="80px">
-                <el-form-item
-                  v-for="(item, index) in viewWin"
-                  :key="'view-win' + index"
-                  :label="`视窗【${index + 1}】`"
-                >
-                  <el-select v-model="item.layer" style="width: 100%">
-                    <el-option
-                      v-for="(item, index) in viewLayer"
-                      :key="index"
-                      :label="item.text"
-                      :value="item.id"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
+                <template v-for="(item, index) in viewWin" :key="'view-win' + index">
+                  <el-form-item
+                    v-if="index < viewVisibleNum"
+                    :label="`视窗【${index + 1}】`"
+                  >
+                    <el-select
+                      v-model="item.layer"
+                      style="width: 100%"
+                      @change="changeViewLayer(index)"
+                    >
+                      <el-option
+                        v-for="(item, index) in viewLayers"
+                        :key="index"
+                        :label="item.title"
+                        :value="item.id"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </template>
               </el-form>
             </div>
           </div>
@@ -121,7 +126,7 @@ import {
 // Arcgis
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
-import Basemap from "@arcgis/core/Basemap";
+import TileLayer from "@arcgis/core/layers/TileLayer";
 // 组件
 import MaxScreenPanel from "components/common/MaxScreenPanel/index.vue";
 import UtilPanel from "components/common/UtilPanel/index.vue";
@@ -131,8 +136,6 @@ import maxScreenPanel from "common/maxScreenPanel.js";
 // 地图
 import map from "common/map/index.js";
 import layers from "common/map/layers.js";
-// 配置
-import { SPATIAL_REFERENCE_WKID } from "config/index.js";
 
 const props = defineProps({
   // 面板
@@ -167,31 +170,49 @@ const fixedHeader = inject("getFixedHeader");
 const mapID = "splitScreenMapView";
 // 地图视图
 const viewCount = ref(new Array(6).fill(0));
-// 视图图层
-const viewLayer = ref([]);
+// 图层资源
+const viewLayers = [
+  {
+    id: "ChinaOnlineStreetPurplishBlue",
+    title: "蓝黑色中文不含兴趣点版中国基础地图",
+    url:
+      "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
+  },
+  {
+    id: "ChinaBoundaryLine",
+    title: "中国边界线",
+    url:
+      "http://map.geoq.cn/arcgis/rest/services/SimpleFeature/ChinaBoundaryLine/MapServer",
+  },
+  {
+    id: "ChinaOnlineCommunity",
+    title: "彩色中文含兴趣点版中国基础地图",
+    url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
+  },
+];
 // 可见视图数
 const viewVisibleNum = ref(1);
 // 视图群组，存储视图对象
 const viewGroup = {};
-// 视窗图层
+// 视窗
 const viewWin = reactive([
   {
-    layer: null,
+    layer: "ChinaOnlineStreetPurplishBlue",
   },
   {
-    layer: null,
+    layer: "ChinaBoundaryLine",
   },
   {
-    layer: null,
+    layer: "ChinaOnlineCommunity",
   },
   {
-    layer: null,
+    layer: "ChinaOnlineStreetPurplishBlue",
   },
   {
-    layer: null,
+    layer: "ChinaBoundaryLine",
   },
   {
-    layer: null,
+    layer: "ChinaOnlineCommunity",
   },
 ]);
 
@@ -235,6 +256,7 @@ const removeLayer = (index) => {
  */
 const initMap = (index) => {
   let view = viewGroup[index];
+  const layerID = viewWin[index].layer;
 
   if (!view) {
     let map = new Map({
@@ -252,19 +274,52 @@ const initMap = (index) => {
 
     // 移除powered by
     view.ui._removeComponents(["attribution"]);
+  }
 
-    viewGroup[index] = view;
+  getLayer(view.map, layerID);
+  viewGroup[index] = view;
+};
 
-    console.log(viewGroup);
+// 获取图层
+const getLayer = (map, layerID) => {
+  if (!layerID) {
+    return false;
+  }
+
+  const layerObj = viewLayers.find((e) => e.id === layerID);
+  const layer = map.findLayerById(layerID);
+  if (!layer) {
+    map.removeAll();
+    
+    const { id, title, url } = layerObj;
+
+    const layer = new TileLayer({
+      id,
+      title,
+      url,
+    });
+
+    map.add(layer);
   }
 };
 
 // 获取视图标题
 const getViewTitle = (index) => {
-  // if (viewLayer.value[index]) {
-  //   return viewLayer.value[index].text ? viewLayer.value[index].text : "暂无标题";
+  // if (viewLayers.value[index]) {
+  //   return viewLayers.value[index].text ? viewLayers.value[index].text : "暂无标题";
   // }
   return `视窗【${index + 1}】`;
+};
+
+/**
+ * 变更视图图层
+ *
+ * @param {*} index 当前分屏下标
+ */
+const changeViewLayer = (index) => {
+  console.log(index);
+  const layerID = viewWin[index].layer;
+  getLayer(viewGroup[index].map, layerID);
 };
 
 /**

@@ -140,7 +140,6 @@ const onClearCoordMarker = () => {
 </script>
 
 <style lang="scss" scoped>
-@import "~@/styles/util-panel.scss";
 .locate-panel {
   &__content {
     padding: 2px;

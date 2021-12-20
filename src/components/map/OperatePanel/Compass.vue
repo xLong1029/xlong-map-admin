@@ -127,7 +127,7 @@ const setCompassStyles = (angle, duration = "0.2s") => {
 
   .pointer {
     position: absolute;
-    z-index: 999;
+    z-index: 99;
     top: 10px;
     color: #717171;
     width: 12px;
@@ -141,7 +141,7 @@ const setCompassStyles = (angle, duration = "0.2s") => {
     &-left,
     &-right {
       position: absolute;
-      z-index: 999;
+      z-index: 99;
       top: 13px;
       font-size: 24px;
       color: #717171;

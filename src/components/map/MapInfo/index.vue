@@ -116,7 +116,7 @@ const onLocateToNanning = () => {
 <style lang="scss" scoped>
 .map-info-panel {
   position: absolute;
-  z-index: 99;
+  // z-index: 10;
   top: 15px;
   left: 15px;
   background: #fff;
