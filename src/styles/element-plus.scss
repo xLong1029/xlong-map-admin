@@ -18,3 +18,12 @@
 .el-button {
   max-height: 32px !important;
 }
+
+.el-alert--info {
+  background: #e0f0ff !important;
+  color: $primary-color !important;
+
+  .el-alert__closebtn {
+    color: $primary-color !important;
+  }
+}

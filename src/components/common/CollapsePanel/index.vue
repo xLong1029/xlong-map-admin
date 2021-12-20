@@ -73,7 +73,7 @@ $left-panel-width: 400px;
     width: $left-panel-width;
     left: 0;
     // box-shadow: 2px 0px 4px 0px rgba(0, 0, 0, 0.08);
-    padding: 10px;
+    
     @extend .transition;
     @extend .fixed-div;
 
@@ -83,7 +83,9 @@ $left-panel-width: 400px;
     }
 
     &-content {
-      width: 100%;
+      // width: 100%;
+      padding: 10px;
+      overflow-y: auto;
 
       :deep(.layer-filter-wrapper) {
         padding: 0;

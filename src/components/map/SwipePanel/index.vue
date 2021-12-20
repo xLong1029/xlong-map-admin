@@ -314,15 +314,6 @@ const onMaximize = () => {
     border-bottom: $border;
     margin-bottom: 15px;
   }
-
-  :deep(.el-alert) {
-    background: #e0f0ff;
-    color: $primary-color;
-  }
-
-  :deep(.el-alert__closebtn) {
-    color: $primary-color;
-  }
 }
 
 .swipe-way {

@@ -40,9 +40,36 @@
               </template>
             </ul>
           </div>
+          <div class="mt-15">
+            <div class="title">图层资源</div>
+            <el-alert
+              class="mb-20"
+              title="这里只做简单的演示功能，用的是AecGis服务图层"
+              type="info"
+              show-icon
+            >
+            </el-alert>
+            <div>
+              <el-form label-width="80px">
+                <el-form-item
+                  v-for="(item, index) in viewWin"
+                  :key="'view-win' + index"
+                  :label="`视窗【${index + 1}】`"
+                >
+                  <el-select v-model="item.layer" style="width: 100%">
+                    <el-option
+                      v-for="(item, index) in viewLayer"
+                      :key="index"
+                      :label="item.text"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-form>
+            </div>
+          </div>
         </template>
         <template #right>
-          <!-- <div :id="mapID" :class="{ 'show-header': fixedHeader }"></div> -->
           <div class="map-view-container">
             <div
               ref="mapView"
@@ -90,7 +117,6 @@ import {
   inject,
   onMounted,
   nextTick,
-  watch,
 } from "@vue/runtime-core";
 // Arcgis
 import Map from "@arcgis/core/Map";
@@ -147,6 +173,27 @@ const viewLayer = ref([]);
 const viewVisibleNum = ref(1);
 // 视图群组，存储视图对象
 const viewGroup = {};
+// 视窗图层
+const viewWin = reactive([
+  {
+    layer: null,
+  },
+  {
+    layer: null,
+  },
+  {
+    layer: null,
+  },
+  {
+    layer: null,
+  },
+  {
+    layer: null,
+  },
+  {
+    layer: null,
+  },
+]);
 
 // 分屏按钮
 const splitButtons = reactive([
@@ -190,7 +237,6 @@ const initMap = (index) => {
   let view = viewGroup[index];
 
   if (!view) {
-
     let map = new Map({
       basemap: "satellite",
     });
@@ -218,7 +264,7 @@ const getViewTitle = (index) => {
   // if (viewLayer.value[index]) {
   //   return viewLayer.value[index].text ? viewLayer.value[index].text : "暂无标题";
   // }
-  return `分屏视图【${index + 1}】`;
+  return `视窗【${index + 1}】`;
 };
 
 /**
@@ -284,14 +330,13 @@ const getSplitScreenHeight = (screenNum, index) => {
  *
  * @param {*} index 当前分屏下标
  */
-const getSplitScreenDisplay = (index) => {  
+const getSplitScreenDisplay = (index) => {
   nextTick(() => {
     initMap(index);
   });
 
   return index < viewVisibleNum.value ? "block" : "none";
 };
-
 
 // 关闭面板
 const onClose = () => {

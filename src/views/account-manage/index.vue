@@ -291,16 +291,7 @@ const setTableRowClassName = ({ row }) => {
     background: #f2f2f2;
     color: #b5b5b5;
   }
-
-  :deep(.el-alert) {
-    background: #e0f0ff;
-    color: $primary-color;
-  }
-
-  :deep(.el-alert__closebtn) {
-    color: $primary-color;
-  }
-
+  
   .delete-btn {
     color: $red;
   }
