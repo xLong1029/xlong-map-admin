@@ -31,7 +31,7 @@
           </div>
           <div>
             <div class="title">图层资源</div>
-            <el-alert class="mb-20" title="这里只做简单的演示功能" type="info" show-icon>
+            <el-alert class="mb-20" title="这里只做简单的演示功能，用的是AecGis服务图层" type="info" show-icon>
             </el-alert>
             <div
               class="layer-transfer"

@@ -22,7 +22,8 @@
               >
                 <li
                   class="split-buttons-item"
-                  :class="splitButton.active ? 'active' : ''"
+                  :class="splitButton.active ? 'is-active' : ''"
+                  @click="onClickSplitButton(i)"
                 >
                   <template v-for="(item, j) in i + 1" :key="'item' + j">
                     <div
@@ -34,28 +35,6 @@
                     >
                       {{ j + 1 }}
                     </div>
-                    <!-- 双数 -->
-                    <!-- <div
-                      v-if="(i + 1) % 2 === 0"
-                      class="button"
-                      :style="{
-                        width: `${(i + 1) % 3 === 0 ? '33.33%' : '50%'}`,
-                        height: `${i + 1 === 2 ? '100%' : '50%'}`,
-                      }"
-                    >
-                      {{ j + 1 }}
-                    </div> -->
-                    <!-- 单数 -->
-                    <!-- <div
-                      v-else
-                      class="button odd"
-                      :style="{
-                        width: `${(i + 1) % 3 === 0 ? '50%' : '33.33%'}`,
-                        height: i + 1 > 1 ? '50%' : '100%',
-                      }"
-                    >
-                      {{ j + 1 }}
-                    </div> -->
                   </template>
                 </li>
               </template>
@@ -64,17 +43,22 @@
         </template>
         <template #right>
           <!-- <div :id="mapID" :class="{ 'show-header': fixedHeader }"></div> -->
-          <div
-            ref="mapView"
-            v-for="(item, index) in viewCount"
-            :key="'map-view' + index"
-            :id="`splitScreenMapView${index + 1}`"
-            class="map-view"
-            :style="getStyle(index + 1)"
-          >
-            <div class="map-view__map" v-show="viewVisibleNum >= index"></div>
-            <div class="map-view__title" :id="'mapviewtitle' + index">
-              {{ getViewTitle(index) }}
+          <div class="map-view-container">
+            <div
+              ref="mapView"
+              v-for="(item, index) in viewCount"
+              :key="'map-view' + index"
+              class="map-view"
+              :style="{
+                width: getSplitScreenWidth(viewVisibleNum, index),
+                height: getSplitScreenHeight(viewVisibleNum, index),
+                display: getSplitScreenDisplay(index),
+              }"
+            >
+              <div class="map-view__map" :id="`splitScreenMapView${index + 1}`"></div>
+              <div class="map-view__title" :id="'mapviewtitle' + index">
+                {{ getViewTitle(index) }}
+              </div>
             </div>
           </div>
         </template>
@@ -98,7 +82,16 @@
 </template>
 
 <script setup>
-import { ref, reactive, defineProps, defineEmits, inject } from "@vue/runtime-core";
+import {
+  ref,
+  reactive,
+  defineProps,
+  defineEmits,
+  inject,
+  onMounted,
+  nextTick,
+  watch,
+} from "@vue/runtime-core";
 // Arcgis
 import Map from "@arcgis/core/Map";
 import MapView from "@arcgis/core/views/MapView";
@@ -112,6 +105,8 @@ import maxScreenPanel from "common/maxScreenPanel.js";
 // 地图
 import map from "common/map/index.js";
 import layers from "common/map/layers.js";
+// 配置
+import { SPATIAL_REFERENCE_WKID } from "config/index.js";
 
 const props = defineProps({
   // 面板
@@ -143,51 +138,39 @@ const { imageBasemapLayer } = layers();
 const fixedHeader = inject("getFixedHeader");
 
 // 地图ID
-const mapID = "splitScreen0";
-let splitScreenView = null;
+const mapID = "splitScreenMapView";
 // 地图视图
 const viewCount = ref(new Array(6).fill(0));
+// 视图图层
 const viewLayer = ref([]);
-const viewVisibleNum = ref(6);
-const viewWinOne = ref(true);
-const viewWinTwo = ref(false);
-const viewWinThree = ref(false);
-const viewWinFour = ref(false);
-const viewWinFive = ref(false);
-const viewWinSix = ref(false);
+// 可见视图数
+const viewVisibleNum = ref(1);
+// 视图群组，存储视图对象
+const viewGroup = {};
 
 // 分屏按钮
-const splitButtons = reactive(new Array(6).fill({ active: false }));
+const splitButtons = reactive([
+  { active: false },
+  { active: false },
+  { active: false },
+  { active: false },
+  { active: false },
+  { active: false },
+]);
 
 // 是否第一次加载
 let firstLoad = true;
 
-const changeBg = (index) => {
-  if (treeRealSelect.value.length > 0) {
-    splitButtons.forEach((item) => (item.active = false));
-    splitButtons[index].active = true;
-  }
-};
-const getStyle = (index) => {
-  // console.log(index);
+onMounted(() => {
+  splitButtons[0].active = true;
+});
 
-  // if (index >= viewLayer.value.length + 1 && index != 1) {
-  //   return "dispay:none";
-  // }
+// 改变分屏选择
+const onClickSplitButton = (index) => {
+  splitButtons.forEach((e) => (e.active = false));
+  splitButtons[index].active = true;
 
-  // // 没有要显示图层时，第一个地图的图层清空
-  // if (viewLayer.value.length == 0) {
-  //   removeLayer(0);
-  // }
-
-  initMap(index);
-
-  // if (firstLoad) {
-  //   firstLoad = false;
-  //     loadMapView(index - 1);
-  // } else {
-  //   loadMapView(index - 1);
-  // }
+  viewVisibleNum.value = index + 1;
 };
 
 // 清除图层
@@ -198,29 +181,36 @@ const removeLayer = (index) => {
   // }
 };
 
-// 初始化地图
+/**
+ * 初始化地图
+ *
+ * @param {*} index 当前分屏下标
+ */
 const initMap = (index) => {
-  console.log(index);
-  let map = new Map({
-    basemap: new Basemap({
-      baseMapLayers: [imageBasemapLayer],
-    }),
-  });
+  let view = viewGroup[index];
 
-  map.add(imageBasemapLayer);
+  if (!view) {
 
-  let view = new MapView({
-    map,
-    ...mapViewConfig(mapID),
-    center: mapCenterPoint,
-    zoom: 14,
-  });
+    let map = new Map({
+      basemap: "satellite",
+    });
 
-  view.ui.move("zoom", "bottom-right");
+    view = new MapView({
+      map,
+      container: `${mapID}${index + 1}`,
+      center: mapCenterPoint,
+      zoom: 14,
+    });
 
-  // 移除powered by
-  view.ui._removeComponents(["attribution"]);
-  splitScreenView = view;
+    view.ui.move("zoom", "bottom-right");
+
+    // 移除powered by
+    view.ui._removeComponents(["attribution"]);
+
+    viewGroup[index] = view;
+
+    console.log(viewGroup);
+  }
 };
 
 // 获取视图标题
@@ -228,66 +218,9 @@ const getViewTitle = (index) => {
   // if (viewLayer.value[index]) {
   //   return viewLayer.value[index].text ? viewLayer.value[index].text : "暂无标题";
   // }
-  return "暂无标题";
+  return `分屏视图【${index + 1}】`;
 };
 
-// 改变视图数量
-const changeViewCount = (val) => {
-  viewVisibleNum.value = val;
-
-  switch (Number(val)) {
-    case 1:
-      viewWinOne.value = true;
-      viewWinTwo.value = false;
-      viewWinThree.value = false;
-      viewWinFour.value = false;
-      viewWinFive.value = false;
-      viewWinSix.value = false;
-      break;
-    case 2:
-      viewWinOne.value = true;
-      viewWinTwo.value = true;
-      viewWinThree.value = false;
-      viewWinFour.value = false;
-      viewWinFive.value = false;
-      viewWinSix.value = false;
-      break;
-    case 3:
-      viewWinOne.value = true;
-      viewWinTwo.value = true;
-      viewWinThree.value = true;
-      viewWinFour.value = false;
-      viewWinFive.value = false;
-      viewWinSix.value = false;
-      break;
-    case 4:
-      viewWinOne.value = true;
-      viewWinTwo.value = true;
-      viewWinThree.value = true;
-      viewWinFour.value = true;
-      viewWinFive.value = false;
-      viewWinSix.value = false;
-      break;
-    case 5:
-      viewWinOne.value = true;
-      viewWinTwo.value = true;
-      viewWinThree.value = true;
-      viewWinFour.value = true;
-      viewWinFive.value = true;
-      viewWinSix.value = false;
-      break;
-    case 6:
-      viewWinOne.value = true;
-      viewWinTwo.value = true;
-      viewWinThree.value = true;
-      viewWinFour.value = true;
-      viewWinFive.value = true;
-      viewWinSix.value = true;
-      break;
-    default:
-      break;
-  }
-};
 /**
  * 获取分屏宽度
  *
@@ -313,11 +246,10 @@ const getSplitScreenWidth = (screenNum, index) => {
     const topNum = (screenNum - 1) / 2;
     const bottomNum = topNum + 1;
 
-    if(index < topNum){
-      return `${100/ topNum}%`
-    }
-    else{
-      return `${100/ bottomNum}%`
+    if (index < topNum) {
+      return `${100 / topNum}%`;
+    } else {
+      return `${100 / bottomNum}%`;
     }
   }
 };
@@ -347,6 +279,20 @@ const getSplitScreenHeight = (screenNum, index) => {
   }
 };
 
+/**
+ * 获取分屏显示样式
+ *
+ * @param {*} index 当前分屏下标
+ */
+const getSplitScreenDisplay = (index) => {  
+  nextTick(() => {
+    initMap(index);
+  });
+
+  return index < viewVisibleNum.value ? "block" : "none";
+};
+
+
 // 关闭面板
 const onClose = () => {
   onClosePanel(emit, props);
@@ -374,24 +320,28 @@ const onMaximize = () => {
     margin-bottom: 15px;
   }
 }
-// #splitScreen {
-//   width: 100%;
-//   height: 100%;
-// }
 
 .map-view {
-  border: #eeeeee 2px solid;
-  display: none;
+  border: #eceef3 2px solid;
   position: relative;
 
+  &-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   &__map {
-    height: calc(100% - 20px);
+    width: 100%;
+    height: calc(100% - 26px);
   }
 
   &__title {
     background: #fff;
-    height: 20px;
+    height: 26px;
     text-align: center;
+    padding: 5px;
   }
 }
 
@@ -407,7 +357,6 @@ const onMaximize = () => {
     border: $border;
     margin: 5px;
     width: 30.5%;
-    // border-radius: 4px;
     height: 100px;
     flex-wrap: wrap;
     color: #888;
@@ -420,47 +369,11 @@ const onMaximize = () => {
       font-weight: bold;
       justify-content: center;
       position: relative;
-      border: $border;
-
-      // &.odd {
-      //   &:nth-child(2n + 1) {
-      //     &::before {
-      //       border-left: none;
-      //     }
-      //   }
-      // }
-
-      // &:first-child {
-      //   &::before {
-      //     border-left: none;
-      //   }
-      //   &::after {
-      //     border-left: none;
-      //   }
-      // }
-
-      // // &:last-child{}
-
-      // &::before {
-      //   content: "";
-      //   display: block;
-      //   position: absolute;
-      //   height: 100%;
-      //   left: -1px;
-      //   border-left: $border;
-      // }
-
-      // &::after {
-      //   content: "";
-      //   display: block;
-      //   position: absolute;
-      //   width: 100%;
-      //   bottom: -1px;
-      //   border-bottom: $border;
-      // }
+      border: 1px solid #f8f8f8;
     }
 
-    &:hover {
+    &:hover,
+    &.is-active {
       cursor: pointer;
       border-color: $primary-color;
       z-index: 2;
@@ -468,14 +381,6 @@ const onMaximize = () => {
       .button {
         color: $primary-color;
         border-color: $primary-color;
-
-        &::before {
-          border-color: $primary-color;
-        }
-
-        &::after {
-          border-color: $primary-color;
-        }
       }
     }
   }

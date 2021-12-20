@@ -623,7 +623,7 @@ export function getInfoByIDCard(IDCard) {
  * @param {*} pageTitle 页面标题
  */
 export function getPageTitle(pageTitle) {
-  const title = settings.sysTitle || "一张图产品";
+  const title = settings.sysTitle || "XLONG家里蹲地图系统";
 
   if (pageTitle) {
     return `${pageTitle} - ${title}`;
