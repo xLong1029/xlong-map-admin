@@ -189,6 +189,21 @@ const viewLayers = [
     title: "彩色中文含兴趣点版中国基础地图",
     url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
   },
+  {
+    id: "ChinaOnlineCommunityENG",
+    title: "彩色英文含兴趣点版中国基础地图",
+    url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunityENG/MapServer",
+  },
+  {
+    id: "ChinaOnlineStreetWarm",
+    title: "暖色中文不含兴趣点版中国基础地图",
+    url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetWarm/MapServer",
+  },
+  {
+    id: "ChinaOnlineStreetGray",
+    title: "灰色中文不含兴趣点版中国基础地图",
+    url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetGray/MapServer",
+  },
 ];
 // 可见视图数
 const viewVisibleNum = ref(1);
@@ -206,13 +221,13 @@ const viewWin = reactive([
     layer: "ChinaOnlineCommunity",
   },
   {
-    layer: "ChinaOnlineStreetPurplishBlue",
+    layer: "ChinaOnlineCommunityENG",
   },
   {
-    layer: "ChinaBoundaryLine",
+    layer: "ChinaOnlineStreetWarm",
   },
   {
-    layer: "ChinaOnlineCommunity",
+    layer: "ChinaOnlineStreetGray",
   },
 ]);
 
@@ -290,7 +305,7 @@ const getLayer = (map, layerID) => {
   const layer = map.findLayerById(layerID);
   if (!layer) {
     map.removeAll();
-    
+
     const { id, title, url } = layerObj;
 
     const layer = new TileLayer({
@@ -305,9 +320,11 @@ const getLayer = (map, layerID) => {
 
 // 获取视图标题
 const getViewTitle = (index) => {
-  // if (viewLayers.value[index]) {
-  //   return viewLayers.value[index].text ? viewLayers.value[index].text : "暂无标题";
-  // }
+  const layerID = viewWin[index].layer;
+  const layerObj = viewLayers.find((e) => e.id === layerID);
+  if(layerID){
+    return `视窗【${index + 1}】-${layerObj.title ? layerObj.title : '暂无标题'}`;
+  }
   return `视窗【${index + 1}】`;
 };
 
@@ -317,7 +334,6 @@ const getViewTitle = (index) => {
  * @param {*} index 当前分屏下标
  */
 const changeViewLayer = (index) => {
-  console.log(index);
   const layerID = viewWin[index].layer;
   getLayer(viewGroup[index].map, layerID);
 };
