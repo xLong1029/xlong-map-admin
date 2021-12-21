@@ -31,9 +31,25 @@
           </div>
           <div>
             <div class="title">图层资源</div>
-            <el-alert class="mb-20" title="这里只做简单的演示功能，用的是AecGis服务图层" type="info" show-icon>
+            <el-alert
+              class="mb-20"
+              title="这里只做简单的演示功能，用的是AecGis服务图层"
+              type="info"
+              show-icon
+            >
             </el-alert>
-            <div
+            <Transfer
+              v-model:value="transferValue"
+              :data="transferLayers"
+              :titles="transferTitles"
+              :props="{
+                key: 'id',
+                label: 'title',
+              }"
+              @change="onChangeLayer"
+            />
+
+            <!-- <div
               class="layer-transfer"
               v-loading="transferLoading"
               element-loading-text="正在加载数据..."
@@ -52,7 +68,7 @@
                   <span :title="option.title">{{ option.title }}</span>
                 </template>
               </el-transfer>
-            </div>
+            </div> -->
           </div>
         </template>
         <template #right>
@@ -95,6 +111,7 @@ import TileLayer from "@arcgis/core/layers/TileLayer";
 import MaxScreenPanel from "components/common/MaxScreenPanel/index.vue";
 import UtilPanel from "components/common/UtilPanel/index.vue";
 import CollapsePanel from "components/common/CollapsePanel/index.vue";
+import Transfer from "components/common/Transfer/index.vue";
 // 通用模块
 import maxScreenPanel from "common/maxScreenPanel.js";
 // 地图事件
@@ -143,12 +160,12 @@ const transferLayers = ref([
     url:
       "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
   },
-  // {
-  //   id: "ChinaBoundaryLine",
-  //   title: "中国边界线",
-  //   url:
-  //     "http://map.geoq.cn/arcgis/rest/services/SimpleFeature/ChinaBoundaryLine/MapServer",
-  // },
+  {
+    id: "ChinaBoundaryLine",
+    title: "中国边界线",
+    url:
+      "http://map.geoq.cn/arcgis/rest/services/SimpleFeature/ChinaBoundaryLine/MapServer",
+  },
   {
     id: "ChinaOnlineCommunity",
     title: "彩色中文含兴趣点版中国基础地图",
@@ -253,7 +270,7 @@ const handleSwipeData = () => {
     trailingLayers: [],
   };
 
-  // 左侧数据
+  // 上方数据
   transferValue.value.forEach((item) => {
     const layer = swipeMapView.map.findLayerById(item);
     if (layer) {
@@ -261,7 +278,7 @@ const handleSwipeData = () => {
     }
   });
 
-  // 右侧数据
+  // 下方数据
   transferLayers.value.forEach((item) => {
     const index = data.trailingLayers.findIndex((e) => e.id === item.id);
     if (index < 0) {
@@ -276,7 +293,8 @@ const handleSwipeData = () => {
 };
 
 // 改变图层
-const onChangeLayer = () => {
+const onChangeLayer = (values) => {
+  console.log(transferValue);
   if (openSwipe.value) {
     mapEvents()["onChangeSwipeLayer"](swipeMapView, handleSwipeData());
   }
@@ -353,6 +371,45 @@ const onMaximize = () => {
 
   :deep(.el-checkbox__label) {
     font-size: 14px;
+  }
+}
+
+.layer-res {
+  &-top,
+  &-bottom {
+    height: 240px;
+    border: $border;
+    border-radius: 4px;
+  }
+
+  &-operate {
+    margin: 10px 0;
+    text-align: center;
+  }
+
+  &__title {
+    background: #f5f7fa;
+    padding: 0 15px;
+    height: 40px;
+    line-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .check-num {
+      font-size: 12px;
+    }
+  }
+
+  &-item {
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .name {
+      max-width: 200px;
+    }
   }
 }
 </style>

@@ -17,8 +17,6 @@ export default {
     try {
       const { direction, leadingLayers, trailingLayers } = data;
 
-      console.log(data);
-
       widget = new Swipe({
         id: "Swipe",
         view,
