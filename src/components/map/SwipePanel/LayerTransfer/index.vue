@@ -11,48 +11,14 @@
         <div class="check-num">{{ topDataChecked.length }} / {{ topDatas.length }}</div>
       </div>
       <div class="transfer__content">
-        <template v-if="topDatas.length">
-          <Draggable
-            :list="topDatas"
-            group="item"
-            :item-key="props.key"
-            handle=".move-btn"
-            ghost-class="ghost"
-            @end="onChangeTopSort"
-          >
-            <template #item="{ element }">
-              <div class="transfer-item">
-                <el-checkbox
-                  v-model="element.checked"
-                  :label="element[props.label]"
-                  @change="onChangeCheck(element, 1)"
-                >
-                  <div class="name ellipsis" :title="element[props.label]">
-                    {{ element[props.label] }}
-                  </div>
-                </el-checkbox>
-                <div class="operate">
-                  <i
-                    v-if="element.visible"
-                    class="iconfont icon-kejian visible-btn"
-                    title="图层可见"
-                    @click="onSetLayerVisible(element, false)"
-                  >
-                  </i>
-                  <i
-                    v-else
-                    class="iconfont icon-bukejian visible-btn"
-                    title="图层不可见"
-                    @click="onSetLayerVisible(element, true)"
-                  >
-                  </i>
-                  <i class="iconfont icon-yidong move-btn" title="可上下移动排序"> </i>
-                </div>
-              </div>
-            </template>
-          </Draggable>
-        </template>
-        <el-empty v-else :image-size="80"></el-empty>
+        <List
+          :data="topDatas"
+          :props="props"
+          :type="1"
+          @change-check="onChangeCheck"
+          @set-layer-visible="onSetLayerVisible"
+          @change-sort="onChangeSort"
+        />
       </div>
     </div>
     <!-- 操作按钮 -->
@@ -85,47 +51,14 @@
         </div>
       </div>
       <div class="transfer__content">
-        <template v-if="bottomDatas.length">
-          <Draggable
-            :list="bottomDatas"
-            group="item"
-            :item-key="props.key"
-            ghost-class="ghost"
-            @end="onChangeBottomSort"
-          >
-            <template #item="{ element }">
-              <div class="transfer-item">
-                <el-checkbox
-                  v-model="element.checked"
-                  :label="element[props.label]"
-                  @change="onChangeCheck(element, -1)"
-                >
-                  <div class="name ellipsis" :title="element[props.label]">
-                    {{ element[props.label] }}
-                  </div>
-                </el-checkbox>
-                <div class="operate">
-                  <i
-                    v-if="element.visible"
-                    class="iconfont icon-kejian visible-btn"
-                    title="图层可见"
-                    @click="onSetLayerVisible(element, false)"
-                  >
-                  </i>
-                  <i
-                    v-else
-                    class="iconfont icon-bukejian visible-btn"
-                    title="图层不可见"
-                    @click="onSetLayerVisible(element, true)"
-                  >
-                  </i>
-                  <i class="iconfont icon-yidong move-btn" title="可上下移动排序"> </i>
-                </div>
-              </div>
-            </template>
-          </Draggable>
-        </template>
-        <el-empty v-else :image-size="80"></el-empty>
+        <List
+          :data="bottomDatas"
+          :props="props"
+          :type="-1"
+          @change-check="onChangeCheck"
+          @set-layer-visible="onSetLayerVisible"
+          @change-sort="onChangeSort"
+        />
       </div>
     </div>
   </div>
@@ -133,7 +66,8 @@
 
 <script setup>
 import { ref, defineProps, defineEmits, onMounted } from "@vue/runtime-core";
-import Draggable from "vuedraggable";
+import List from "./List.vue";
+// import Draggable from "vuedraggable";
 
 const thisProps = defineProps({
   // 未选中的数据，在上方
@@ -172,7 +106,7 @@ const emit = defineEmits([
   "change",
   "sort-top",
   "sort-bottom",
-  "set-layer-visible"
+  "set-layer-visible",
 ]);
 
 // 上方数据
@@ -295,6 +229,7 @@ const moveTo = (type) => {
 // 更新选中数据
 const upadteValue = () => {
   const { props } = thisProps;
+
   const unSelectvalues = topDatas.value.map((e) => e[props.key]);
   const selectValues = bottomDatas.value.map((e) => e[props.key]);
 
@@ -303,29 +238,35 @@ const upadteValue = () => {
   emit("change", selectValues, unSelectvalues);
 };
 
-// 上方元素移动
-const onChangeTopSort = (event) => {
+/**
+ * 排序元素
+ *
+ * @param {*} event 事件
+ * @param {*} type 类型  1移动到上方 -1移动到下方
+ */
+const onChangeSort = (event, type) => {
+  console.log(type);
+
   const { props } = thisProps;
-  const unSelectvalues = topDatas.value.map((e) => e[props.key]);
 
-  emit("update:un-select-values", unSelectvalues);
-  emit("sort-top", unSelectvalues);
-};
+  if (type === 1) {
+    const unSelectvalues = topDatas.value.map((e) => e[props.key]);
 
-// 下方元素移动
-const onChangeBottomSort = (event) => {
-  const { props } = thisProps;
-  const selectValues = bottomDatas.value.map((e) => e[props.key]);
+    emit("update:un-select-values", unSelectvalues);
+    emit("sort-top", unSelectvalues);
+  } else {
+    const selectValues = bottomDatas.value.map((e) => e[props.key]);
 
-  emit("update:select-values", selectValues);
-  emit("sort-bottom", selectValues);
+    emit("update:select-values", selectValues);
+    emit("sort-bottom", selectValues);
+  }
 };
 
 // 设置图层可见性
 const onSetLayerVisible = (element, visible) => {
   element.visible = visible;
   emit("set-layer-visible", element, visible);
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -374,7 +315,7 @@ const onSetLayerVisible = (element, visible) => {
 
     .operate {
       .iconfont {
-        margin-left: 12px;
+        margin-left: 15px;
         font-size: 16px;
       }
     }
