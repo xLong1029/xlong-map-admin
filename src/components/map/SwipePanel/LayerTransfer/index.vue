@@ -17,6 +17,7 @@
             group="item"
             :item-key="props.key"
             handle=".move-btn"
+            ghost-class="ghost"
             @end="onChangeTopSort"
           >
             <template #item="{ element }">
@@ -30,7 +31,23 @@
                     {{ element[props.label] }}
                   </div>
                 </el-checkbox>
-                <i class="iconfont icon-liebiao move-btn" title="可上下移动排序"> </i>
+                <div class="operate">
+                  <i
+                    v-if="element.visible"
+                    class="iconfont icon-kejian visible-btn"
+                    title="图层可见"
+                    @click="onSetLayerVisible(element, false)"
+                  >
+                  </i>
+                  <i
+                    v-else
+                    class="iconfont icon-bukejian visible-btn"
+                    title="图层不可见"
+                    @click="onSetLayerVisible(element, true)"
+                  >
+                  </i>
+                  <i class="iconfont icon-yidong move-btn" title="可上下移动排序"> </i>
+                </div>
               </div>
             </template>
           </Draggable>
@@ -87,7 +104,23 @@
                     {{ element[props.label] }}
                   </div>
                 </el-checkbox>
-                <i class="iconfont icon-liebiao move-btn" title="可上下移动排序"> </i>
+                <div class="operate">
+                  <i
+                    v-if="element.visible"
+                    class="iconfont icon-kejian visible-btn"
+                    title="图层可见"
+                    @click="onSetLayerVisible(element, false)"
+                  >
+                  </i>
+                  <i
+                    v-else
+                    class="iconfont icon-bukejian visible-btn"
+                    title="图层不可见"
+                    @click="onSetLayerVisible(element, true)"
+                  >
+                  </i>
+                  <i class="iconfont icon-yidong move-btn" title="可上下移动排序"> </i>
+                </div>
               </div>
             </template>
           </Draggable>
@@ -139,6 +172,7 @@ const emit = defineEmits([
   "change",
   "sort-top",
   "sort-bottom",
+  "set-layer-visible"
 ]);
 
 // 上方数据
@@ -163,6 +197,9 @@ const handleDatas = () => {
     bottomDatas.value = [];
   } else {
     data.forEach((e) => {
+      // 默认全部可见
+      e.visible = true;
+
       // 是否选中数据
       if (selectValues.indexOf(e[props.key]) >= 0) {
         bottomDatas.value.push(e);
@@ -270,7 +307,7 @@ const upadteValue = () => {
 const onChangeTopSort = (event) => {
   const { props } = thisProps;
   const unSelectvalues = topDatas.value.map((e) => e[props.key]);
-  
+
   emit("update:un-select-values", unSelectvalues);
   emit("sort-top", unSelectvalues);
 };
@@ -283,6 +320,12 @@ const onChangeBottomSort = (event) => {
   emit("update:select-values", selectValues);
   emit("sort-bottom", selectValues);
 };
+
+// 设置图层可见性
+const onSetLayerVisible = (element, visible) => {
+  element.visible = visible;
+  emit("set-layer-visible", element, visible);
+}
 </script>
 
 <style lang="scss" scoped>
@@ -326,7 +369,18 @@ const onChangeBottomSort = (event) => {
     justify-content: space-between;
 
     .name {
-      max-width: 280px;
+      max-width: 240px;
+    }
+
+    .operate {
+      .iconfont {
+        margin-left: 12px;
+        font-size: 16px;
+      }
+    }
+
+    .visible-btn {
+      cursor: pointer;
     }
 
     .move-btn {

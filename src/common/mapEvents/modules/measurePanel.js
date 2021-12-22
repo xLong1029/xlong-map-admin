@@ -39,6 +39,7 @@
  
      if (!data || !data.panelID) {
        console.log("缺少传递数据 { panelID }，获取父级内容容器ID");
+       return false;
      }
  
      const { panelID, activeButton } = data;
@@ -74,6 +75,7 @@
  
      if (!data || !data.panelID) {
        console.log("缺少传递数据 { panelID }，获取父级内容容器ID");
+       return false;
      }
  
      const { panelID, activeButton } = data;
@@ -108,6 +110,7 @@
  
      if (!data || !data.panelID) {
        console.log("缺少传递数据 { panelID }，获取父级内容容器ID");
+       return false;
      }
  
      const { panelID, activeButton } = data;
@@ -143,6 +146,7 @@
  
      if (!data || !data.panelID) {
        console.log("缺少传递数据 { panelID }，获取父级内容容器ID");
+       return false;
      }
  
      const { panelID, activeButton } = data;

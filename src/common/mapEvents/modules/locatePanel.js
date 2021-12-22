@@ -131,7 +131,7 @@ export default {
 
         if (!coordinates) {
           ElMessage.error("坐标有误！请点击地图拾取新坐标");
-          return;
+          return false;
         }
 
         store.dispatch("map/setLocateData", {

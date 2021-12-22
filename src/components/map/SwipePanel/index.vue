@@ -50,6 +50,7 @@
               @change="onChangeLayer"
               @sort-top="onLayerOrder"
               @sort-bottom="onLayerOrder"
+              @set-layer-visible="onSetLayerVisble"
             />
           </div>
         </template>
@@ -284,21 +285,19 @@ const onChangeLayer = () => {
 // 排序
 const onLayerOrder = () => {
   if (openSwipe.value) {
-    // 方向排序
-    const sortData = [
+    // 反向排序
+    const layerIds = [
       ...transferUnSelectValues.value.reverse(),
       ...transferSelectValues.value.reverse(),
     ];
 
-    const layerCount = swipeMapView.map.layers.items.length;
-    const stortDataCount = sortData.length;
-    const baseLayerCount = layerCount - stortDataCount;
-
-    sortData.forEach((id, index) => {
-      const layer = swipeMapView.map.findLayerById(id);
-      swipeMapView.map.reorder(layer, baseLayerCount + index + 1);
-    });
+    mapEvents()["onLayerOrder"](swipeMapView, { layerIds });
   }
+};
+
+// 设置图层可见性
+const onSetLayerVisble = ({ id }, visible) => {
+  mapEvents()["setLayerVisible"](swipeMapView, { id, visible });
 };
 
 // 关闭面板

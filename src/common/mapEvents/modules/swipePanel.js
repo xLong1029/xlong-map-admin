@@ -66,7 +66,6 @@ export default {
 
       widget.trailingLayers.removeAll();
       widget.trailingLayers.addMany(trailingLayers);
-
     }
   },
 };
