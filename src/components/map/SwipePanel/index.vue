@@ -279,6 +279,7 @@ const handleSwipeData = () => {
 const onChangeLayer = () => {
   if (openSwipe.value) {
     mapEvents()["onChangeSwipeLayer"](swipeMapView, handleSwipeData());
+    onLayerOrder();
   }
 };
 
