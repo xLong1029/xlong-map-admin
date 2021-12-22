@@ -15,9 +15,9 @@
           <Draggable
             :list="topDatas"
             group="item"
-            @change="onChangeTopSort"
             :item-key="props.key"
             handle=".move-btn"
+            @end="onChangeTopSort"
           >
             <template #item="{ element }">
               <div class="transfer-item">
@@ -72,9 +72,9 @@
           <Draggable
             :list="bottomDatas"
             group="item"
-            @change="onChangeBottomSort"
             :item-key="props.key"
-            handle=".move-btn"
+            ghost-class="ghost"
+            @end="onChangeBottomSort"
           >
             <template #item="{ element }">
               <div class="transfer-item">
@@ -103,8 +103,13 @@ import { ref, defineProps, defineEmits, onMounted } from "@vue/runtime-core";
 import Draggable from "vuedraggable";
 
 const thisProps = defineProps({
-  // 选中的数据，显示在bottom
-  value: {
+  // 未选中的数据，在上方
+  unSelectValues: {
+    type: Array,
+    default: [],
+  },
+  // 选中的数据，在下方
+  selectValues: {
     type: Array,
     default: [],
   },
@@ -128,7 +133,13 @@ const thisProps = defineProps({
   },
 });
 
-const emit = defineEmits(["update:value", "change", "sort-top", "sort-bottom"]);
+const emit = defineEmits([
+  "update:un-select-values",
+  "update:select-values",
+  "change",
+  "sort-top",
+  "sort-bottom",
+]);
 
 // 上方数据
 const topDatas = ref([]);
@@ -146,14 +157,14 @@ onMounted(() => {
 
 // 处理数据
 const handleDatas = () => {
-  const { value, data, props } = thisProps;
-  if (!value.length) {
+  const { selectValues, data, props } = thisProps;
+  if (!selectValues.length) {
     topDatas.value = JSON.parse(JSON.stringify(...data));
     bottomDatas.value = [];
   } else {
     data.forEach((e) => {
       // 是否选中数据
-      if (value.indexOf(e[props.key]) >= 0) {
+      if (selectValues.indexOf(e[props.key]) >= 0) {
         bottomDatas.value.push(e);
       } else {
         topDatas.value.push(e);
@@ -247,19 +258,30 @@ const moveTo = (type) => {
 // 更新选中数据
 const upadteValue = () => {
   const { props } = thisProps;
-  const values = bottomDatas.value.map((e) => e[props.key]);
-  emit("update:value", values);
-  emit("change", values);
+  const unSelectvalues = topDatas.value.map((e) => e[props.key]);
+  const selectValues = bottomDatas.value.map((e) => e[props.key]);
+
+  emit("update:un-select-values", unSelectvalues);
+  emit("update:select-values", selectValues);
+  emit("change", selectValues, unSelectvalues);
 };
 
 // 上方元素移动
 const onChangeTopSort = (event) => {
-  emit("sort-top", topDatas.value);
+  const { props } = thisProps;
+  const unSelectvalues = topDatas.value.map((e) => e[props.key]);
+  
+  emit("update:un-select-values", unSelectvalues);
+  emit("sort-top", unSelectvalues);
 };
 
 // 下方元素移动
 const onChangeBottomSort = (event) => {
-  emit("sort-bottom", bottomDatas.value);
+  const { props } = thisProps;
+  const selectValues = bottomDatas.value.map((e) => e[props.key]);
+
+  emit("update:select-values", selectValues);
+  emit("sort-bottom", selectValues);
 };
 </script>
 
@@ -292,7 +314,7 @@ const onChangeBottomSort = (event) => {
     }
   }
 
-  &__content{
+  &__content {
     height: 210px;
     overflow-y: auto;
   }
@@ -304,11 +326,16 @@ const onChangeBottomSort = (event) => {
     justify-content: space-between;
 
     .name {
-      max-width: 200px;
+      max-width: 280px;
     }
 
     .move-btn {
       cursor: move;
+    }
+
+    &.ghost {
+      opacity: 0.5;
+      background: #e0f0ff;
     }
   }
 }

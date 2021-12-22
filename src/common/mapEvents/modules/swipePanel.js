@@ -25,6 +25,7 @@ export default {
         leadingLayers,
         trailingLayers,
       });
+      
       view.ui.add(widget);
     } catch (err) {
       console.log(err);

@@ -38,8 +38,9 @@
               show-icon
             >
             </el-alert>
-            <Transfer
-              v-model:value="transferValue"
+            <LayerTransfer
+              v-model:un-select-values="transferUnSelectValues"
+              v-model:select-values="transferSelectValues"
               :data="transferLayers"
               :titles="transferTitles"
               :props="{
@@ -47,28 +48,9 @@
                 label: 'title',
               }"
               @change="onChangeLayer"
+              @sort-top="onLayerOrder"
+              @sort-bottom="onLayerOrder"
             />
-
-            <!-- <div
-              class="layer-transfer"
-              v-loading="transferLoading"
-              element-loading-text="正在加载数据..."
-            >
-              <el-transfer
-                v-model="transferValue"
-                :data="transferLayers"
-                :titles="transferTitles"
-                @change="onChangeLayer"
-                :props="{
-                  key: 'id',
-                  label: 'title',
-                }"
-              >
-                <template #default="{ option }">
-                  <span :title="option.title">{{ option.title }}</span>
-                </template>
-              </el-transfer>
-            </div> -->
           </div>
         </template>
         <template #right>
@@ -101,7 +83,6 @@ import {
   inject,
   onMounted,
   watch,
-  nextTick,
 } from "@vue/runtime-core";
 // Arcgis
 import Map from "@arcgis/core/Map";
@@ -111,7 +92,7 @@ import TileLayer from "@arcgis/core/layers/TileLayer";
 import MaxScreenPanel from "components/common/MaxScreenPanel/index.vue";
 import UtilPanel from "components/common/UtilPanel/index.vue";
 import CollapsePanel from "components/common/CollapsePanel/index.vue";
-import Transfer from "components/common/Transfer/index.vue";
+import LayerTransfer from "./LayerTransfer/index.vue";
 // 通用模块
 import maxScreenPanel from "common/maxScreenPanel.js";
 // 地图事件
@@ -152,14 +133,9 @@ let swipeMapView = null;
 const mapID = "swipeMap";
 
 // 穿梭框配置
-const transferValue = ref(["ChinaOnlineStreetPurplishBlue"]);
+const transferUnSelectValues = ref([]);
+const transferSelectValues = ref(["ChinaOnlineCommunity"]);
 const transferLayers = ref([
-  {
-    id: "ChinaOnlineStreetPurplishBlue",
-    title: "蓝黑色中文不含兴趣点版中国基础地图",
-    url:
-      "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
-  },
   {
     id: "ChinaBoundaryLine",
     title: "中国边界线",
@@ -167,12 +143,17 @@ const transferLayers = ref([
       "http://map.geoq.cn/arcgis/rest/services/SimpleFeature/ChinaBoundaryLine/MapServer",
   },
   {
+    id: "ChinaOnlineStreetPurplishBlue",
+    title: "蓝黑色中文不含兴趣点版中国基础地图",
+    url:
+      "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer",
+  },
+  {
     id: "ChinaOnlineCommunity",
     title: "彩色中文含兴趣点版中国基础地图",
     url: "http://map.geoq.cn/arcgis/rest/services/ChinaOnlineCommunity/MapServer",
   },
 ]);
-const transferLoading = ref(false);
 const transferTitles = ref(["上方", "下方"]);
 
 // 卷帘配置
@@ -194,18 +175,23 @@ watch(
 );
 
 onMounted(() => {
-  nextTick(() => {
-    init();
-  });
+  init();
 });
 
 // 初始化
 const init = () => {
+  transferUnSelectValues.value = [];
+  transferLayers.value.forEach((e) => {
+    if (transferSelectValues.value.indexOf(e.id) < 0) {
+      transferUnSelectValues.value.push(e.id);
+    }
+  });
+
   let map = new Map({
     basemap: "satellite",
   });
 
-  // 加载切片图层
+  // 加载图层
   transferLayers.value.forEach((e) => {
     const { id, title, url } = e;
     const layer = new TileLayer({
@@ -242,6 +228,7 @@ const init = () => {
   swipeMapView = view;
 
   openSwipe.value = true;
+  onLayerOrder();
 };
 
 // 改变卷帘方式
@@ -270,21 +257,16 @@ const handleSwipeData = () => {
     trailingLayers: [],
   };
 
-  // 上方数据
-  transferValue.value.forEach((item) => {
-    const layer = swipeMapView.map.findLayerById(item);
-    if (layer) {
-      data.trailingLayers.push(layer);
-    }
-  });
+  console.log(transferSelectValues.value, transferUnSelectValues.value);
 
-  // 下方数据
-  transferLayers.value.forEach((item) => {
-    const index = data.trailingLayers.findIndex((e) => e.id === item.id);
-    if (index < 0) {
-      const layer = swipeMapView.map.findLayerById(item.id);
-      if (layer) {
+  transferLayers.value.forEach((e) => {
+    const { id } = e;
+    const layer = swipeMapView.map.findLayerById(id);
+    if (layer) {
+      if (transferUnSelectValues.value.indexOf(id) >= 0) {
         data.leadingLayers.push(layer);
+      } else if (transferSelectValues.value.indexOf(id) >= 0) {
+        data.trailingLayers.push(layer);
       }
     }
   });
@@ -293,10 +275,29 @@ const handleSwipeData = () => {
 };
 
 // 改变图层
-const onChangeLayer = (values) => {
-  console.log(transferValue);
+const onChangeLayer = () => {
   if (openSwipe.value) {
     mapEvents()["onChangeSwipeLayer"](swipeMapView, handleSwipeData());
+  }
+};
+
+// 排序
+const onLayerOrder = () => {
+  if (openSwipe.value) {
+    // 方向排序
+    const sortData = [
+      ...transferUnSelectValues.value.reverse(),
+      ...transferSelectValues.value.reverse(),
+    ];
+
+    const layerCount = swipeMapView.map.layers.items.length;
+    const stortDataCount = sortData.length;
+    const baseLayerCount = layerCount - stortDataCount;
+
+    sortData.forEach((id, index) => {
+      const layer = swipeMapView.map.findLayerById(id);
+      swipeMapView.map.reorder(layer, baseLayerCount + index + 1);
+    });
   }
 };
 
