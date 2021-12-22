@@ -20,7 +20,7 @@
 }
 
 .el-alert--info {
-  background: #e0f0ff !important;
+  // background: lighten(#{$primary-color}, 40%) !important;
   color: $primary-color !important;
 
   .el-alert__closebtn {

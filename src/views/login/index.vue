@@ -70,7 +70,7 @@ import formJs from "common/form.js";
 import { encrypt, decrypt } from "utils";
 import { reactive, ref, computed, onMounted, watch, toRaw } from "@vue/runtime-core";
 // logo图片
-import logoImg from "assets/images/logo.png";
+import logoImg from "assets/images/logo.jpg";
 
 const { showDevMessage, store, toPage } = common();
 const { validForm } = formJs();

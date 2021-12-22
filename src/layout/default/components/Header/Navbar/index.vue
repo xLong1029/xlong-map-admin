@@ -59,7 +59,7 @@ const permissionRoutes = computed(() => store.getters.permissionRoutes);
 
 .navbar-container {
   background: transparent;
-  width: 100%;
+  // width: 100%;
   overflow: hidden;
 }
 

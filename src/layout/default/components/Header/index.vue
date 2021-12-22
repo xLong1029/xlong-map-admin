@@ -3,7 +3,7 @@
     <div class="header-content-left">
       <div class="logo-container">
         <img class="logo" :src="logoImg" :title="sysTitle" />
-        <!-- <span class="title">{{ title }}</span> -->
+        <!-- <span class="title">{{ sysTitle }}</span> -->
       </div>
       <Navbar />
     </div>
@@ -49,7 +49,7 @@ import AccountSetting from "components/user/AccountSetting/index.vue";
 import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
 import Navbar from "./Navbar/index.vue";
 // 图片
-import logoImg from "assets/images/logo.png";
+import logoImg from "assets/images/logo.jpg";
 import defaultAvatarImg from "assets/images/default-avatar.png";
 
 const store = useStore();
@@ -100,6 +100,7 @@ const onFullExit = () => {
   height: $header-height;
   align-items: center;
   color: #333;
+  width: 100%;
 
   &-left {
     display: flex;
@@ -108,16 +109,17 @@ const onFullExit = () => {
     .logo-container {
       display: flex;
       align-items: center;
-      min-width: 100px;
+      margin-right: 20px;
     }
 
     .logo {
-      height: 28px;
+      height: 45px;
       margin-right: 15px;
     }
 
     .title {
-      font-size: 20px;
+      font-size: 16px;
+      font-weight: bold;
     }
   }
 
