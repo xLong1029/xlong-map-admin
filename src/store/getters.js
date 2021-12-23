@@ -19,6 +19,7 @@ const getters = {
   mapUtilsPanel:(state) => state.settings.mapUtilsPanel,
   mapOperatePanel:(state) => state.settings.mapOperatePanel,
   switchMap:(state) => state.settings.switchMap,
+  mapScaleBar:(state) => state.settings.mapScaleBar,
   mapBottomCoord:(state) => state.settings.mapBottomCoord,
   // map  
   mapEvent:(state) => state.map.mapEvent,

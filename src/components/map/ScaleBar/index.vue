@@ -4,25 +4,15 @@
       <img class="scale-bar-img" :src="scalebarImg" />
     </span>
     <span class="ruler-text">
-      <span style="text-align: left; display: inline-block">0</span>
-      <span
-        style="text-align: center; display: inline-block"
-        v-if="coordInfo.scale < 50000"
-        >{{ (coordInfo.scale / 100).toFixed(0) }}</span
-      >
-      <span
-        style="text-align: center; display: inline-block"
-        v-if="coordInfo.scale >= 50000"
-        >{{ (coordInfo.scale / 100000).toFixed(0) }}</span
-      >
-      <span
-        style="text-align: right; display: inline-block"
-        v-if="coordInfo.scale < 50000"
+      <span>0</span>
+      <span v-if="coordInfo.scale < 50000">{{ (coordInfo.scale / 100).toFixed(0) }}</span>
+      <span v-if="coordInfo.scale >= 50000">{{
+        (coordInfo.scale / 100000).toFixed(0)
+      }}</span>
+      <span v-if="coordInfo.scale < 50000"
         >{{ (coordInfo.scale / 100).toFixed(0) * 2 }} 米</span
       >
-      <span
-        style="text-align: right; display: inline-block"
-        v-if="coordInfo.scale >= 50000"
+      <span v-if="coordInfo.scale >= 50000"
         >{{ (coordInfo.scale / 100000).toFixed(0) * 2 }} 千米</span
       >
     </span>
@@ -40,10 +30,10 @@ const coordInfo = inject("getCoordInfo");
 <style lang="scss" scoped>
 .scale-bar {
   height: 36px;
-  width: 100px;
+  width: 120px;
   position: absolute;
-  bottom: 25px;
-  right: 50px;
+  bottom: 20px;
+  left: 10px;
   font-size: 12px;
 
   &-img {
@@ -52,7 +42,7 @@ const coordInfo = inject("getCoordInfo");
   }
 }
 .ruler-img {
-  padding: 4px 14px 0 14px;
+  // padding: 4px 14px 0 14px;
   display: inline-block;
   width: 100%;
   height: 16px;
@@ -66,6 +56,8 @@ const coordInfo = inject("getCoordInfo");
 
   span {
     flex: 1;
+    text-align: right;
+    display: inline-block;
   }
 }
 </style>
