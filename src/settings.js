@@ -61,6 +61,12 @@ export default {
 
   /**
    * @type {boolean} true | false
+   * @description 是否显示比例尺
+   */
+  mapScaleBar: true,
+
+  /**
+   * @type {boolean} true | false
    * @description 是否显示底部信息
    */
   mapBottomCoord: true,

@@ -27,6 +27,8 @@
       v-if="mapUtilsPanel"
       @open-full-screen-window="onOpenFullscreenWindow"
     />
+    <!-- 比例尺 -->
+    <ScaleBar v-if="mapScaleBar"/>
     <!-- 底部信息 -->
     <BottomCoord v-if="mapBottomCoord" :companyName="companyName" />
     <!-- 操作栏 -->
@@ -56,7 +58,6 @@
       @minimize="onMinimizeFullscreenWindow(swipePanel)"
       @maximize="onMaximizeFullscreenWindow(swipePanel)"
     />
-
     <!-- 分屏工具 -->
     <SplitScreen
       v-if="splitScreen.visible"
@@ -79,6 +80,7 @@ import MapInfo from "components/map/MapInfo/index.vue";
 import SwitchMap from "components/map/SwitchMap/index.vue";
 import UtilsPanel from "components/map/UtilsPanel/index.vue";
 import OperatePanel from "components/map/OperatePanel/index.vue";
+import ScaleBar from "components/map/ScaleBar/index.vue";
 import BottomCoord from "components/map/BottomCoord/index.vue";
 import AccountSetting from "components/user/AccountSetting/index.vue";
 import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
@@ -119,6 +121,7 @@ const mapInfoPanel = computed(() => store.getters.mapInfoPanel);
 const switchMap = computed(() => store.getters.switchMap);
 const mapUtilsPanel = computed(() => store.getters.mapUtilsPanel);
 const mapOperatePanel = computed(() => store.getters.mapOperatePanel);
+const mapScaleBar = computed(() => store.getters.mapScaleBar);
 const mapBottomCoord = computed(() => store.getters.mapBottomCoord);
 const companyName = computed(() => store.getters.companyName);
 

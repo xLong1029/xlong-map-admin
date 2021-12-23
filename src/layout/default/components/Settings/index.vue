@@ -24,18 +24,24 @@
       </div>
 
       <div class="drawer-item">
-        <span>切换底图</span>
-        <el-switch v-model="switchMap" class="drawer-switch" />
-      </div>
-
-      <div class="drawer-item">
         <span>工具面板</span>
         <el-switch v-model="mapUtilsPanel" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
+        <span>切换底图</span>
+        <el-switch v-model="switchMap" class="drawer-switch" />
+      </div>
+
+
+      <div class="drawer-item">
         <span>操作面板(放大、缩小)</span>
         <el-switch v-model="mapOperatePanel" class="drawer-switch" />
+      </div>
+
+      <div class="drawer-item">
+        <span>比例尺</span>
+        <el-switch v-model="mapScaleBar" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
@@ -105,6 +111,15 @@ const switchMap = computed({
   },
   set(val) {
     changeSettings("switchMap", val);
+  },
+});
+
+const mapScaleBar = computed({
+  get() {
+    return store.getters.mapScaleBar;
+  },
+  set(val) {
+    changeSettings("mapScaleBar", val);
   },
 });
 

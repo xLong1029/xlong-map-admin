@@ -12,6 +12,7 @@ const {
   mapUtilsPanel,
   mapOperatePanel,
   switchMap,
+  mapScaleBar,
   mapBottomCoord,
 } = settings;
 
@@ -25,6 +26,7 @@ const state = {
   mapUtilsPanel,
   mapOperatePanel,
   switchMap,
+  mapScaleBar,
   mapBottomCoord,
 };
 

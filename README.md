@@ -9,6 +9,7 @@ xlong-map-element-plus 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单�
 1. 因我的 Bmob 用的是开发版套餐，所有查询只有全匹配查询，无模糊查询，请根据自行需求进行修改。
 2. 部署到 github 的站点是 https 的，上传到 Bmob 的图片地址是 http，在线上项目浏览器会报 Mixed Content 错误，并且无法显示图片，本地运行项目无此问题，建议使用本地运行查看效果。
 3. 如果要测试删除功能，请自行添加再删除，请保留我原有的测试数据
+4. 定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
 
 * 该项目仅作学习参考，请勿商用
 
@@ -55,6 +56,7 @@ xlong-map-element-plus 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单�
 │  │    jobList.json // 岗位数据
 │  │    moreUtilPanel.json // 工具面板
 │  │    professionList.json // 专业领域
+│  │    wkids.json // 坐标系
 │  │
 │  ├─common 通用方法
 │  │  │ index.js
@@ -63,6 +65,7 @@ xlong-map-element-plus 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单�
 │  │  │ table.js
 │  │  │ theme.js
 │  │  │ utilsPanel.js
+│  │  │ maxScreenPanel.js
 │  │  │
 │  │  ├─map // 地图相关
 │  │  └─mapEvents // 地图事件
