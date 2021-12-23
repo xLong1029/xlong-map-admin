@@ -3,7 +3,10 @@
     <div class="header-content-left">
       <div class="logo-container">
         <img class="logo" :src="logoImg" :title="sysTitle" />
-        <!-- <span class="title">{{ sysTitle }}</span> -->
+        <div>
+          <div class="title">{{ title }}</div>
+          <div class="sub-english">XLONG JILIDUN MAP MANAGEMENT SYSTEM</div>
+        </div>
       </div>
       <Navbar />
     </div>
@@ -49,7 +52,7 @@ import AccountSetting from "components/user/AccountSetting/index.vue";
 import AccountInfoPopover from "components/user/AccountInfoPopover/index.vue";
 import Navbar from "./Navbar/index.vue";
 // 图片
-import logoImg from "assets/images/logo.jpg";
+import logoImg from "assets/images/logo.png";
 import defaultAvatarImg from "assets/images/default-avatar.png";
 
 const store = useStore();
@@ -57,7 +60,7 @@ const store = useStore();
 const { isNull } = filter();
 
 // 标题
-const sysTitle = computed(() => store.getters.sysTitle);
+const title = computed(() => store.getters.sysTitle);
 
 // 用户信息
 const user = computed(() => store.getters.user);
@@ -114,12 +117,21 @@ const onFullExit = () => {
 
     .logo {
       height: 45px;
-      margin-right: 15px;
+      margin-right: 12px;
+    }
+    .title {
+      font-weight: 600;
+      font-size: 18px;
+      color:$primary-color;
+      font-family: Avenir, "Helvetica Neue", Arial, Helvetica, sans-serif;
     }
 
-    .title {
-      font-size: 16px;
-      font-weight: bold;
+    .sub-english {
+      font-size: 12px;
+      margin-top: 2px;
+      color: #999;
+      transform:scale(0.84);
+      margin-left: -8%;
     }
   }
 

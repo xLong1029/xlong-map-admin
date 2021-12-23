@@ -1,9 +1,11 @@
 <template>
   <div class="login-container">
+    <div class="login-bg"></div>
     <div class="login-wrapper">
       <div class="login__header">
         <img :src="logoImg" class="logo" />
-        <span class="title">{{ title }}</span>
+        <div class="title">{{ title }}</div>
+        <div class="sub-english">XLONG JILIDUN MAP MANAGEMENT SYSTEM</div>
       </div>
       <div class="login__content">
         <el-form :model="form" :rules="rules" ref="lofinForm" label-width="0">
@@ -37,24 +39,26 @@
         </el-form>
 
         <div class="remember-wrapper">
-          <el-checkbox v-model="remeberPwd" :disabled="submitLoading">记住密码</el-checkbox>
+          <el-checkbox v-model="remeberPwd" :disabled="submitLoading"
+            >记住密码</el-checkbox
+          >
           <a class="forget-link" @click="onResetPwd">忘记密码?</a>
         </div>
-        <el-button class="login__btn" type="primary" :loading="submitLoading" @click="onSubmit()">登录</el-button>
+        <el-button
+          class="login__btn"
+          type="primary"
+          :loading="submitLoading"
+          @click="onSubmit()"
+          >登录</el-button
+        >
       </div>
-    </div>
-    <div class="copyright">
-      Copyright © {{ year }}
-      <a
-        class="link"
-        target="blank"
-        href="https://github.com/xLong1029/xlong-map-element-plus"
-      >
-        {{
-          companyName
-        }}
-      </a>
-      All Rights Reserved.
+      <div class="copyright">
+        Copyright © {{ year }}
+        <a class="link" target="blank" href="https://github.com/xLong1029">
+          {{ companyName }}
+        </a>
+        All Rights Reserved.
+      </div>
     </div>
   </div>
 </template>
@@ -70,7 +74,7 @@ import formJs from "common/form.js";
 import { encrypt, decrypt } from "utils";
 import { reactive, ref, computed, onMounted, watch, toRaw } from "@vue/runtime-core";
 // logo图片
-import logoImg from "assets/images/logo.jpg";
+import logoImg from "assets/images/logo.png";
 
 const { showDevMessage, store, toPage } = common();
 const { validForm } = formJs();
@@ -177,33 +181,49 @@ const onSwitchPwdVisible = () => {
 <style lang="scss" scoped>
 .login {
   &-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-bg {
     position: relative;
-    background-image: url("./../../assets/images/login-bg.svg");
+    width: 100%;
+    background-image: url("./../../assets/images/bg.jpg");
+    background-size: cover;
     background-repeat: no-repeat;
-    background-position: center 110px;
-    background-size: 100%;
+    background-position: center;
     min-height: 100vh;
   }
+
   &-wrapper {
-    padding: 80px 0 32px 0;
-    margin: 0 20px;
+    padding: 10% 0 32px 0;
+    min-height: 100vh;
+    width: 720px;
+    background: #168bf2;
+    position: relative;
   }
+
   &__header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
     margin-bottom: 40px;
+    color: #fff;
 
     .logo {
-      height: 50px;
+      height: 80px;
       margin-right: 15px;
     }
 
     .title {
-      color: rgba(0, 0, 0, 0.85);
+      margin-top: 10px;
       font-weight: 600;
-      font-size: 33px;
+      font-size: 24px;
       font-family: Avenir, "Helvetica Neue", Arial, Helvetica, sans-serif;
+    }
+
+    .sub-english {
+      font-size: 12px;
+      margin-top: 4px;
+      color: rgba(255, 255, 255, 0.6);
     }
   }
 
@@ -211,32 +231,81 @@ const onSwitchPwdVisible = () => {
     width: 100%;
     max-width: 340px;
     margin: 0 auto;
+
+    :deep(.el-form-item__error){
+      background: $red;
+      color: #fff;
+      padding: 5px;
+      border-radius: 2px;
+      margin-top: 1px;
+      margin-left: 28px;
+    }
+  }
+
+  &__input {
+    :deep(.el-input__inner) {
+      border-radius: 20px;
+    }
   }
 
   &__btn {
     width: 100%;
+    background: #a0d037;
+    border-color: #a0d037;
+    border-radius: 20px;
   }
 }
 
 .remember-wrapper {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 24px;
+  align-items: center;
+  margin-bottom: 18px;
 
   .forget-link {
-    color: $primary-color;
+    color: #fff;
+  }
+
+  :deep(.el-checkbox){
+    height: 30px;
+  }
+
+  :deep(.el-checkbox__label){
+    color: #fff;
+  }
+
+  :deep(.el-checkbox__inner){
+    border-radius: 10px;
+    height: 20px;
+    width: 20px;
+  }
+
+  :deep(.el-checkbox__input.is-checked){
+    .el-checkbox__inner{
+      background: #fff;
+
+      &::after{
+        color:$primary-color;
+        border-color: $primary-color;
+        width:4px;
+        height: 10px;
+        top: 2px;
+        left:6px;
+      }
+    }
   }
 }
 
 .copyright {
-  color: rgba(0, 0, 0, 0.45);
   position: absolute;
   width: 100%;
   text-align: center;
   bottom: 24px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
 
   .link {
-    color: $primary-color;
+    color: #ffffff;
   }
 }
 </style>

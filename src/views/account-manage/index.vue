@@ -90,7 +90,7 @@
           >
             <template #default="{ row }">
               <el-tag v-if="row.enabledState === 1" type="success">启用</el-tag>
-              <el-tag v-else type="info">禁用</el-tag>
+              <el-tag v-else type="danger">禁用</el-tag>
             </template>
           </el-table-column>
           <el-table-column

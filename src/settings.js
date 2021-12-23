@@ -3,7 +3,7 @@ export default {
    * @type {string} *
    * @description 系统标题
    */
-  sysTitle: "XLONG家里蹲地图系统",
+  sysTitle: "XLONG家里蹲地图管理系统",
 
   /**
    * @type {string} *

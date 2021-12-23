@@ -124,8 +124,7 @@ xlong-map-element-plus 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单�
 > npm run dev
 3. 访问地址：http://localhost:8999
 
-* 通过IP地址访问，获取当前定位时会提示“定位失败，用户拒绝请求地理定位”，通过http://localhost:8080/ 访问可正常使用定位功能
-
+* 通过IP地址访问，获取当前定位时会提示“定位失败，用户拒绝请求地理定位”，通过http://localhost:8080/ 访问可正常使用定位功能。定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
 
 ## 作者联系方式
 

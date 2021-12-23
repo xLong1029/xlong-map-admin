@@ -38,9 +38,9 @@
           ><i class="iconfont icon-quanfuxianshi mr-5"></i
           ><span>南宁市全幅</span></el-button
         >
-        <el-button type="primary" size="mini" @click="setScale(bastScale)"
+        <el-button type="primary" size="mini" @click="setScale(bestScale)"
           ><i class="iconfont icon-bili mr-5"></i
-          ><span>最佳比例1:{{ bastScale }}</span></el-button
+          ><span>最佳比例1:{{ bestScale }}</span></el-button
         >
       </div>
     </div>
@@ -76,7 +76,7 @@ const coordInfo = inject("getCoordInfo");
 // 地图底图
 const basemap = inject("getBasemap");
 // 最佳比例
-const bastScale = ref(2000);
+const bestScale = ref(2000);
 
 const emit = defineEmits(["click-fold", "map-set-view-scale"]);
 
@@ -86,7 +86,7 @@ const { mapCenterPoint } = map();
 watch(
   () => basemap.value,
   (val) => {
-    bastScale.value = val === "terrain" ? 30000 : 2000;
+    bestScale.value = val === "terrain" ? 30000 : 2000;
   }
 );
 
@@ -121,7 +121,7 @@ const onLocateToNanning = () => {
   left: 15px;
   background: #fff;
   border-radius: $map-border-radius;
-  width: 285px;
+  width: 290px;
   overflow: hidden;
   box-shadow: $map-box-shadow;
 
@@ -172,6 +172,8 @@ const onLocateToNanning = () => {
 }
 
 .scale-content {
+  display: flex;
+  justify-content: space-around;
   :deep(.el-button--primary) {
     > span {
       display: flex;
