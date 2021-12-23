@@ -2,7 +2,7 @@
   <div class="header-content flex">
     <div class="header-content-left">
       <div class="logo-container">
-        <img class="logo" :src="logoImg" :title="sysTitle" />
+        <img class="logo" :src="logoImg" :title="title" />
         <div>
           <div class="title">{{ title }}</div>
           <div class="sub-english">XLONG JILIDUN MAP MANAGEMENT SYSTEM</div>

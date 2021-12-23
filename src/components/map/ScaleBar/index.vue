@@ -1,7 +1,6 @@
 <template>
   <div class="scale-bar">
-      22
-    <!-- <span class="ruler-img">
+    <span class="ruler-img">
       <img class="scale-bar-img" :src="scalebarImg" />
     </span>
     <span class="ruler-text">
@@ -26,7 +25,7 @@
         v-if="coordInfo.scale >= 50000"
         >{{ (coordInfo.scale / 100000).toFixed(0) * 2 }} 千米</span
       >
-    </span> -->
+    </span>
   </div>
 </template>
 

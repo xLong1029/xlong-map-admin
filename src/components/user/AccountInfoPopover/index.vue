@@ -60,7 +60,7 @@ const { isNull } = filter();
 
 // 用户信息
 const user = computed(() => store.getters.user);
-const sysTitle = computed(() => store.getters.sysTitle);
+const title = computed(() => store.getters.sysTitle);
 
 const onAccountSetting = (val) => {
   emit("on-account-setting", val);
@@ -76,7 +76,7 @@ const onLogout = () => {
     try {
       await store.dispatch("user/logout");
       await store.dispatch("permission/generateRoutes", null);
-      ElMessage.success(`您已退出${sysTitle.value}`);
+      ElMessage.success(`您已退出${title.value}`);
       toPage("/login");
     } catch (err) {
       console.log(err);
