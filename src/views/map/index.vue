@@ -9,7 +9,6 @@
     <MapInfo
       v-if="mapInfoPanel"
       :fold-map-info-panel="foldMapInfoPanel"
-      :map-bottom-coord="mapBottomCoord"
       @click-fold="onFoldMapInfoPanel"
       @map-set-view-scale="onMapSetView"
     />
@@ -17,7 +16,6 @@
     <SwitchMap
       v-if="switchMap"
       :map-operate-panel="mapOperatePanel"
-      :map-bottom-coord="mapBottomCoord"
       @change-basemap="changeBasemap"
       @map-set-view-scale="onMapSetView"
     />
@@ -28,11 +26,11 @@
       @open-full-screen-window="onOpenFullscreenWindow"
     />
     <!-- 比例尺 -->
-    <ScaleBar v-if="mapScaleBar"/>
+    <ScaleBar v-if="mapScaleBar" :map-bottom-coord="mapBottomCoord"/>
     <!-- 底部信息 -->
     <BottomCoord v-if="mapBottomCoord" :companyName="companyName" />
     <!-- 操作栏 -->
-    <OperatePanel v-if="mapOperatePanel" :map-bottom-coord="mapBottomCoord" />
+    <OperatePanel v-if="mapOperatePanel" />
 
     <!-- 账户设置 -->
     <AccountInfoPopover

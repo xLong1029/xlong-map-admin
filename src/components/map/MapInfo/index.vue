@@ -7,7 +7,7 @@
     <div
       v-if="!foldMapInfoPanel"
       class="map-info-panel__content"
-      :class="{ 'show-header': fixedHeader, 'has-bottom-coord': mapBottomCoord }"
+      :class="{ 'show-header': fixedHeader }"
     >
       <div class="title">
         当前视图<span class="normal ml-10"
@@ -59,11 +59,6 @@ const props = defineProps({
   foldMapInfoPanel: {
     type: Boolean,
     default: false,
-  },
-  // 是否显示地图底部信息
-  mapBottomCoord: {
-    type: Boolean,
-    default: true,
   },
 });
 
