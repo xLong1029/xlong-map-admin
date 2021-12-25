@@ -3,7 +3,7 @@
     <div class="copyright" :class="{ black: basemap === 'hybrid' }">
       <span
         >Copyright © 2021
-        <a class="link" target="blank" href="https://github.com/xLong1029/xlong-map-element-plus"
+        <a class="link" target="blank" href="https://github.com/xLong1029/xlong-map-admin"
           ><span>{{ companyName }}</span></a
         >
         All Rights Reserved.</span
