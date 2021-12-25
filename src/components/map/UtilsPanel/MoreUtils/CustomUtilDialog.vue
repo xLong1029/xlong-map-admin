@@ -190,7 +190,7 @@ const onSaveCustomUtils = () => {
 };
 </script>
 <style lang="scss" scoped>
-@import "~@/styles/more-utils.scss";
+@import "@/styles/more-utils.scss";
 .more-util-list-item {
   cursor: move;
 

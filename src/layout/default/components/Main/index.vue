@@ -17,7 +17,7 @@
 <script setup>
 // 通用方法
 import common from "common";
-import { computed } from "vue-demi";
+import { computed } from "@vue/runtime-core";
 
 const { pageLoading, store } = common();
 

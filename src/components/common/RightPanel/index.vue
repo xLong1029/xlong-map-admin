@@ -148,10 +148,8 @@ const insertToBody = () => {
   pointer-events: auto;
   cursor: pointer;
   color: #fff;
-  line-height: 48px;
-  i {
-    font-size: 24px;
-    line-height: 48px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

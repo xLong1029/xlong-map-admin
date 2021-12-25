@@ -1,5 +1,5 @@
 <template>
-  <el-config-provider :locale="locale">
+ <el-config-provider :locale="locale">
     <div
       id="app"
       v-loading="sysLoading"
@@ -49,7 +49,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss">
+<style>
 #app {
   max-height: 100vh !important;
   height: 100vh !important;

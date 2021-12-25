@@ -1,29 +1,27 @@
 // cover some element-plus styles
 .el-dialog {
-  border-radius: 6px !important;
-
-  &__headerbtn .el-dialog__close {
-    font-size: 20px;
-  }
+    border-radius: 6px !important;
+    &__headerbtn .el-dialog__close {
+        font-size: 20px;
+    }
 }
 
 .el-card {
-  border-radius: 4px;
+    border-radius: 4px;
 }
 
 .el-pager li {
-  outline: none !important;
+    outline: none !important;
 }
 
 .el-button {
-  max-height: 32px !important;
+    max-height: 32px !important;
 }
 
 .el-alert--info {
-  // background: lighten(#{$primary-color}, 40%) !important;
-  color: $primary-color !important;
-
-  .el-alert__closebtn {
+    // background: lighten(#{$primary-color}, 40%) !important;
     color: $primary-color !important;
-  }
+    .el-alert__closebtn {
+        color: $primary-color !important;
+    }
 }

@@ -2,31 +2,28 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import path from "path";
 
-// 初始化ElementPlus
-import initElementPlus from "./element-plus";
 // 初始化ElementPlus
 import initDirectives from "./directives";
 
-import BmobServer from "./bmob/bmob-server";
+import BmobServer from "./bmob/bmob-server.js";
 BmobServer.Init();
-
-// 字体样式
-import "@/assets/iconfont/iconfont.css";
-// 全局样式
-import "./styles/index.scss";
 
 // 路由权限
 import "./permission.js";
 
+// 基于断点的隐藏类样式
+import 'element-plus/theme-chalk/display.css';
+// 字体样式
+import "./assets/iconfont/iconfont.css";
+// 全局样式
+import "./styles/index.scss";
+
 const app = createApp(App);
 app.config.productionTip = false;
-
-initElementPlus(app);
 initDirectives(app);
 
 app
-  .use(store)
-  .use(router)
-  .mount("#app");
+    .use(store)
+    .use(router)
+    .mount("#app");

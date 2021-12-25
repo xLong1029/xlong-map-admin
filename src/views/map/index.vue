@@ -14,7 +14,7 @@
     />
     <!-- 切换底图 -->
     <SwitchMap
-      v-if="switchMap"
+      v-if="mapSwitchMap"
       :map-operate-panel="mapOperatePanel"
       @change-basemap="changeBasemap"
       @map-set-view-scale="onMapSetView"
@@ -116,7 +116,7 @@ const coordInfo = reactive({
 const user = computed(() => store.getters.user);
 const fixedHeader = computed(() => store.getters.fixedHeader);
 const mapInfoPanel = computed(() => store.getters.mapInfoPanel);
-const switchMap = computed(() => store.getters.switchMap);
+const mapSwitchMap = computed(() => store.getters.switchMap);
 const mapUtilsPanel = computed(() => store.getters.mapUtilsPanel);
 const mapOperatePanel = computed(() => store.getters.mapOperatePanel);
 const mapScaleBar = computed(() => store.getters.mapScaleBar);
@@ -234,8 +234,8 @@ const onMaximizeFullscreenWindow = (e) => {
 <style lang="scss" scoped>
 .map-index-container {
   position: relative;
+  height: 100%;
 }
-
 .user-avatar {
   position: absolute;
   cursor: pointer;

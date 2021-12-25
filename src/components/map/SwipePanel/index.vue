@@ -22,8 +22,8 @@
                 </el-form-item>
                 <el-form-item label="卷帘方向">
                   <el-radio-group v-model="swipeDirection" @change="onChangeSwipeType">
-                    <el-radio label="vertical">垂直</el-radio>
                     <el-radio label="horizontal">水平</el-radio>
+                    <el-radio label="vertical">垂直</el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-form>
@@ -158,7 +158,7 @@ const transferLayers = ref([
 const transferTitles = ref(["上方", "下方"]);
 
 // 卷帘配置
-const swipeDirection = ref("vertical");
+const swipeDirection = ref("horizontal");
 
 const openSwipe = ref(false);
 

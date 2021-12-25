@@ -1,30 +1,13 @@
-/* 改变主题色变量 */
-$--colors: (
-  "primary": (
-    "base": #1890ff,
-  ),
-  "warning": (
-    "base": #f0ad4e,
-  ),
-  "danger": (
-    "base": #e42b2b,
-  ),
-  "error": (
-    "base": #db2828,
-  ),
-  "info": (
-    "base": #1e1e1e,
-  ),
-);
+$--colors: ("primary": ("base": #168bf2, ), "success": ("base": #21ba45, ), "warning": ("base": #f2711c, ), "danger": ("base": #db2828, ), "error": ("base": #db2828, ), "info": ("base": #42b8dd, ), );
+// You should use them in scss, because we calculate it by sass.
+// comment next lines to use default color
+@forward "element-plus/theme-chalk/src/common/var.scss"with ( // do not use same name, it will override.
+$colors: $--colors, $button-padding-horizontal: ("default": 50px));
+// if you want to import all
+// @use "element-plus/theme-chalk/src/index.scss" as *;
+// You can comment it to hide debug info.
+// @debug $--colors;
 
 /* 改变 icon 字体路径变量，必需 */
-// $--font-path: "node_modules/element-plus/dist/fonts";
-$--font-path: "./fonts"; // 拷贝element-plus字体到styles目录下，可防止字体丢失
 
-@import "node_modules/element-plus/packages/theme-chalk/src/index";
-
-// the :export directive is the magic sauce for webpack
-// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
-// :export {
-//   theme: $--color-primary;
-// }
+$--font-path: "node_modules/element-plus/dist/fonts";

@@ -1,74 +1,102 @@
+import path from "path";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import { resolve } from "path";
-import styleImport from "vite-plugin-style-import";
 import settings from "./src/settings";
 
-// const production = process.env.NODE_ENV === "production";
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from "unplugin-vue-components/vite";
+import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 
 const port = settings.webPort;
 
+// 获取打包文件
+function getOutputDir() {
+    let dir = "xlongMapAdmin";
+
+    // switch (process.env.VUE_APP_ENV) {
+    //     case "test":
+    //         dir = "xlongMapAdminTest";
+    //         break;
+    //     case "release":
+    //         dir = "xlongMapAdminRelease";
+    //         break;
+    // }
+
+    return dir;
+}
+
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    styleImport({
-      libs: [
-        {
-          libraryName: "element-plus",
-          esModule: true,
-          ensureStyleFile: true,
-          resolveStyle: (name) => {
-            name = name.slice(3);
-            return `element-plus/packages/theme-chalk/src/${name}.scss`;
-          },
-          resolveComponent: (name) => {
-            return `element-plus/lib/${name}`;
-          },
+export default defineConfig(({ mode }) => {
+    return {
+        build: {
+            publicPath: "./",
+            outDir: getOutputDir(),
+            chunkSizeWarningLimit: 1500
         },
-      ],
-    })
-  ],
-  // 引入第三方的配置
-  optimizeDeps: {
-    include: [
-      "element-plus/lib/locale/lang/zh-cn",
-    ],
-  },
-  server: {
-    hmr: { overlay: false },
-    // 使用IP启动项目
-    host: "0.0.0.0",
-    // 配置启用的端口号
-    port: 8080,
-    // 是否开启https
-    https: false,
-    // 服务端渲染
-    ssr: false,
-  },
-  resolve: {
-    // 设置别名
-    alias: {
-      "@": resolve(__dirname, "src/"),
-      api: resolve(__dirname, "src/api"),
-      mock: resolve(__dirname, "src/mock"),
-      common: resolve(__dirname, "src/common"),
-      assets: resolve(__dirname, "src/assets"),
-      components: resolve(__dirname, "src/components"),
-      views: resolve(__dirname, "src/views"),
-      utils: resolve(__dirname, "src/utils"),
-      router: resolve(__dirname, "src/router"),
-      bmob: resolve("src/bmob"),
-      config: resolve("src/config"),
-      "~@": resolve(__dirname, "src/"),
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // 添加公共样式
-        additionalData: '@use "@/styles/variables.scss" as *;',
-      },
-    },
-  },
+        plugins: [
+            vue(),
+            AutoImport({
+                resolvers: [ElementPlusResolver({
+                    importStyle: "sass",
+                })],
+            }),
+            Components({
+                resolvers: [
+                    ElementPlusResolver({
+                        importStyle: "sass",
+                    }),
+                ],
+            }),
+        ],
+        // 引入第三方的配置
+        optimizeDeps: {
+            include: [
+                "element-plus/lib/locale/lang/zh-cn",
+            ],
+        },
+        server: {
+            hmr: { overlay: false },
+            // 使用IP启动项目
+            host: "0.0.0.0",
+            // 配置启用的端口号
+            port,
+            // 是否开启https
+            https: false,
+        },
+        resolve: {
+            alias: {
+                "@/": `${path.resolve(__dirname, "src")}/`,
+                "api": `${path.resolve(__dirname, "src")}/api`,
+                "mock": `${path.resolve(__dirname, "src")}/mock`,
+                "common": `${path.resolve(__dirname, "src")}/common`,
+                "assets": `${path.resolve(__dirname, "src")}/assets`,
+                "components": `${path.resolve(__dirname, "src")}/components`,
+                "views": `${path.resolve(__dirname, "src")}/views`,
+                "utils": `${path.resolve(__dirname, "src")}/utils`,
+                "router": `${path.resolve(__dirname, "src")}/router`,
+                "bmob": `${path.resolve(__dirname, "src")}/bmob`,
+                "config": `${path.resolve(__dirname, "src")}/config`
+            },
+        },
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    additionalData: `@use "@/styles/variables.scss" as *;`,
+                },
+            },
+            postcss: {
+                plugins: [{
+                    postcssPlugin: 'internal:charset-removal',
+                    AtRule: {
+                        // 去除"@charset" must be the first警告
+                        charset: (atRule) => {
+                            if (atRule.name === 'charset') {
+                                atRule.remove();
+                            }
+                        }
+                    }
+                }],
+            },
+        }
+    }
 });

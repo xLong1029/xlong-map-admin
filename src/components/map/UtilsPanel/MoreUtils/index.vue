@@ -110,7 +110,7 @@ const onCustomUtil = () => {
 };
 </script>
 <style lang="scss" scoped>
-@import "~@/styles/more-utils.scss";
+@import "@/styles/more-utils.scss";
 </style>
 <style>
 .more-utils-container {

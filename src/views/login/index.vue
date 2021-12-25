@@ -13,7 +13,7 @@
             <el-input
               class="login__input"
               placeholder="请输入用户名"
-              prefix-icon="el-icon-user"
+               prefix-icon="el-icon-user"
               v-model="form.username"
               @keyup.enter="onSubmit()"
             ></el-input>
