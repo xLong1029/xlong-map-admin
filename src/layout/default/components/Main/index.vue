@@ -32,5 +32,4 @@ const fixedHeader = computed(() => store.getters.fixedHeader);
     height: calc(100vh - #{$header-height});
   }
 }
-
 </style>
