@@ -1,8 +1,8 @@
-# xlong-map-element-plus
+# xlong-map-admin
 
 ## 介绍
 
-xlong-map-element-plus 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面客户端渲染的信息化管理系统示例。
+xlong-map-admin 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面客户端渲染的信息化管理系统示例。
 
 温馨提示：
 

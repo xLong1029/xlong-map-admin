@@ -2,7 +2,7 @@
   <div class="describe-container">
     <el-card class="overspread-page" shadow="never">
       <p>
-        xlong-map-element-plus 是一套基于 Vite + Vue3 + Element Plus + Bmob
+        xlong-map-admin 是一套基于 Vite + Vue3 + Element Plus + Bmob
         开发的单页面客户端渲染地图管理系统示例。
       </p>
       <p class="red">
