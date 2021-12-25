@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
         build: {
             publicPath: "./",
             outDir: getOutputDir(),
+            // 修改打包块限制大小
             chunkSizeWarningLimit: 1500
         },
         plugins: [
