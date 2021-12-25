@@ -12,7 +12,6 @@
         "hydrogen-js-sdk": "^2.2.4",
         "js-cookie": "^2.2.1",
         "path-browserify": "^1.0.1",
-        "proj4": "^2.7.5",
         "sass-resources-loader": "^2.2.3",
         "unplugin-auto-import": "^0.5.4",
         "vue": "^3.2.20",
