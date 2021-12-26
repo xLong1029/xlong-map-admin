@@ -13,14 +13,14 @@ const port = settings.webPort;
 function getOutputDir() {
     let dir = "xlongMapAdmin";
 
-    // switch (process.env.VUE_APP_ENV) {
-    //     case "test":
-    //         dir = "xlongMapAdminTest";
-    //         break;
-    //     case "release":
-    //         dir = "xlongMapAdminRelease";
-    //         break;
-    // }
+    switch (process.env.VITE_APP_ENV) {
+        case "test":
+            dir = "xlongMapAdminTest";
+            break;
+        case "release":
+            dir = "xlongMapAdminRelease";
+            break;
+    }
 
     return dir;
 }
@@ -28,7 +28,7 @@ function getOutputDir() {
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     return {
-        base: mode === 'production' ? "./" : "/",
+        // base: mode === 'production' ? "/xlong-map-admin/" : "/",
         build: {
             outDir: getOutputDir(),
             // 修改打包块限制大小

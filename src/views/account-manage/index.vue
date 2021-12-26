@@ -6,15 +6,10 @@
         title="这里只做功能演示，并非此系统登录的账户管理，如果要测试删除功能，请自行新增后再删除，请保留我原有的测试数据"
         type="info"
         show-icon
-      >
-      </el-alert>
+      ></el-alert>
       <!-- 筛选 -->
       <div class="operate-container">
-        <el-form
-          :model="filterParamsForm"
-          :inline="true"
-          class="form-container"
-        >
+        <el-form :model="filterParamsForm" :inline="true" class="form-container">
           <el-form-item>
             <el-input
               class="form-keyword"
@@ -37,23 +32,19 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" @click="onSearch()"
-              >搜索</el-button
-            >
+            <el-button type="primary" icon="el-icon-search" @click="onSearch()">搜索</el-button>
           </el-form-item>
         </el-form>
-        <div>
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd()"
-            >新增账户</el-button
-          >
+        <div v-if="roles.indexOf('admin') >= 0">
+          {{ roles }}
+          <el-button type="primary" icon="el-icon-plus" @click="onAdd()">新增账户</el-button>
           <el-button
             type="danger"
             icon="el-icon-delete"
             :disabled="!selectList.length"
             :loading="delLoading"
             @click="onDel()"
-            >批量删除</el-button
-          >
+          >批量删除</el-button>
         </div>
       </div>
       <!-- 表格 -->
@@ -73,27 +64,24 @@
         @pagination="getList"
       >
         <template #before>
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column width="50" label="序号" fixed="" align="center">
-            <template v-slot="{ $index }">{{
-              $index + 1 + page.pageSize * (page.pageNo - 1)
-            }}</template>
+          <el-table-column v-if="roles.indexOf('admin') >= 0" type="selection" width="55"></el-table-column>
+          <el-table-column width="50" label="序号" fixed align="center">
+            <template v-slot="{ $index }">
+              {{
+                $index + 1 + page.pageSize * (page.pageNo - 1)
+              }}
+            </template>
           </el-table-column>
         </template>
         <template #after>
-          <el-table-column
-            prop="enabledState"
-            label="状态"
-            width="100"
-            fixed="right"
-            align="center"
-          >
+          <el-table-column prop="enabledState" label="状态" width="100" fixed="right" align="center">
             <template #default="{ row }">
               <el-tag v-if="row.enabledState === 1" type="success">启用</el-tag>
               <el-tag v-else type="danger">禁用</el-tag>
             </template>
           </el-table-column>
           <el-table-column
+            v-if="roles.indexOf('admin') >= 0"
             prop="action"
             label="操作"
             fixed="right"
@@ -101,19 +89,13 @@
             align="center"
           >
             <template #default="{ row, $index }">
-              <el-button
-                type="text"
-                icon="el-icon-edit"
-                @click="onEdit(row, $index)"
-                >编辑</el-button
-              >
+              <el-button type="text" icon="el-icon-edit" @click="onEdit(row, $index)">编辑</el-button>
               <el-button
                 class="delete-btn"
                 type="text"
                 icon="el-icon-delete"
                 @click="onDelRow(row, $index)"
-                >删除</el-button
-              >
+              >删除</el-button>
             </template>
           </el-table-column>
         </template>
@@ -130,7 +112,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from "@vue/runtime-core";
+import { computed, onMounted, reactive, ref } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 组件
 import DynamicTable from "components/common/Table/DynamicTable.vue";
@@ -152,6 +134,8 @@ const {
   getSelectList,
   clearSelect,
 } = table();
+
+const roles = computed(() => store.getters.roles);
 
 const tableHeader = [
   {
@@ -213,7 +197,7 @@ const storeDialog = reactive({
 });
 
 onMounted(() => {
-  getList(1, 10);
+  getList(1, page.pageSize);
 });
 
 // 获取列表内容
@@ -237,7 +221,7 @@ const getList = (pageNo, pageSize) => {
 
 // 搜索
 const onSearch = () => {
-  getList(1, 10);
+  getList(1, page.pageSize);
 };
 
 // 新增
@@ -291,7 +275,7 @@ const setTableRowClassName = ({ row }) => {
     background: #f2f2f2;
     color: #b5b5b5;
   }
-  
+
   .delete-btn {
     color: $red;
   }
