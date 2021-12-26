@@ -2,12 +2,12 @@
 
 ## 介绍
 
-xlong-map-admin 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面客户端渲染的信息化管理系统示例。
+xlong-map-admin是一套基于 Vue3 + Vite + ArcGis 开发的单页面客户端渲染的信息化管理系统示例。
 
 温馨提示：
 
 1. 因我的 Bmob 用的是开发版套餐，所有查询只有全匹配查询，无模糊查询，请根据自行需求进行修改。
-2. 部署到 github 的站点是 https 的，上传到 Bmob 的图片地址是 http，在线上项目浏览器会报 Mixed Content 错误，并且无法显示图片，本地运行项目无此问题，建议使用本地运行查看效果。
+2. 开发过程中发现Vite项目打包发布后因使用Bmob项目会报错“Uncaught TypeError: Cannot read property 'prototype' of undefined”，但本地运行无此问题，如果想使用可正常打包的版本，请移步[develop-vite-mock](https://github.com/xLong1029/xlong-map-admin/tree/develop-vite-mock)版本。
 3. 如果要测试删除功能，请自行添加再删除，请保留我原有的测试数据
 4. 定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
 
@@ -17,7 +17,7 @@ xlong-map-admin 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面�
 
 #### 1. 前后端分离开发模式
 
-- **前端**：Vue + Element Plus + ArcGis
+- **前端**：Vue + Vite + Element Plus + ArcGis
 - **后端**：Bmob
 
 #### 2. 项目用到技术、框架与插件
@@ -25,6 +25,18 @@ xlong-map-admin 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面�
 [Vue3](https://v3.vuejs.org/)<br/>
 [Element Plus](https://github.com/element-plus)<br/>
 [ArcGis](https://developers.arcgis.com/javascript/latest/)<br/>
+
+#### 3. 角色权限说明
+
+1. 超级管理员  
+可见所有菜单，可对用户进行增、删、改、查等管理。  
+测试账户：18376686974，密码：123456
+2. 普通管理员
+可见所有菜单，只能查看用户信息，无法对用户进行增、删、改管理。
+测试账户：17777075292，密码：123456
+3. 普通用户
+仅可见“GIS地图”和“系统说明”菜单。
+测试账户：18888888888，密码：666666
 
 ## 目录结构
 
