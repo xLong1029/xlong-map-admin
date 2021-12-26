@@ -1,1 +1,0 @@
-import{r6 as a,r7 as c}from"./index.a1c5dd56.js";import"./vendor.c6be4c00.js";import"./index.a0863940.js";/* empty css              */import"./qrcode.0911187d.js";/* empty css                 */export{a as build,c as defaultAngleCutoff};
