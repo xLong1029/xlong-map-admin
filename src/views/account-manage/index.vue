@@ -36,7 +36,6 @@
           </el-form-item>
         </el-form>
         <div v-if="roles.indexOf('admin') >= 0">
-          {{ roles }}
           <el-button type="primary" icon="el-icon-plus" @click="onAdd()">新增账户</el-button>
           <el-button
             type="danger"
