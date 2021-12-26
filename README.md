@@ -2,14 +2,10 @@
 
 ## 介绍
 
-xlong-map-admin 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面客户端渲染的信息化管理系统示例。
+xlong-map-admin是一套基于 Vue3 + Vite + ArcGis 开发的单页面客户端渲染的信息化管理系统示例。
 
 温馨提示：
-
-1. 因我的 Bmob 用的是开发版套餐，所有查询只有全匹配查询，无模糊查询，请根据自行需求进行修改。
-2. 部署到 github 的站点是 https 的，上传到 Bmob 的图片地址是 http，在线上项目浏览器会报 Mixed Content 错误，并且无法显示图片，本地运行项目无此问题，建议使用本地运行查看效果。
-3. 如果要测试删除功能，请自行添加再删除，请保留我原有的测试数据
-4. 定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
+1. 定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
 
 * 该项目仅作学习参考，请勿商用
 
@@ -17,20 +13,34 @@ xlong-map-admin 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面�
 
 #### 1. 前后端分离开发模式
 
-- **前端**：Vue + Element Plus + ArcGis
-- **后端**：Bmob
+- **前端**：Vue + Vite + Element Plus + ArcGis
+- **后端**：Mock.js模拟请求
 
 #### 2. 项目用到技术、框架与插件
 
 [Vue3](https://v3.vuejs.org/)<br/>
 [Element Plus](https://github.com/element-plus)<br/>
 [ArcGis](https://developers.arcgis.com/javascript/latest/)<br/>
+[Mockjs](http://mockjs.com/)<br/>
+
+#### 3. 角色权限说明
+
+1. 超级管理员  
+可见所有菜单，可对用户进行增、删、改、查等管理。  
+测试账户：18376686974，密码：123456
+2. 普通管理员  
+可见所有菜单，只能查看用户信息，无法对用户进行增、删、改管理。  
+测试账户：17777075292，密码：123456
+3. 普通用户  
+仅可见“GIS地图”和“系统说明”菜单。  
+测试账户：18888888888，密码：666666
 
 ## 目录结构
 
 ```
 │  .env.development // 开发环境配置
 │  .env.production // 生产环境配置
+│  .env.release // release环境配置
 │  .gitignore
 │  package.json
 │  vite.config.js // 配置文件
@@ -44,7 +54,6 @@ xlong-map-admin 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面�
 │  │  main.js // 项目入口js
 │  │  permission.js // 路由权限配置
 │  │  settings.js // 设置文件
-│  │  element-plus.js // element-plus按需引用配置
 │  │  App.vue // 根组件
 │  │
 │  ├─assets // 资源目录，这里的资源会被wabpack构建
@@ -52,11 +61,10 @@ xlong-map-admin 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面�
 │  ├─store  // 应用级数据（state）
 │  ├─styles  // 样式
 │  │
-│  ├─mock // 测试数据
-│  │    jobList.json // 岗位数据
-│  │    moreUtilPanel.json // 工具面板
-│  │    professionList.json // 专业领域
-│  │    wkids.json // 坐标系
+│  ├─mock // 模拟请求数据
+│  │  │  index.js
+│  │  │
+│  │  └─modules
 │  │
 │  ├─common 通用方法
 │  │  │ index.js
@@ -125,9 +133,9 @@ xlong-map-admin 是一套基于 Vue3 + Vite + Bmob + ArcGis 开发的单页面�
 > npm install
 2. 运行项目
 > npm run dev
-3. 访问地址：http://localhost:8999
+3. 访问地址：http://localhost:6666
 
-* 通过IP地址访问，获取当前定位时会提示“定位失败，用户拒绝请求地理定位”，通过http://localhost:8080/ 访问可正常使用定位功能。定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
+* 通过IP地址访问，获取当前定位时会提示“定位失败，用户拒绝请求地理定位”，通过http://localhost:6666/ 访问可正常使用定位功能。定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
 
 ## 作者联系方式
 

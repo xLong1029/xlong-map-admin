@@ -1,35 +1,35 @@
 const users = [{
-        userId: "admin",
-        avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+        userId: "ozdUQQQe",
+        avatar: "http://xlongadmin.xlong.club/2020/11/30/5d14ade440fbf67980d98ff08672de8a.png",
         gender: "女",
         username: 18376686974,
         password: 123456,
-        realName: "超级管理员",
+        realName: "小六子",
         nickName: "xLong",
-        token: 'admin-token',
-        roles: ['admin'],
+        token: '0aks73hhd8xjsu394',
+        roles: 'admin',
     },
     {
-        userId: "manager",
-        avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
+        userId: "aDKHTTTk",
+        avatar: "http://xlongadmin.xlong.club/2020/01/08/61afcdfa40d8bb1a80e8c25ed65d8ba7.jpg",
         gender: "男",
         username: 17777075292,
-        password: 666666,
-        realName: "普通用户",
-        nickName: "小六子",
-        token: 'manager-token',
-        roles: ['manager'],
+        password: 123456,
+        realName: "琛小黑",
+        nickName: "Lio.Huang",
+        token: 'a7f441154089e22b80f17c338e5d2a4e',
+        roles: 'manage',
     },
     {
-        userId: "user",
+        userId: "LKdsAAAF",
         avatar: "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif",
         gender: "男",
         username: 18888888888,
         password: 666666,
-        realName: "普通用户",
-        nickName: "超级英雄",
-        token: 'user-token',
-        roles: ['user'],
+        realName: "小朋友",
+        nickName: "夏普",
+        token: '0osi7u3hfydg28xus7',
+        roles: 'user',
     }
 ]
 
@@ -66,6 +66,9 @@ export default [{
         url: "/api/user/info",
         method: "get",
         response: config => {
+
+            console.log(222, config);
+
             const {
                 token
             } = config.query

@@ -23,7 +23,7 @@ router.beforeEach(async(to, from, next) => {
             if (hasToken) {
                 if (to.path === "/login") {
                     store.dispatch("app/setSysLoading", false);
-                    next("/home");
+                    next("/map");
                 } else {
                     // 获取用户信息
                     const { roles } = await store.dispatch("user/getInfo");
@@ -49,6 +49,7 @@ router.beforeEach(async(to, from, next) => {
                 }
             }
         } catch (err) {
+            console.log(err);
             // 重登录
             ElMessage.error(err || "用户信息已失效，请重新登录");
 

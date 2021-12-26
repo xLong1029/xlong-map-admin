@@ -50,14 +50,14 @@ export default defineConfig(({ mode }) => {
                 ],
             }),
             viteMockServe({
-                mockPath: "./src/mock",
+                mockPath: "./src/mock", // mock地址
                 supportTs: false, // 如果使用 js发开，则需要配置 supportTs 为 false
                 watchFiles: true, // 监视文件更改
                 prodEnabled: process.env.VITE_USE_MOCK,
-                // mock
+                // mock生产环境配置
                 injectCode: `
-                import { setupProdMockServer } from "./mock/mock-server.js";
-                setupProdMockServer();
+                    import { setupProdMockServer } from "./mock/mock-server.js";
+                    setupProdMockServer();
                 `
             }),
         ],

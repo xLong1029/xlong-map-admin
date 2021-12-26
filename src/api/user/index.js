@@ -25,10 +25,11 @@ export default {
      * @param {*} token token
      */
     GetUser: (token) => {
+
+        console.log(token);
         return request({
-            url: '/api/user/info',
-            method: 'get',
-            params: { token }
+            url: `/api/user/info?token=${token}`,
+            method: 'get'
         })
     },
     /**

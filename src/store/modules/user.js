@@ -42,13 +42,15 @@ const actions = {
         return new Promise((resolve, reject) => {
             const token = getToken();
 
+            console.log(token);
+
             Api.GetUser(token)
                 .then((res) => {
                     const { code, data } = res;
 
                     // 登录成功
                     if (code == 200 && data) {
-                        data.roles = strToArr(data.roles, ",")
+                        data.roles = strToArr(data.roles, ",");
 
                         commit("SET_USER", data);
                         resolve(data);
@@ -85,6 +87,7 @@ const actions = {
                         // 存储token
                         setToken(data.token);
                         commit("SET_TOKEN", data.token);
+                        data.roles = strToArr(data.roles, ",");
                         resolve(data);
                     } else reject(res);
                 })

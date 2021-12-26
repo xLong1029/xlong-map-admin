@@ -1,22 +1,19 @@
 import LayoutDefault from "@/layout/default/index.vue";
 
-const router = [
-  {
+const router = [{
     path: "/account-manage",
     component: LayoutDefault,
     redirect: "/account-manage/index",
     meta: {
-      roles: ["admin"]
+        roles: ["admin", "manage"]
     },
-    children: [
-      {
+    children: [{
         path: "index",
-        component: () => import("@/views/account-manage/index.vue"),
+        component: () =>
+            import ("@/views/account-manage/index.vue"),
         name: "AccountManage",
         meta: { title: "用户管理", icon: "iconfont icon-zhanghuguanli mr-5" },
-      },
-    ],
-  }
-];
+    }, ],
+}];
 
 export default router;

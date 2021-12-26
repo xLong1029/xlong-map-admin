@@ -28,7 +28,7 @@
         <el-button
           class="bullshit__return-home"
           type="primary"
-          @click="toPage('/home')"
+          @click="toPage('/map')"
           >返回首页</el-button
         >
       </div>
