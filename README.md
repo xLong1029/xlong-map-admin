@@ -43,6 +43,7 @@ xlong-map-admin是一套基于 Vue3 + Vite + ArcGis 开发的单页面客户端�
 ```
 │  .env.development // 开发环境配置
 │  .env.production // 生产环境配置
+│  .env.release // release环境配置
 │  .gitignore
 │  package.json
 │  vite.config.js // 配置文件
@@ -56,7 +57,6 @@ xlong-map-admin是一套基于 Vue3 + Vite + ArcGis 开发的单页面客户端�
 │  │  main.js // 项目入口js
 │  │  permission.js // 路由权限配置
 │  │  settings.js // 设置文件
-│  │  element-plus.js // element-plus按需引用配置
 │  │  App.vue // 根组件
 │  │
 │  ├─assets // 资源目录，这里的资源会被wabpack构建
@@ -137,7 +137,7 @@ xlong-map-admin是一套基于 Vue3 + Vite + ArcGis 开发的单页面客户端�
 > npm install
 2. 运行项目
 > npm run dev
-3. 访问地址：http://localhost:8999
+3. 访问地址：http://localhost:6666
 
 * 通过IP地址访问，获取当前定位时会提示“定位失败，用户拒绝请求地理定位”，通过http://localhost:8080/ 访问可正常使用定位功能。定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
 
