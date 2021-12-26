@@ -28,8 +28,8 @@ function getOutputDir() {
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     return {
+        base: mode === 'production' ? "./" : "/",
         build: {
-            publicPath: mode === 'development' ? "/" : "/xlong-map-admin/",
             outDir: getOutputDir(),
             // 修改打包块限制大小
             chunkSizeWarningLimit: 1500
