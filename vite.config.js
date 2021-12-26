@@ -29,7 +29,7 @@ function getOutputDir() {
 export default defineConfig(({ mode }) => {
     return {
         build: {
-            publicPath: "./",
+            publicPath: mode === 'development' ? "/" : "/xlong-map-admin/",
             outDir: getOutputDir(),
             // 修改打包块限制大小
             chunkSizeWarningLimit: 1500
