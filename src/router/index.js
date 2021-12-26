@@ -1,5 +1,5 @@
 import LayoutDefault from "@/layout/default/index.vue";
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
 /**
  * 静态路由
@@ -44,7 +44,7 @@ Object.keys(routesModules).forEach((modulePath) => {
  */
 export const initRouter = () =>
     createRouter({
-        history: createWebHashHistory(),
+        history: createWebHistory('/xlong-map-admin/'),
         scrollBehavior: () => ({ y: 0 }),
         routes: [...constantRoutes],
     });
