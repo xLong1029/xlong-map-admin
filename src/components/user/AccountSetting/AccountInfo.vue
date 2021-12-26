@@ -51,7 +51,7 @@ import RoleTag from "components/user/RoleTag/index.vue";
 // 工具
 import { strToArr } from "utils";
 // Api
-import Api from "api/user/index.js";
+// import Api from "api/user/index.js";
 
 const { store } = common();
 const { validForm, validateRealName } = formJs();
@@ -93,56 +93,56 @@ const resetForm = () => {
 const onSubmit = async () => {
   const valid = await validForm(infoForm.value, "信息填写有误，请检查");
 
-  if (valid) {
-    submitLoading.value = true;
+  // if (valid) {
+  //   submitLoading.value = true;
 
-    const params = toRaw(form);
-    Api.EditProfile(params, user.value.userId)
-      .then(async (res) => {
-        const { code, msg } = res;
-        if (code == 200) {
-          getProfile();
-          ElMessage.success("信息保存成功");
-        } else {
-          ElMessage.success("信息保存失败");
-        }
-      })
-      .catch((err) => console.log(err))
-      .finally(() => (submitLoading.value = false));
-  }
+  //   const params = toRaw(form);
+  //   Api.EditProfile(params, user.value.userId)
+  //     .then(async (res) => {
+  //       const { code, msg } = res;
+  //       if (code == 200) {
+  //         getProfile();
+  //         ElMessage.success("信息保存成功");
+  //       } else {
+  //         ElMessage.success("信息保存失败");
+  //       }
+  //     })
+  //     .catch((err) => console.log(err))
+  //     .finally(() => (submitLoading.value = false));
+  // }
 };
 
 // 获取个人资料
 const getProfile = () => {
-  infoLoading.value = true;
+  // infoLoading.value = true;
 
-  Api.GetUser(token.value)
-    .then((res) => {
-      const { code, data } = res;
-      // 获取到数据
-      if (code == 200) {
-        const { username, userFace, nickName, realName, gender, objectId, role } = data;
+  // Api.GetUser(token.value)
+  //   .then((res) => {
+  //     const { code, data } = res;
+  //     // 获取到数据
+  //     if (code == 200) {
+  //       const { username, userFace, nickName, realName, gender, objectId, role } = data;
 
-        form.nickName = nickName;
-        form.realName = realName;
+  //       form.nickName = nickName;
+  //       form.realName = realName;
 
-        // 更新用户信息
-        store.commit("user/SET_USER", {
-          avatar: userFace,
-          gender,
-          username,
-          realName,
-          nickName,
-          userId: objectId,
-          roles: role ? strToArr(role, ",") : null,
-        });
-      } else {
-        ElMessage.error("无法获取用户数据");
-        console.log("无该用户");
-      }
-    })
-    .catch((err) => console.log(err))
-    .finally(() => (infoLoading.value = false));
+  //       // 更新用户信息
+  //       store.commit("user/SET_USER", {
+  //         avatar: userFace,
+  //         gender,
+  //         username,
+  //         realName,
+  //         nickName,
+  //         userId: objectId,
+  //         roles: role ? strToArr(role, ",") : null,
+  //       });
+  //     } else {
+  //       ElMessage.error("无法获取用户数据");
+  //       console.log("无该用户");
+  //     }
+  //   })
+  //   .catch((err) => console.log(err))
+  //   .finally(() => (infoLoading.value = false));
 };
 </script>
 <style lang="scss">

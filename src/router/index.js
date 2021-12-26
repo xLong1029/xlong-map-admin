@@ -1,8 +1,8 @@
 import LayoutDefault from "@/layout/default/index.vue";
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
-const VITE_APP_ENV =
-    import.meta.env.VITE_APP_ENV;
+// const VITE_APP_ENV =
+//     import.meta.env.VITE_APP_ENV;
 
 /**
  * 静态路由
@@ -47,7 +47,7 @@ Object.keys(routesModules).forEach((modulePath) => {
  */
 export const initRouter = () =>
     createRouter({
-        history: createWebHistory(VITE_APP_ENV === 'test' ? '' : '/xlong-map-admin/'),
+        history: createWebHashHistory(),
         scrollBehavior: () => ({ y: 0 }),
         routes: [...constantRoutes],
     });

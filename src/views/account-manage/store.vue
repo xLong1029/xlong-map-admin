@@ -124,7 +124,7 @@ import formJs from "common/form.js";
 import jobList from "mock/jobList.json";
 import professionList from "mock/professionList.json";
 // Api
-import Api from "api/account-manage/index.js";
+// import Api from "api/account-manage/index.js";
 
 const props = defineProps({
   visible: {
@@ -249,29 +249,29 @@ const onSubmit = async () => {
 
     const { row } = props;
 
-    if (row) {
-      Api.EditAccount(params, row.objectId)
-        .then((res) => {
-          if (res.code == 200) {
-            ElMessage.success("编辑成功");
-            emit("submit");
-            onClose();
-          } else ElMessage.error(res.msg);
-        })
-        .catch((err) => ElMessage.error("操作失败"))
-        .finally(() => (submitLoading.value = false));
-    } else {
-      Api.AddAccount(params)
-        .then((res) => {
-          if (res.code == 200) {
-            ElMessage.success("新增成功");
-            emit("submit");
-            onClose();
-          } else ElMessage.error(res.msg);
-        })
-        .catch((err) => ElMessage.error("操作失败"))
-        .finally(() => (submitLoading.value = false));
-    }
+    // if (row) {
+    //   Api.EditAccount(params, row.objectId)
+    //     .then((res) => {
+    //       if (res.code == 200) {
+    //         ElMessage.success("编辑成功");
+    //         emit("submit");
+    //         onClose();
+    //       } else ElMessage.error(res.msg);
+    //     })
+    //     .catch((err) => ElMessage.error("操作失败"))
+    //     .finally(() => (submitLoading.value = false));
+    // } else {
+    //   Api.AddAccount(params)
+    //     .then((res) => {
+    //       if (res.code == 200) {
+    //         ElMessage.success("新增成功");
+    //         emit("submit");
+    //         onClose();
+    //       } else ElMessage.error(res.msg);
+    //     })
+    //     .catch((err) => ElMessage.error("操作失败"))
+    //     .finally(() => (submitLoading.value = false));
+    // }
   }
 };
 </script>

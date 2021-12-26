@@ -34,15 +34,14 @@ export default {
 
                     // 对createdAt字段降序排列
                     query.order("-createdAt")
-                    // 返回数据条数，默认返回10条数据
+                        // 返回数据条数，默认返回10条数据
                     query.limit(pageSize)
-                    // 跳过前面几条数据开始
+                        // 跳过前面几条数据开始
                     query.skip((pageNo - 1) * pageSize)
 
                     query.find().then(res => resolve({ code: 200, data: res, page })).catch(err => reject(err))
                 })
-            }
-            else {
+            } else {
                 query.find().then(res => resolve({ code: 200, data: res })).catch(err => reject(err))
             }
         })
@@ -72,7 +71,7 @@ export default {
     // 添加一行数据
     AddOne: (tableName, params) => {
         let query = Bmob.Query(tableName)
-        // 删除参数中的objectId值
+            // 删除参数中的objectId值
         params = objOmit(params, ['objectId', 'createdAt', 'updatedAt'])
         return new Promise((resolve, reject) => {
             // 循环执行set操作
@@ -87,7 +86,7 @@ export default {
     // 删除一行数据
     DelOne: (tableName, objectId) => {
         let query = Bmob.Query(tableName)
-        // 获取对象并删除
+            // 获取对象并删除
         return new Promise((resolve, reject) => {
             query.get(objectId).then(res => {
                 res.destroy().then(() => resolve({ code: 200, msg: '操作成功！' })).catch(err => reject(err))
@@ -97,9 +96,9 @@ export default {
     // 修改一行数据
     EditOne: (tableName, objectId, params) => {
         let query = Bmob.Query(tableName)
-        // 删除参数中的objectId值
+            // 删除参数中的objectId值
         params = objOmit(params, ['objectId', 'createdAt', 'updatedAt'])
-        // 获取对象并修改
+            // 获取对象并修改
         return new Promise((resolve, reject) => {
             query.get(objectId).then(res => {
                 // 循环执行set操作
@@ -115,9 +114,9 @@ export default {
     // 批量删除数据
     DelMore: (tableName, objectIds) => {
         let query = Bmob.Query(tableName)
-        // 查询某一字段值在某一集合中的记录
+            // 查询某一字段值在某一集合中的记录
         query.containedIn('objectId', objectIds)
-        // 获取对象并删除
+            // 获取对象并删除
         return new Promise((resolve, reject) => {
             query.find().then(todos => {
                 todos.destroyAll().then(() => resolve({ code: 200, msg: '操作成功！' })).catch(err => reject(err))
@@ -128,7 +127,7 @@ export default {
     EditMore: (tableName, objectIds, params) => {
         let query = Bmob.Query(tableName)
         query.containedIn('objectId', objectIds)
-        // 获取对象并修改
+            // 获取对象并修改
         return new Promise((resolve, reject) => {
             query.find().then(todos => {
                 // 循环执行set操作

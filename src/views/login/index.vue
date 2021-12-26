@@ -161,6 +161,7 @@ const onSubmit = async () => {
 
       toPage("/map");
     } catch (err) {
+      console.log(err);
       ElMessage.error("用户名或者密码不正确");
 
       submitLoading.value = false;

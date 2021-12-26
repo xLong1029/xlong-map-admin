@@ -1,5 +1,5 @@
 <template>
- <el-config-provider :locale="locale">
+  <el-config-provider :locale="locale">
     <div
       id="app"
       v-loading="sysLoading"

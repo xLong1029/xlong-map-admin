@@ -139,7 +139,7 @@ import StoreDialog from "./store.vue";
 import table from "common/table.js";
 import common from "common";
 // Api
-import Api from "api/account-manage/index.js";
+// import Api from "api/account-manage/index.js";
 
 const { store, toPage } = common();
 const {
@@ -213,31 +213,30 @@ const storeDialog = reactive({
 });
 
 onMounted(() => {
-  getList(1, 10);
+  getList(1, page.pageSize);
 });
 
 // 获取列表内容
 const getList = (pageNo, pageSize) => {
-  console.log(123);
-  listLoading.value = true;
+  // listLoading.value = true;
 
-  Api.GetAccList(filterParamsForm, pageNo, pageSize)
-    .then((res) => {
-      const { code, data, page, message } = res;
-      if (code === 200) {
-        listData.value = data;
-        setPage({ ...page });
-      } else {
-        ElMessage.error(message);
-      }
-    })
-    .catch((err) => console.log(err))
-    .finally(() => (listLoading.value = false));
+  // Api.GetAccList(filterParamsForm, pageNo, pageSize)
+  //   .then((res) => {
+  //     const { code, data, page, message } = res;
+  //     if (code === 200) {
+  //       listData.value = data;
+  //       setPage({ ...page });
+  //     } else {
+  //       ElMessage.error(message);
+  //     }
+  //   })
+  //   .catch((err) => console.log(err))
+  //   .finally(() => (listLoading.value = false));
 };
 
 // 搜索
 const onSearch = () => {
-  getList(1, 10);
+  getList(1, page.pageSize);
 };
 
 // 新增
@@ -250,20 +249,20 @@ const onAdd = () => {
 const onDel = (showLoading = true) => {
   const ids = selectList.value.map((e) => e.objectId);
 
-  delLoading.value = true;
-  Api.DeleteAcc(ids)
-    .then((res) => {
-      const { code, data, page, message } = res;
-      if (code === 200) {
-        ElMessage.success("删除成功");
-        getList(1, 10);
-        clearSelect();
-      } else {
-        ElMessage.error(message);
-      }
-    })
-    .catch((err) => console.log(err))
-    .finally(() => (delLoading.value = false));
+  // delLoading.value = true;
+  // Api.DeleteAcc(ids)
+  //   .then((res) => {
+  //     const { code, data, page, message } = res;
+  //     if (code === 200) {
+  //       ElMessage.success("删除成功");
+  //       getList(1, 10);
+  //       clearSelect();
+  //     } else {
+  //       ElMessage.error(message);
+  //     }
+  //   })
+  //   .catch((err) => console.log(err))
+  //   .finally(() => (delLoading.value = false));
 };
 
 // 编辑

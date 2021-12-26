@@ -6,6 +6,7 @@ import settings from "./src/settings";
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import { viteMockServe } from "vite-plugin-mock"
 
 const port = settings.webPort;
 
@@ -13,14 +14,14 @@ const port = settings.webPort;
 function getOutputDir() {
     let dir = "xlongMapAdmin";
 
-    // switch (process.env.VUE_APP_ENV) {
-    //     case "test":
-    //         dir = "xlongMapAdminTest";
-    //         break;
-    //     case "release":
-    //         dir = "xlongMapAdminRelease";
-    //         break;
-    // }
+    switch (process.env.VITE_APP_ENV) {
+        case "test":
+            dir = "xlongMapAdminTest";
+            break;
+        case "release":
+            dir = "xlongMapAdminRelease";
+            break;
+    }
 
     return dir;
 }
@@ -28,7 +29,7 @@ function getOutputDir() {
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     return {
-        base: mode === 'production' ? "./" : "/",
+        // base: mode === 'production' ? "/xlong-map-admin/" : "/",
         build: {
             outDir: getOutputDir(),
             // 修改打包块限制大小
@@ -47,6 +48,17 @@ export default defineConfig(({ mode }) => {
                         importStyle: "sass",
                     }),
                 ],
+            }),
+            viteMockServe({
+                mockPath: "./src/mock",
+                supportTs: false, // 如果使用 js发开，则需要配置 supportTs 为 false
+                watchFiles: true, // 监视文件更改
+                prodEnabled: process.env.VITE_USE_MOCK,
+                // mock
+                injectCode: `
+                import { setupProdMockServer } from "./mock/mock-server.js";
+                setupProdMockServer();
+                `
             }),
         ],
         // 引入第三方的配置
