@@ -66,9 +66,6 @@ export default [{
         url: "/api/user/info",
         method: "get",
         response: config => {
-
-            console.log(222, config);
-
             const {
                 token
             } = config.query

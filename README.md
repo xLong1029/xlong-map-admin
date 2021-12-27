@@ -5,7 +5,8 @@
 xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单页面客户端渲染的地图管理系统示例。
 
 温馨提示：
-1. 定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
+1. 使用Mock.js随机生成数据，拦截 Ajax 请求。
+2. 定位功能，ArcGis官方示例，获取当前定位总是定位到兰州附近
 
 * 该项目仅作学习参考，请勿商用
 
@@ -13,7 +14,7 @@ xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单�
 
 #### 1. 前后端分离开发模式
 
-- **前端**：Vue + Vite + Element Plus + ArcGis
+- **前端**：Vite + Vue3
 - **后端**：Mock.js模拟请求
 
 #### 2. 项目用到技术、框架与插件

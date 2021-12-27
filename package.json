@@ -2,8 +2,8 @@
     "name": "xlong-map-admin",
     "version": "0.1.0",
     "scripts": {
-        "dev": "cross-env NODE_ENV=development vite",
-        "build": "cross-env NODE_ENV=production vite build",
+        "dev": "cross-env vite",
+        "build": "cross-env vite build",
         "build:release": "vite build --mode release",
         "serve": "vite preview"
     },
