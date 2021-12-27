@@ -250,22 +250,24 @@ const onSubmit = async () => {
     if (row) {
       Api.EditAccount(params, row.objectId)
         .then((res) => {
-          if (res.code == 200) {
+          const { code, msg } = res;
+          if (code == 200) {
             ElMessage.success("编辑成功");
             emit("submit");
             onClose();
-          } else ElMessage.error(res.msg);
+          } else ElMessage.error(msg);
         })
         .catch((err) => ElMessage.error("操作失败"))
         .finally(() => (submitLoading.value = false));
     } else {
       Api.AddAccount(params)
         .then((res) => {
-          if (res.code == 200) {
+          const { code, msg } = res;
+          if (code == 200) {
             ElMessage.success("新增成功");
             emit("submit");
             onClose();
-          } else ElMessage.error(res.msg);
+          } else ElMessage.error(msg);
         })
         .catch((err) => ElMessage.error("操作失败"))
         .finally(() => (submitLoading.value = false));
