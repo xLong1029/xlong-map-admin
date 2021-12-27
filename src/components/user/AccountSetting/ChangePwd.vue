@@ -61,7 +61,6 @@ const props = defineProps({
 
 const { store, toPage } = common();
 const { validForm } = formJs();
-const { isNull } = filter();
 
 // 表单
 const changePwdForm = ref();
