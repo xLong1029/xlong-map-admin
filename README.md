@@ -17,7 +17,7 @@ xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单�
 
 #### 1. 前后端分离开发模式
 
-- **前端**：Vue + Vite + Element Plus + ArcGis
+- **前端**：Vue + Vite + Element Plus
 - **后端**：Bmob
 
 #### 2. 项目用到技术、框架与插件
