@@ -2,7 +2,7 @@
   <div class="describe-container">
     <el-card class="overspread-page" shadow="never">
       <p>
-        xlong-map-admin是一套基于 Vite2 + Vue3 + Element Plus + ArcGis 开发的单页面客户端渲染的地图管理系统示例。
+        xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单页面客户端渲染的地图管理系统示例。
       </p>
       <p class="red">
         温馨提示：
