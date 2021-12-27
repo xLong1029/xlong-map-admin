@@ -75,7 +75,7 @@
 <script setup>
 import Draggable from "vuedraggable";
 import moreUtilPanel from "mock/moreUtilPanel.json";
-import { reactive, ref, onMounted, defineProps, defineEmits } from "@vue/runtime-core";
+import { reactive, ref, onMounted } from "@vue/runtime-core";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { setLocalS, getLocalS } from "utils";
 

@@ -40,7 +40,7 @@
 
 <script setup>
 import { reactive, ref, toRaw } from "@vue/reactivity";
-import { onMounted, defineProps } from "@vue/runtime-core";
+import { onMounted } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 表单
 import formJs from "common/form.js";

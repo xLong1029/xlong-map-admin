@@ -79,8 +79,6 @@
 <script setup>
 import {
   ref,
-  defineProps,
-  defineEmits,
   inject,
   onMounted,
   watch,

@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, defineProps, defineEmits } from "@vue/runtime-core";
+import { reactive, ref } from "@vue/runtime-core";
 import utilsPanel from "common/utilsPanel.js";
 
 const props = defineProps({

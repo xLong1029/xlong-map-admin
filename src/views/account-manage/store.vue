@@ -110,8 +110,6 @@
 <script setup>
 import {
   ref,
-  defineProps,
-  defineEmits,
   reactive,
   nextTick,
   watch,

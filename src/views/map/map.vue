@@ -18,7 +18,6 @@ import {
   watch,
   inject,
   nextTick,
-  defineExpose,
 } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 import { useStore } from "vuex";

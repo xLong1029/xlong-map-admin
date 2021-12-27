@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, computed, watch } from "@vue/runtime-core";
+import { ref, computed, watch } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 import UtilPanel from "components/common/UtilPanel/index.vue";
 import common from "common";

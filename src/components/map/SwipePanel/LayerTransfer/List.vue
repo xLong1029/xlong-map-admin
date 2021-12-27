@@ -46,7 +46,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "@vue/runtime-core";
 import Draggable from "vuedraggable";
 
 const thisProps = defineProps({

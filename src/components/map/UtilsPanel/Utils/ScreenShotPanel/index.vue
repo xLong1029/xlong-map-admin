@@ -20,7 +20,7 @@
 
 <script setup>
 import common from "common";
-import { defineProps, defineEmits, computed } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 import UtilPanel from "components/common/UtilPanel/index.vue";
 
 const props = defineProps({

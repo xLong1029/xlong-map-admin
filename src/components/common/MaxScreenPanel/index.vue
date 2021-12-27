@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "@vue/runtime-core";
 const props = defineProps({
   // 标题
   title: {

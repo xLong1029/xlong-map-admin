@@ -65,7 +65,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, onMounted } from "@vue/runtime-core";
+import { ref, onMounted } from "@vue/runtime-core";
 import List from "./List.vue";
 // import Draggable from "vuedraggable";
 

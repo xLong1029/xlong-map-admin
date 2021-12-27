@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref, inject, watch, defineProps, defineEmits } from "@vue/runtime-core";
+import { ref, inject, watch } from "@vue/runtime-core";
 // 通用模块
 import common from "common";
 // 地图

@@ -99,7 +99,6 @@ export default defineComponent({
 
 <script setup>
 import {
-  defineEmits,
   defineExpose,
   ref,
   reactive,
