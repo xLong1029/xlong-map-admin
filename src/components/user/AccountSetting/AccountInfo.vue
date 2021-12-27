@@ -104,7 +104,7 @@ const onSubmit = async () => {
           getProfile();
           ElMessage.success("信息保存成功");
         } else {
-          ElMessage.success("信息保存失败");
+          ElMessage.error("信息保存失败");
         }
       })
       .catch((err) => console.log(err))
