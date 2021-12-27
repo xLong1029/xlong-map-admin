@@ -1,7 +1,6 @@
-/* eslint-disable */
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import store from "@/store";
+import { getToken } from "utils/auth.js";
 
 export function handelRequestError(error) {
     switch (error.response.status) {
@@ -32,7 +31,7 @@ export function handelRequestError(error) {
 }
 
 export function configSetting(config) {
-    config.headers["Authorization"] = "bearer " + store.getters.token;
+    config.headers["Authorization"] = "bearer " + getToken();
     return config;
 }
 
