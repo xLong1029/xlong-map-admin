@@ -26,7 +26,7 @@
         <el-col :span="12">
           <el-form-item label="真实姓名" prop="realname"
             ><el-input
-              placeholder="请输入昵称"
+              placeholder="请输入真实姓名"
               clearable
               v-model="form.realname"
               @keyup.enter="onSubmit()"
