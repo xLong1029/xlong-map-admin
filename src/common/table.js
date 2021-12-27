@@ -14,9 +14,9 @@ export default function() {
         // 当前页面
         pageNo: 1,
         // 每页条数
-        pageSize: 8,
+        pageSize: 10,
         // 每页条数选择
-        pageSizes: [8, 20, 40, 60],
+        pageSizes: [10, 20, 40, 60],
         // 总数
         total: 0
     });
