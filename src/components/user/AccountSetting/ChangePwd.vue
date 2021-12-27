@@ -39,8 +39,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, toRaw } from "@vue/reactivity";
-import { onMounted } from "@vue/runtime-core";
+import { reactive, ref, toRaw, onMounted } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 表单
 import formJs from "common/form.js";
@@ -51,7 +50,7 @@ import common from "common";
 // 校验
 import { validPassword, isEqual } from "utils/validate";
 // Api
-// import Api from "api/user/index.js";
+import Api from "api/user/index.js";
 
 const props = defineProps({
   clickNotClose: {
@@ -62,7 +61,6 @@ const props = defineProps({
 
 const { store, toPage } = common();
 const { validForm } = formJs();
-const { isNull } = filter();
 
 // 表单
 const changePwdForm = ref();
@@ -119,29 +117,32 @@ const resetForm = () => {
 const onSubmit = async () => {
   const valid = await validForm(changePwdForm.value, "信息填写有误，请检查");
 
-  // if (valid) {
-  //   submitLoading.value = true;
+  if (valid) {
+    submitLoading.value = true;
 
-  //   const params = toRaw(form);
+    const params = toRaw(form);
 
-  //   Api.ChangePwd(params)
-  //     .then(async (res) => {
-  //       const { code, msg } = res;
-  //       if (code == 200) {
-  //         try {
-  //           await store.dispatch("user/logout");
-  //           await store.dispatch("permission/generateRoutes", null);
-  //           ElMessage.success("密码修改成功！请重新登录");
+    Api.ChangePwd(params)
+      .then(async (res) => {
+        const { code, message } = res;
+        if (code == 200) {
+          try {
+            await store.dispatch("user/logout");
+            await store.dispatch("permission/generateRoutes", null);
+            ElMessage.success("密码修改成功！请重新登录");
 
-  //           toPage("/login");
-  //         } catch (err) {
-  //           console.log(err);
-  //         }
-  //       }
-  //     })
-  //     .catch((err) => console.log(err))
-  //     .finally(() => (submitLoading.value = false));
-  // }
+            toPage("/login");
+          } catch (err) {
+            console.log(err);
+          }
+        }
+        else{
+          ElMessage.error(message);
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => (submitLoading.value = false));
+  }
 };
 </script>
 <style lang="scss">

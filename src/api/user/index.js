@@ -10,7 +10,7 @@ export default {
     /**
      * 登录
      *
-     * @param {*} data 参数对象
+     * @param {*} data 参数
      */
     Login: (data) => {
         return request({
@@ -21,39 +21,40 @@ export default {
     },
     /**
      * 获取用户信息
-     *
-     * @param {*} token token
      */
-    GetUser: (token) => {
+    GetUser: () => {
         return request({
             url: `/api/user/info`,
-            method: 'get',
-            params: { token }
+            method: 'get'
         })
     },
     /**
      * 修改个人资料
      *
-     * @param {*} params 修改的参数对象
-     * @param {*} id 对象id
+     * @param {*} data 参数
+     * @param {*} id 用户id
      */
-    EditProfile: (params, id) => {
-
+    EditProfile: (data) => {
+        return request({
+            url: '/api/user/info/edit',
+            method: 'post',
+            data
+        })
     },
     /**
      * 修改密码
      *
-     * @param {*} params 修改的参数对象
-     * @param {*} token token
+     * @param {*} data 参数
      */
-    ChangePwd: (params, token) => {
-
+    ChangePwd: (data) => {
+        return request({
+            url: '/api/user/password/edit',
+            method: 'post',
+            data
+        })
     },
     /**
      * 退出登录
-     *
-     * @param {*} params 修改的参数对象
-     * @param {*} token token
      */
     Logout: () => {
         return request({

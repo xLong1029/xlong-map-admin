@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "@vue/runtime-core";
+import { ref } from "@vue/runtime-core";
 import utilsPanel from "common/utilsPanel.js";
 
 const props = defineProps({
@@ -59,13 +59,15 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  utilList: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const emit = defineEmits(["click-util", "click-custom"]);
 
 const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
-
-const utilList = reactive([...moreUtilPanel.list]);
 
 const visible = ref(false);
 

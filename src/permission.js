@@ -6,7 +6,7 @@ import { getPageTitle } from "@/utils";
 
 const whiteList = ["/login", "/404"]; // 重定向白名单
 
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     // 页面标题
     document.title = getPageTitle(to.meta.title);
 
@@ -38,7 +38,7 @@ router.beforeEach(async(to, from, next) => {
 
                     // hack方法以确保addroutes是完整的
                     // 设置replace:true，这样导航就不会留下历史记录
-                    next({...to, replace: true });
+                    next({ ...to, replace: true });
                 }
             } else {
                 store.dispatch("app/setSysLoading", false);
@@ -52,11 +52,10 @@ router.beforeEach(async(to, from, next) => {
             console.log(err);
             // 重登录
             ElMessage.error(err || "用户信息已失效，请重新登录");
-
-            setTimeout(async() => {
-                await store.dispatch("user/logout");
-                next("/login");
-            }, 500);
+            await store.dispatch("user/logout");
+            // 取消系统加载
+            store.dispatch("app/setSysLoading", false);
+            next("/login");
         }
     }
 });

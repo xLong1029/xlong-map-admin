@@ -201,21 +201,20 @@ onMounted(() => {
 
 // 获取列表内容
 const getList = (pageNo, pageSize) => {
-  console.log(123);
   listLoading.value = true;
 
-  Api.GetAccList(filterParamsForm, pageNo, pageSize)
-    .then((res) => {
-      const { code, data, page, message } = res;
-      if (code === 200) {
-        listData.value = data;
-        setPage({ ...page });
-      } else {
-        ElMessage.error(message);
-      }
-    })
-    .catch((err) => console.log(err))
-    .finally(() => (listLoading.value = false));
+  // Api.GetAccList(filterParamsForm, pageNo, pageSize)
+  //   .then((res) => {
+  //     const { code, data, page, message } = res;
+  //     if (code === 200) {
+  //       listData.value = data;
+  //       setPage({ ...page });
+  //     } else {
+  //       ElMessage.error(message);
+  //     }
+  //   })
+  //   .catch((err) => console.log(err))
+  //   .finally(() => (listLoading.value = false));
 };
 
 // 搜索
@@ -236,10 +235,10 @@ const onDel = (showLoading = true) => {
   delLoading.value = true;
   Api.DeleteAcc(ids)
     .then((res) => {
-      const { code, data, page, message } = res;
+      const { code, message } = res;
       if (code === 200) {
         ElMessage.success("删除成功");
-        getList(1, 10);
+        getList(1, page.pageSize);
         clearSelect();
       } else {
         ElMessage.error(message);

@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => {
         build: {
             outDir: getOutputDir(),
             // 修改打包块限制大小
-            chunkSizeWarningLimit: 1500
+            chunkSizeWarningLimit: 10000
         },
         plugins: [
             vue(),
@@ -87,7 +87,6 @@ export default defineConfig(({ mode }) => {
                 "views": `${path.resolve(__dirname, "src")}/views`,
                 "utils": `${path.resolve(__dirname, "src")}/utils`,
                 "router": `${path.resolve(__dirname, "src")}/router`,
-                "bmob": `${path.resolve(__dirname, "src")}/bmob`,
                 "config": `${path.resolve(__dirname, "src")}/config`
             },
         },

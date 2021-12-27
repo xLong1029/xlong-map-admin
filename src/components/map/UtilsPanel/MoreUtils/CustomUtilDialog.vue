@@ -74,7 +74,6 @@
 
 <script setup>
 import Draggable from "vuedraggable";
-import moreUtilPanel from "mock/moreUtilPanel.json";
 import { reactive, ref, onMounted } from "@vue/runtime-core";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { setLocalS, getLocalS } from "utils";
@@ -99,8 +98,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["close", "save"]);
-
-const utilList = reactive([...moreUtilPanel.list]);
 
 // 自定义常用工具
 const customUtils = ref([]);

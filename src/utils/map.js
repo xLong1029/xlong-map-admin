@@ -1,5 +1,3 @@
-import wkids from "mock/wkids.json";
-
 /**
  * 移除地图部件
  *

@@ -116,12 +116,9 @@ xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单�
 │  │    index.js
 │  │    auth.js // 读写token
 │  │    map.js // 地图通用工具
-│  │    request.js // 请求配置，因用了bmob，所以没用到requrest请求
+│  │    request.js // 请求配置
 │  │    scroll-to.js // 页面滚动
 │  │    validate.js // 验证
-│  │
-│  ├─bmob  // 封装Bmob请求函数
-│  │    bmob-server.js
 │  │
 │  └─router  // 路由配置
 │     │  index.js

@@ -15,16 +15,15 @@ const defaultUser = {
 
 // 清空账户信息
 function clearAccount(_commit) {
-    delLocalS("bmob");
     removeToken();
     resetRouter();
     _commit("SET_TOKEN", null);
-    _commit("SET_USER", {...defaultUser });
+    _commit("SET_USER", { ...defaultUser });
 }
 
 const state = {
     token: getToken(),
-    user: {...defaultUser },
+    user: { ...defaultUser },
 };
 
 const mutations = {
@@ -40,11 +39,7 @@ const actions = {
     // 获取用户信息
     getInfo({ commit }) {
         return new Promise((resolve, reject) => {
-            const token = getToken();
-
-            console.log(token);
-
-            Api.GetUser(token)
+            Api.GetUser()
                 .then((res) => {
                     const { code, data } = res;
 
@@ -71,6 +66,7 @@ const actions = {
     // 登出
     logout({ commit }) {
         return new Promise((resolve) => {
+            // Api.Logout();
             clearAccount(commit);
             resolve();
         });

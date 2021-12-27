@@ -1,5 +1,5 @@
 <template>
-  <div class="utils-panel" :class="{ 'show-header': fixedHeader }">
+  <div v-loading="panelListLoading" class="utils-panel" :class="{ 'show-header': fixedHeader }">
     <div class="utils-panel-wrapper">
       <!-- 常用工具列表 -->
       <div class="util-list-wrapper">
@@ -26,6 +26,7 @@
           <MoreUtils
             :map-view-type="mapViewType"
             :highlight-panels="highlightPanels"
+            :util-list="utilList"
             @click-util="onClickUtilBoxUtils"
             @click-custom="setCustomUtilDialogVisible(true)"
           >
@@ -55,6 +56,7 @@
       <!-- 自定义常用工具栏 -->
       <CustomUtilDialog
         :visible="customUtilDialog.visible"
+        :util-list="utilList"
         @close="setCustomUtilDialogVisible(false)"
         @save="onSaveCustomUtils"
       />
@@ -77,6 +79,8 @@ import {
   ScreenshotPanel,
   LocatePanel,
 } from "./Utils/index.js";
+// Api
+import Api from "api/map/index.js";
 
 export default defineComponent({
   name: "UtilsPanel",
@@ -115,7 +119,7 @@ import { getLocalS } from "utils";
 const emit = defineEmits(["open-full-screen-window"]);
 
 const { store, dispatchMapEvent, showDevMessage } = common();
-const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
+const { isUtilDisabled, isUtilActive } = utilsPanel();
 
 // 获取顶级组件传递的值：当前地图视图是2D或者3D
 const mapViewType = inject("getMapViewType");
@@ -146,6 +150,8 @@ const commonUtils = ref([
   },
 ]);
 
+const panelListLoading = ref(false);
+
 // 工具面板列表
 const panelList = ref([
   // json内容示例
@@ -171,6 +177,9 @@ const panelList = ref([
   // }
 ]);
 
+// 工具列表
+const utilList = ref([]);
+
 // 高亮面板
 const highlightPanels = ref([]);
 
@@ -183,16 +192,6 @@ const customUtilDialog = reactive({
 });
 
 onMounted(() => {
-  let list = [];
-
-  moreUtilPanel.list.forEach((e) => {
-    if (e.children && e.children.length) {
-      e.children.forEach((c) => {
-        list.push(c);
-      });
-    }
-  });
-
   // 从缓存获取自定义工具
   if (getLocalS("customUtils")) {
     customUtils.value = [...JSON.parse(getLocalS("customUtils"))];
@@ -200,9 +199,26 @@ onMounted(() => {
     customUtils.value = [...commonUtils.value];
   }
 
-  panelList.value = [...commonUtils.value, ...list];
+  let list = [];
 
-  // console.log(panelList.value);
+  panelListLoading.value = true;
+  Api.GetUtilList()
+    .then((res) => {
+      const { code, data } = res;
+      if (code === 200) {
+        utilList.value = data;
+        data.forEach((e) => {
+          if (e.children && e.children.length) {
+            e.children.forEach((c) => {
+              list.push(c);
+            });
+          }
+        });
+
+        panelList.value = [...commonUtils.value, ...list];
+      }
+    })
+    .finally(() => (panelListLoading.value = false));
 });
 
 /**

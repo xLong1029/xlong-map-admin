@@ -1,7 +1,6 @@
-/* eslint-disable */
 import axios from "axios";
 import { ElMessage } from "element-plus";
-import store from "@/store";
+import { getToken } from "utils/auth.js";
 
 export function handelRequestError(error) {
     switch (error.response.status) {
@@ -36,7 +35,7 @@ export function configSetting(config) {
     if (url.indexOf("api.weixin.qq.com") >= 0) {
         return config;
     }
-    config.headers["Authorization"] = "bearer " + store.getters.token;
+    config.headers["authorization"] = "bearer " + getToken();
     return config;
 }
 

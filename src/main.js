@@ -3,9 +3,6 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-// import BmobServer from "./bmob/bmob-server.js";
-// BmobServer.Init();
-
 // 初始化ElementPlus
 import initDirectives from "./directives";
 
