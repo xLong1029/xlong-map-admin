@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits } from "@vue/runtime-core";
+import { ref } from "@vue/runtime-core";
 // 组件
 import AccountInfo from "./AccountInfo.vue";
 import ChangePwd from "./ChangePwd.vue";

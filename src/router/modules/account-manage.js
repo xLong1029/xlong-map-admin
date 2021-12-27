@@ -12,6 +12,7 @@ const router = [{
         component: () =>
             import ("@/views/account-manage/index.vue"),
         name: "AccountManage",
+        file: 'account-manage/index.vue',
         meta: { title: "用户管理", icon: "iconfont icon-zhanghuguanli mr-5" },
     }, ],
 }];

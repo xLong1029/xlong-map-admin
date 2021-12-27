@@ -117,8 +117,6 @@
 import {
   ref,
   reactive,
-  defineProps,
-  defineEmits,
   inject,
   onMounted,
   nextTick,

@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { computed, defineProps, defineEmits } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 import { ElMessageBox } from "element-plus";
 // 通用模块

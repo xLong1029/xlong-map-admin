@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from "@vue/runtime-core";
+import { ref } from "@vue/runtime-core";
 
 const emit = defineEmits(["close"]);
 

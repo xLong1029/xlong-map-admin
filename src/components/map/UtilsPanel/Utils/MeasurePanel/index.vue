@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { defineProps, watch } from "@vue/runtime-core";
+import { watch } from "@vue/runtime-core";
 import { ref } from "@vue/reactivity";
 import common from "common";
 import UtilPanel from "components/common/UtilPanel/index.vue";

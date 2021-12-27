@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, ref, inject } from "@vue/runtime-core";
+import { ref, inject } from "@vue/runtime-core";
 import imageImg from "assets/images/map-1.jpg";
 import vectorImg from "assets/images/map-2.jpg";
 import terrainImg from "assets/images/map-3.jpg";

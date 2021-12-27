@@ -42,7 +42,7 @@
 </template>
 
 <script setup>
-import { inject, defineProps } from "@vue/runtime-core";
+import { inject } from "@vue/runtime-core";
 // 图片
 import QRCodeImg from "assets/images/qrcode.jpg";
 

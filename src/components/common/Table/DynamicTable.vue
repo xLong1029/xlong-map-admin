@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed } from "vue";
+import { computed } from "vue";
 import Pagination from "components/common/Pagination/index.vue";
 
 const props = defineProps({

@@ -10,6 +10,7 @@ const router = [
         path: "index",
         component: () => import("@/views/describe/index.vue"),
         name: "Describe",
+        file: 'describe/index.vue',
         meta: { title: "系统说明", icon: "iconfont icon-shiyongwendang mr-5" },
       },
     ],

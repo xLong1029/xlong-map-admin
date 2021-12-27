@@ -1,7 +1,7 @@
 import { asyncRoutes, constantRoutes, resetRouter } from "router";
 import router from "router";
 
-const modules = import.meta.glob("/src/views/*/*.vue");
+const modulesFiles = import.meta.globEager('./../../views/*/*.vue');
 
 /**
  * 使用meta.role判断当前用户是否具有权限访问
@@ -34,7 +34,9 @@ export function filterAsyncRoutes(routes, roles) {
       }
 
       // 修复警告：The above dynamic import cannot be analyzed by vite
-      // tmp.component = modules[`/src/view/${route.component}`];
+      if (route.file) {        
+        tmp.component = modulesFiles[`./../../views/${route.file}`].default;
+      }
 
       res.push(tmp);
     }

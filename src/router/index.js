@@ -1,9 +1,6 @@
 import LayoutDefault from "@/layout/default/index.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
-// const VITE_APP_ENV =
-//     import.meta.env.VITE_APP_ENV;
-
 /**
  * 静态路由
  */
@@ -11,18 +8,21 @@ export const constantRoutes = [{
     path: "/404",
     name: "Err404",
     hidden: true,
+    file: 'error-page/404.vue',
     component: () =>
         import ("@/views/error-page/404.vue"),
 }, {
     path: "/login",
     name: "Login",
     hidden: true,
+    file: 'login/index.vue',
     component: () =>
         import ("@/views/login/index.vue"),
 }, {
     path: "/",
     component: LayoutDefault,
     redirect: "/map",
+    file: 'map/index.vue',
     children: [{
         path: "map",
         name: "Map",

@@ -10,7 +10,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "@vue/runtime-core";
 import UtilPanel from "components/common/UtilPanel/index.vue";
 
 const props = defineProps({

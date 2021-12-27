@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { inject, defineProps } from "@vue/runtime-core";
+import { inject } from "@vue/runtime-core";
 import common from "common";
 import Compass from "./Compass.vue";
 

@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { inject, defineProps } from "@vue/runtime-core";
+import { inject } from "@vue/runtime-core";
 import scalebarImg from "assets/images/scale-bar.jpg";
 
 const props = defineProps({

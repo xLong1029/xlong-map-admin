@@ -27,7 +27,6 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue";
 import filter from "common/filter.js";
 
 const props = defineProps({

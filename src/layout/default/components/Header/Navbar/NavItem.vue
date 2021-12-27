@@ -48,7 +48,6 @@ import path from "path-browserify";
 import { isExternal } from "@/utils/validate";
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
-import { defineProps } from "vue";
 
 const props = defineProps({
   item: {

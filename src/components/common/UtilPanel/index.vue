@@ -32,8 +32,6 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "@vue/runtime-core";
-
 const props = defineProps({
   title: {
     type: String,
