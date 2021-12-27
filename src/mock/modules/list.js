@@ -1,4 +1,4 @@
-const jobList = [
+export const jobList = [
   {
     id: 1,
     name: "管理",
@@ -17,7 +17,7 @@ const jobList = [
   },
 ];
 
-const professionList = [
+export const professionList = [
   {
     id: 1,
     name: "建筑设计",

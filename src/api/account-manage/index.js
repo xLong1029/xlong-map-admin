@@ -1,15 +1,32 @@
 /*
- * 功能 : 封装数据交互api接口(数据使用的是mock云数据)。
+ * 功能 : 封装数据交互api接口(mock.js请求)。
  * 用处 : 账户操作相关api
  * 作者 : 罗永梅（381612175@qq.com）
- * 日期 : 2021-12-26
- * 版本 : version 2.2
+ * 日期 : 2021-12-27
+ * 版本 : version 2.3
  */
 
-/* eslint-disable */
-
+import request from "utils/request.js";
 
 export default {
+    /**
+     * 获取职位列表
+     */
+    GetJobList: () => {
+        return request({
+            url: `/api/list/job`,
+            method: 'get'
+        })
+    },
+    /**
+    * 获取专业领域列表
+    */
+    GetProfessionList: () => {
+        return request({
+            url: `/api/list/profession`,
+            method: 'get'
+        })
+    },
     /**
      * 获取所有账户列表
      *
@@ -18,7 +35,10 @@ export default {
      * @param {*} pageSize 每页显示几条数据
      */
     GetAccList: (params, pageNo, pageSize) => {
-
+        return request({
+            url: `/api/account/list`,
+            method: 'get'
+        })
     },
     /**
      * 新增账户

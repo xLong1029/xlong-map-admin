@@ -26,7 +26,7 @@
         <el-col :span="12">
           <el-form-item label="真实姓名" prop="realname"
             ><el-input
-              placeholder="请输入昵称"
+              placeholder="请输入真实姓名"
               clearable
               v-model="form.realname"
               @keyup.enter="onSubmit()"
@@ -118,11 +118,8 @@ import {
 import { ElMessage } from "element-plus";
 // 表单
 import formJs from "common/form.js";
-// Json数据
-import jobList from "mock/jobList.json";
-import professionList from "mock/professionList.json";
 // Api
-// import Api from "api/account-manage/index.js";
+import Api from "api/account-manage/index.js";
 
 const props = defineProps({
   visible: {
@@ -142,6 +139,14 @@ const props = defineProps({
       profession: [],
       enabledState: true,
     }),
+  },
+  jobList: {
+    type: Array,
+    default: () => [],
+  },
+  professionList: {
+    type: Array,
+    default: () => [],
   },
 });
 
@@ -247,29 +252,31 @@ const onSubmit = async () => {
 
     const { row } = props;
 
-    // if (row) {
-    //   Api.EditAccount(params, row.objectId)
-    //     .then((res) => {
-    //       if (res.code == 200) {
-    //         ElMessage.success("编辑成功");
-    //         emit("submit");
-    //         onClose();
-    //       } else ElMessage.error(res.msg);
-    //     })
-    //     .catch((err) => ElMessage.error("操作失败"))
-    //     .finally(() => (submitLoading.value = false));
-    // } else {
-    //   Api.AddAccount(params)
-    //     .then((res) => {
-    //       if (res.code == 200) {
-    //         ElMessage.success("新增成功");
-    //         emit("submit");
-    //         onClose();
-    //       } else ElMessage.error(res.msg);
-    //     })
-    //     .catch((err) => ElMessage.error("操作失败"))
-    //     .finally(() => (submitLoading.value = false));
-    // }
+    if (row) {
+      Api.EditAccount(params, row.objectId)
+        .then((res) => {
+          const { code, message } = res;
+          if (code == 200) {
+            ElMessage.success("编辑成功");
+            emit("submit");
+            onClose();
+          } else ElMessage.error(message);
+        })
+        .catch((err) => ElMessage.error("操作失败"))
+        .finally(() => (submitLoading.value = false));
+    } else {
+      Api.AddAccount(params)
+        .then((res) => {
+          const { code, message } = res;
+          if (code == 200) {
+            ElMessage.success("新增成功");
+            emit("submit");
+            onClose();
+          } else ElMessage.error(message);
+        })
+        .catch((err) => ElMessage.error("操作失败"))
+        .finally(() => (submitLoading.value = false));
+    }
   }
 };
 </script>

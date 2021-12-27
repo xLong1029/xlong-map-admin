@@ -1,80 +1,39 @@
+import { handleMock, handleResponse } from "./../mock-handle.js";
+import { professionList, jobList } from "./list.js";
+import Mock from "mockjs";
 
-import { handleMock } from "./../mock-handle.js";
+const genders = ["男", "女"];
 
-const jobList = [
-    {
-      "id": 1,
-      "name": "管理"
-    },
-    {
-      "id": 2,
-      "name": "设计"
-    },
-    {
-      "id": 3,
-      "name": "开发"
-    },
-    {
-      "id": 8,
-      "name": "其他"
-    }
-  ]
+const list = Mock.mock({
+    // 10-20 个元素的数组
+    'list|10-20': [{
+        // 自增数，起始值为 1，每次增 1
+        'sid|+1': 1,
+        // 5位的随机码
+        'userId|5': '',
+        realname: "张三",
+        // 取数组当中的一个值
+        "gender|1": ["男", "女"],
+        mobile: "18374458456",
+        // 随机email
+        'email': '@email',
+        'job|1': jobList.map(e => e.name),
+        // 一个 yyyy-MM-dd hh:mm:ss 的随机时间
+        'createdTime': '@date("yyyy-MM-dd hh:mm:ss")',
+        "profession|1-4": professionList.map(e => e.name),
+        "enabledState|1": [1, -1],
+    }],
+})
 
-  const professionList = [{
-    "id": 1,
-    "name": "建筑设计"
-},
-{
-    "id": 2,
-    "name": "网页设计"
-},
-{
-    "id": 3,
-    "name": "UI设计"
-},
-{
-    "id": 4,
-    "name": "WEB前端开发"
-},
-{
-    "id": 5,
-    "name": ".NET开发"
-},
-{
-    "id": 6,
-    "name": "JAVA开发"
-},
-{
-    "id": 7,
-    "name": "PHP开发"
-},
-{
-    "id": 8,
-    "name": "其他专业"
-}
-]
+console.log(list);
 
 export default [
     {
-        url: "/api/list/job",
+        url: "/api/account/list",
         method: "get",
-        response: () => {
-            return {
-                code: 200,
-                message: "success",
-                data: jobList,
-            }
-        }
+        response: (config) =>
+            handleMock(config, () => {
+                return handleResponse(200, "success", list);
+            }),
     },
-    {
-        url: "/api/list/profession",
-        method: "get",
-        response: () => {
-            return {
-                code: 200,
-                message: "success",
-                data: professionList,
-            }
-        }
-    },
-]
+];
