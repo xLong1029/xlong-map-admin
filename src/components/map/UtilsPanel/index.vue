@@ -26,6 +26,7 @@
           <MoreUtils
             :map-view-type="mapViewType"
             :highlight-panels="highlightPanels"
+            :util-list="utilList"
             @click-util="onClickUtilBoxUtils"
             @click-custom="setCustomUtilDialogVisible(true)"
           >
@@ -55,6 +56,7 @@
       <!-- 自定义常用工具栏 -->
       <CustomUtilDialog
         :visible="customUtilDialog.visible"
+        :util-list="utilList"
         @close="setCustomUtilDialogVisible(false)"
         @save="onSaveCustomUtils"
       />
@@ -115,7 +117,7 @@ import { getLocalS } from "utils";
 const emit = defineEmits(["open-full-screen-window"]);
 
 const { store, dispatchMapEvent, showDevMessage } = common();
-const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
+const { isUtilDisabled, isUtilActive, utilList } = utilsPanel();
 
 // 获取顶级组件传递的值：当前地图视图是2D或者3D
 const mapViewType = inject("getMapViewType");
@@ -185,7 +187,7 @@ const customUtilDialog = reactive({
 onMounted(() => {
   let list = [];
 
-  moreUtilPanel.list.forEach((e) => {
+  utilList.forEach((e) => {
     if (e.children && e.children.length) {
       e.children.forEach((c) => {
         list.push(c);

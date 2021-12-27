@@ -59,13 +59,15 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  utilList: {
+    type: Array,
+    default: () => [],
+  },
 });
 
 const emit = defineEmits(["click-util", "click-custom"]);
 
-const { isUtilDisabled, isUtilActive, moreUtilPanel } = utilsPanel();
-
-const utilList = reactive([...moreUtilPanel.list]);
+const { isUtilDisabled, isUtilActive } = utilsPanel();
 
 const visible = ref(false);
 

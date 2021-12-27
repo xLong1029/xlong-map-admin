@@ -4,7 +4,7 @@
  * 日期 : 2020-07-30
  * 版本 : version 1.0
  */
-import moreUtilPanel from "mock/moreUtilPanel.json";
+import utilList from "mock/utilList.json";
 
 export default function () {
   /**
@@ -38,6 +38,6 @@ export default function () {
   return {
     isUtilDisabled,
     isUtilActive,
-    moreUtilPanel
+    utilList
   };
 }
