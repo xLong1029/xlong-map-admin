@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, toRaw } from "@vue/reactivity";
+import { reactive, ref, toRaw, onMounted } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 // 表单
 import formJs from "common/form.js";
@@ -50,7 +50,7 @@ import common from "common";
 // 校验
 import { validPassword, isEqual } from "utils/validate";
 // Api
-// import Api from "api/user/index.js";
+import Api from "api/user/index.js";
 
 const props = defineProps({
   clickNotClose: {
@@ -61,6 +61,7 @@ const props = defineProps({
 
 const { store, toPage } = common();
 const { validForm } = formJs();
+const { isNull } = filter();
 
 // 表单
 const changePwdForm = ref();
