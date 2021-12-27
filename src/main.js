@@ -14,6 +14,9 @@ import "./permission.js";
 
 // 基于断点的隐藏类样式
 import 'element-plus/theme-chalk/display.css';
+// element-plus的message相关样式
+import "element-plus/theme-chalk/src/message.scss"
+import "element-plus/theme-chalk/src/message-box.scss"
 // 字体样式
 import "./assets/iconfont/iconfont.css";
 // 全局样式
