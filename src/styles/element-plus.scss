@@ -25,3 +25,9 @@
         color: $primary-color !important;
     }
 }
+
+.el-table {
+    th.el-table__cell {
+      background: #f8f8f8;
+    }
+  }

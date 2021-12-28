@@ -37,7 +37,10 @@ export default {
     GetAccList: (params, pageNo, pageSize) => {
         return request({
             url: `/api/account/list`,
-            method: 'get'
+            method: 'get',
+            params: {
+                params, pageNo, pageSize
+            }
         })
     },
     /**

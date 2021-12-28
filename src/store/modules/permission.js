@@ -1,8 +1,6 @@
 import { asyncRoutes, constantRoutes, resetRouter } from "router";
 import router from "router";
 
-console.log(constantRoutes);
-
 const modulesFiles = import.meta.globEager('./../../views/*/*.vue');
 
 /**

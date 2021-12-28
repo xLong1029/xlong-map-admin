@@ -159,7 +159,7 @@ const tableHeader = [
     key: "userId",
     title: "用户编号",
     align: "center",
-    width: 100,
+    width: 300,
     fixed: true,
   },
   {
@@ -237,8 +237,10 @@ const getList = (pageNo, pageSize) => {
     .then((res) => {
       const { code, data, page, message } = res;
       if (code === 200) {
+        const { list, page} = data;
         listData.value = data.list;
-        // setPage({ ...page });
+        console.log(data);
+        setPage({ ...page });
       } else {
         ElMessage.error(message);
       }
@@ -300,7 +302,7 @@ const setTableRowClassName = ({ row }) => {
 <style lang="scss" scoped>
 .account-manage-container {
   :deep(.el-table tr.is-disabled) {
-    background: #f2f2f2;
+    background: #f8f8f8;
     color: #b5b5b5;
   }
 
