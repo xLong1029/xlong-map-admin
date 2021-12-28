@@ -3,7 +3,7 @@
     :title="title"
     :modelValue="visible"
     @close="onClose()"
-    :width="800"
+    :width="850"
     custom-class="account-store-dialog"
   >
     <el-form
@@ -12,19 +12,19 @@
       :model="form"
       :rules="rules"
       ref="storeForm"
-      label-width="90px"
+      label-width="115px"
     >
       <el-row :gutter="20">
         <template v-if="row">
           <el-col :span="12">
-            <el-form-item label="用户编号">{{ row.objectId }}</el-form-item>
+            <el-form-item label="用户编号：">{{ row.userId }}</el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="创建时间">{{ row.createdAt }}</el-form-item>
+            <el-form-item label="创建时间：">{{ row.createdTime }}</el-form-item>
           </el-col>
         </template>
         <el-col :span="12">
-          <el-form-item label="真实姓名" prop="realname"
+          <el-form-item label="真实姓名：" prop="realname"
             ><el-input
               placeholder="请输入真实姓名"
               clearable
@@ -35,7 +35,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="状态" prop="enabledState">
+          <el-form-item label="状态：" prop="enabledState">
             <el-switch
               v-model="form.enabledState"
               active-text="启用"
@@ -44,7 +44,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="手机号码" prop="mobile">
+          <el-form-item label="手机号码：" prop="mobile">
             <el-input
               v-model="form.mobile"
               placeholder="请输入手机号码"
@@ -52,7 +52,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="性别" prop="gender">
+          <el-form-item label="性别：" prop="gender">
             <el-radio-group v-model="form.gender">
               <el-radio label="男">男</el-radio>
               <el-radio label="女">女</el-radio>
@@ -60,7 +60,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="电子邮箱" prop="email">
+          <el-form-item label="电子邮箱：" prop="email">
             <el-input
               v-model="form.email"
               placeholder="请输入电子邮箱"
@@ -69,7 +69,7 @@
         </el-col>
 
         <el-col :span="12">
-          <el-form-item label="职位" prop="job">
+          <el-form-item label="职位：" prop="job">
             <el-select
               v-model="form.job"
               placeholder="请选择职位"
@@ -85,7 +85,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="24">
-          <el-form-item label="专业领域" prop="profession">
+          <el-form-item label="专业领域：" prop="profession">
             <el-checkbox-group v-model="form.profession">
               <el-checkbox
                 v-for="(item, index) in professionList"
@@ -247,13 +247,12 @@ const onSubmit = async () => {
     submitLoading.value = true;
 
     let params = {...toRaw(form)};
-    params.profession = params.profession.join(",");
     params.enabledState = params.enabledState ? 1 : -1;
 
     const { row } = props;
 
     if (row) {
-      Api.EditAccount(params, row.objectId)
+      Api.EditAccount(params, row.userId)
         .then((res) => {
           const { code, message } = res;
           if (code == 200) {

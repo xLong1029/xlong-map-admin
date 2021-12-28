@@ -159,8 +159,7 @@ const tableHeader = [
     key: "userId",
     title: "用户编号",
     align: "center",
-    width: 300,
-    fixed: true,
+    width: 320,
   },
   {
     key: "realname",

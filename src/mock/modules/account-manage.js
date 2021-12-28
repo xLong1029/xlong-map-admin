@@ -1,6 +1,7 @@
 import { handleMock, handleResponse } from "./../mock-handle.js";
 import { professionList, jobList } from "./list.js";
 import Mock from "mockjs";
+import { count } from "console";
 const Random = Mock.Random;
 
 const phonePrefixs = new Array("139", "138", "137", "136", "135", "134", "159", "158", "157", "150", "151", "152", "188", "187", "182", "183", "184", "178", "130", "131", "132", "156", "155", "186", "185", "176", "133", "153", "189", "180", "181", "177");
@@ -21,8 +22,6 @@ let account = Mock.mock({
     }],
 })
 
-
-
 account.list.forEach(e => {
     // 随机guid
     e.userId = Random.guid();
@@ -36,9 +35,6 @@ account.list.forEach(e => {
     e.mobile = phonePrefixs[Math.floor(Math.random() * phonePrefixs.length)] + Mock.mock(/\d{8}/);
 });
 
-console.log(account.list);
-
-
 export default [
     {
         url: "/api/account/list",
@@ -51,14 +47,26 @@ export default [
                     pageSize
                 } = config.query;
 
+                const { keyword, enabledState } = JSON.parse(params);
+
                 const page = parseInt(pageNo);
                 const size = parseInt(pageSize);
-                const list = account.list.slice((page - 1) * size, page * size)
+                let list = JSON.parse(JSON.stringify(account.list));
+
+                if (keyword) {
+                    list = list.filter(e => (e.userId == keyword || e.realname == keyword || e.mobile == keyword || e.email == keyword))
+                    console.log(list);
+                }
+                if (enabledState) {
+                    list = list.filter(e => e.enabledState == enabledState);
+                }
+
+                list = list.slice((page - 1) * size, page * size)
 
                 return handleResponse(200, "success", {
-                    list: list,
+                    list,
                     page: {
-                        count: account.list.length,
+                        count: list.length,
                         page,
                         size,
                     }
