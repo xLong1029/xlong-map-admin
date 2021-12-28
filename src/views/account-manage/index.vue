@@ -282,6 +282,7 @@ const onDel = (showLoading = true) => {
 
 // 编辑
 const onEdit = (row, index) => {
+  console.log(row);
   storeDialog.visible = true;
   storeDialog.row = row;
 };

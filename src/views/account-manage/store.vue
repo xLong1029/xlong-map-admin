@@ -219,7 +219,7 @@ watch(
           form[i] = row[i];
         }
 
-        form.profession = row.profession ? row.profession.split(",") : [];
+        form.profession = row.profession;
         form.enabledState = row.enabledState === 1 ? true : false;
       } else {
         title.value = "新增用户";

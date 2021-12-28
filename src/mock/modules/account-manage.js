@@ -3,8 +3,6 @@ import { professionList, jobList } from "./list.js";
 import Mock from "mockjs";
 const Random = Mock.Random;
 
-const genders = ["男", "女"];
-
 const phonePrefixs = new Array("139", "138", "137", "136", "135", "134", "159", "158", "157", "150", "151", "152", "188", "187", "182", "183", "184", "178", "130", "131", "132", "156", "155", "186", "185", "176", "133", "153", "189", "180", "181", "177");
 
 let account = Mock.mock({
@@ -19,10 +17,11 @@ let account = Mock.mock({
         'job|1': jobList.map(e => e.name),
         // 一个 yyyy-MM-dd hh:mm:ss 的随机时间
         'createdTime': '@date("yyyy-MM-dd hh:mm:ss")',
-        "profession|1-4": professionList.map(e => e.name),
-        "enabledState|1": [1, -1],
+        'enabledState|1': [1, -1],
     }],
 })
+
+
 
 account.list.forEach(e => {
     // 随机guid
@@ -31,9 +30,13 @@ account.list.forEach(e => {
     e.idCard = Random.id();
     // 随机人名
     e.realname = Random.cname();
+    // 随机取2-4个不重复的值
+    e.profession = Random.pick(professionList.map(e => e.name), 2, 4);
     // 随机手机号
     e.mobile = phonePrefixs[Math.floor(Math.random() * phonePrefixs.length)] + Mock.mock(/\d{8}/);
 });
+
+console.log(account.list);
 
 
 export default [
@@ -42,7 +45,6 @@ export default [
         method: "get",
         response: (config) =>
             handleMock(config, () => {
-                // console.log(config);
                 const {
                     params,
                     pageNo,
