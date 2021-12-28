@@ -271,7 +271,7 @@ const setTableRowClassName = ({ row }) => {
 <style lang="scss" scoped>
 .account-manage-container {
   :deep(.el-table tr.is-disabled) {
-    background: #f2f2f2;
+    background: #f8f8f8;
     color: #b5b5b5;
   }
 

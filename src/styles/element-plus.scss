@@ -1,6 +1,7 @@
 // cover some element-plus styles
 .el-dialog {
     border-radius: 6px !important;
+
     &__headerbtn .el-dialog__close {
         font-size: 20px;
     }
@@ -21,7 +22,14 @@
 .el-alert--info {
     // background: lighten(#{$primary-color}, 40%) !important;
     color: $primary-color !important;
+
     .el-alert__closebtn {
         color: $primary-color !important;
+    }
+}
+
+.el-table {
+    th.el-table__cell {
+        background: #f8f8f8;
     }
 }
