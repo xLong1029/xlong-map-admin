@@ -1,7 +1,6 @@
 import { handleMock, handleResponse } from "./../mock-handle.js";
 import { professionList, jobList } from "./list.js";
 import Mock from "mockjs";
-import { count } from "console";
 const Random = Mock.Random;
 
 const phonePrefixs = new Array("139", "138", "137", "136", "135", "134", "159", "158", "157", "150", "151", "152", "188", "187", "182", "183", "184", "178", "130", "131", "132", "156", "155", "186", "185", "176", "133", "153", "189", "180", "181", "177");
