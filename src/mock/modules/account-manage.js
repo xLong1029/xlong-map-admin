@@ -94,14 +94,24 @@ export default [
         method: "post",
         response: (config) =>
             handleMock(config, () => {
-                let user = {...config.body};
+                let data = {...config.body};
 
-                user.sid = account.list[account.list.length - 1].sid + 1;
-                user.userId = Random.guid();
-                user.createdTime = Mock.mock('@now("yyyy-MM-dd hh:mm:ss")');
+                const user = account.list.find(e => (e.mobile == data.mobile || e.email == data.email));
+                if(user){
+                    if(e.mobile == data.mobile){
+                        return handleResponse(400, "手机号码已存在", null);
+                    }
+                    if(e.email == data.email){
+                        return handleResponse(400, "电子邮箱", null);
+                    }
+                }
 
-                account.list.push(user);
-                return handleResponse(200, "success", user.userId);
+                data.sid = account.list[account.list.length - 1].sid + 1;
+                data.userId = Random.guid();
+                data.createdTime = Mock.mock('@now("yyyy-MM-dd hh:mm:ss")');
+
+                account.list.push(data);
+                return handleResponse(200, "success", data.userId);
             }),
     },
     {
