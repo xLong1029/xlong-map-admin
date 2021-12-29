@@ -73,4 +73,50 @@ export default [
                 });
             }),
     },
+    {
+        url: "/api/account/info",
+        method: "get",
+        response: (config) =>
+            handleMock(config, () => {
+                const {
+                    id
+                } = config.query;
+
+                const user = account.list.find(e => e.userId == id);
+
+                return handleResponse(200, "success", user);
+            }),
+    },
+    {
+        url: "/api/account/add",
+        method: "post",
+        response: (config) =>
+            handleMock(config, () => {
+               
+            }),
+    },
+    {
+        url: "/api/account/delete",
+        method: "post",
+        response: (config) =>
+            handleMock(config, () => {
+               
+            }),
+    },
+    {
+        url: "/api/account/edit",
+        method: "post",
+        response: (config) =>
+            handleMock(config, () => {
+               
+            }),
+    },
+    {
+        url: "/api/account/enabled",
+        method: "post",
+        response: (config) =>
+            handleMock(config, () => {
+               
+            }),
+    },
 ];

@@ -237,7 +237,7 @@ const getList = (pageNo, pageSize) => {
       const { code, data, page, message } = res;
       if (code === 200) {
         const { list, page} = data;
-        listData.value = data.list;
+        listData.value = list;
         console.log(data);
         setPage({ ...page });
       } else {

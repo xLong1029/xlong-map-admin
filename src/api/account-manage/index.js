@@ -44,29 +44,44 @@ export default {
         })
     },
     /**
-     * 新增账户
-     *
-     * @param {*} params 新增的参数对象
-     */
-    AddAccount: (params) => {
-
-    },
-    /**
      * 获取账户信息
      *
      * @param {*} id 查询的objectId
      */
-    GetAccInfo: (id) => {
-
+     GetAccInfo: (id) => {
+        return request({
+            url: `/api/account/info`,
+            method: 'get',
+            params: {
+                id
+            }
+        })
+    },
+    /**
+     * 新增账户
+     *
+     * @param {*} data 新增的参数对象
+     */
+    AddAccount: (data) => {
+        return request({
+            url: `/api/account/list`,
+            method: 'post',
+            data
+        })
     },
     /**
      * 修改账户信息
      *
-     * @param {*} params 新增的参数对象
-     * @param {*} id 查询的objectId
+     * @param {*} data 修改的参数对象
      */
-    EditAccount: (params, id) => {
-
+    EditAccount: (data) => {
+        return request({
+            url: `/api/account/edit`,
+            method: 'post',
+            params: {
+                data
+            }
+        })
     },
     /**
      * 删除账户
@@ -74,15 +89,30 @@ export default {
      * @param {*} ids 需要删除的对象的objectId
      */
     DeleteAcc: (ids) => {
-
+        return request({
+            url: `/api/account/delete`,
+            method: 'post',
+            params: {
+                ids
+            }
+        })
     },
     /**
      * 启用或禁用账户
      *
-     * @param {*} params 修改的参数对象
+     * @param {*} enabledState 禁用状态
      * @param {*} ids 需要操作的对象的objectId
      */
-    EnableAcc: (params, ids) => {
-
+    EnableAcc: (enabledState, ids) => {
+        return request({
+            url: `/api/account/enabled`,
+            method: 'post',
+            params: {
+                enabledState
+            },
+            data: {
+                ids
+            }
+        })
     },
 }
