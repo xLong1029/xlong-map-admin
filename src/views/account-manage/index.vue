@@ -9,7 +9,6 @@
       ></el-alert>
       <!-- 筛选 -->
       <div class="operate-container">
-        {{ storeDialog.row }}
         <el-form :model="filterParamsForm" :inline="true" class="form-container">
           <el-form-item>
             <el-input

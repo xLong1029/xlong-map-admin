@@ -129,7 +129,7 @@ const props = defineProps({
   row: {
     type: Object,
     default: () => ({
-      objectId: null,
+      userId: null,
       createdTime: null,
       realname: null,
       gender: null,
@@ -170,6 +170,7 @@ const defaultData = reactive({
 });
 
 const form = reactive({
+  userId: null,
   realname: null,
   createdTime: null,
   gender: "男",
@@ -219,6 +220,7 @@ watch(
           form[i] = row[i];
         }
 
+        form.userId = row.userId;
         form.profession = row.profession;
         form.enabledState = row.enabledState === 1 ? true : false;
       } else {
@@ -252,14 +254,15 @@ const onSubmit = async () => {
     const { row } = props;
 
     if (row) {
-      Api.EditAccount(params, row.userId)
+      Api.EditAccount(params)
         .then((res) => {
           const { code, message } = res;
           if (code == 200) {
             ElMessage.success("编辑成功");
             emit("submit");
             onClose();
-          } else ElMessage.error(message);
+          }
+          else ElMessage.error(message);
         })
         .catch((err) => ElMessage.error("操作失败"))
         .finally(() => (submitLoading.value = false));

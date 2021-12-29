@@ -97,11 +97,11 @@ export default [
 
                 const user = account.list.find(e => (e.mobile == data.mobile || e.email == data.email));
                 if(user){
-                    if(e.mobile == data.mobile){
-                        return handleResponse(400, "手机号码已存在", null);
+                    if(user.mobile == data.mobile){
+                        return handleResponse(400, "手机号码已存在");
                     }
-                    if(e.email == data.email){
-                        return handleResponse(400, "电子邮箱", null);
+                    if(user.email == data.email){
+                        return handleResponse(400, "电子邮箱");
                     }
                 }
 
@@ -118,7 +118,10 @@ export default [
         method: "post",
         response: (config) =>
             handleMock(config, () => {
+                const { ids } = config.body;
+                account.list = account.list.filter(e => !ids.includes(e.userId))
 
+                return handleResponse(200, "success");
             }),
     },
     {
@@ -126,15 +129,30 @@ export default [
         method: "post",
         response: (config) =>
             handleMock(config, () => {
+                const data = {...config.body};
 
-            }),
-    },
-    {
-        url: "/api/account/enabled",
-        method: "post",
-        response: (config) =>
-            handleMock(config, () => {
+                const user = account.list.find(e => ((e.mobile == data.mobile || e.email == data.email) && e.userId != data.userId));
 
+                console.log(user);
+
+                if(user){
+                    if(user.mobile == data.mobile){
+                        return handleResponse(400, "手机号码已存在，请修改");
+                    }
+                    if(user.email == data.email){
+                        return handleResponse(400, "电子邮箱，请修改");
+                    }
+                }
+
+                const index = account.list.findIndex(e => (e.userId == data.userId));
+
+                if(index >= 0){
+                    account.list[index] = {...config.body};
+                    return handleResponse(200, "success");
+                }
+                else{
+                    return handleResponse(404, "找不到用户信息");
+                }
             }),
-    },
+    }
 ];

@@ -78,9 +78,7 @@ export default {
         return request({
             url: `/api/account/edit`,
             method: 'post',
-            params: {
-                data
-            }
+            data
         })
     },
     /**
@@ -92,7 +90,7 @@ export default {
         return request({
             url: `/api/account/delete`,
             method: 'post',
-            params: {
+            data: {
                 ids
             }
         })
