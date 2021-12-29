@@ -76,7 +76,7 @@ export default {
     /**
      * 修改账户信息
      *
-     * @param {*} params 新增的参数对象
+     * @param {*} params 修改的参数对象
      * @param {*} id 查询的objectId
      */
     EditAccount: (params, id) => {
