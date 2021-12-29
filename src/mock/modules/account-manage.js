@@ -26,7 +26,7 @@ account.list.forEach(e => {
     // 随机guid
     e.userId = Random.guid();
     // 随机身份证
-    e.idCard = Random.id();
+    // e.idCard = Random.id();
     // 随机人名
     e.realname = Random.cname();
     // 随机取2-4个不重复的值
@@ -61,12 +61,14 @@ export default [
                     list = list.filter(e => e.enabledState == enabledState);
                 }
 
+                const filterList = JSON.parse(JSON.stringify(list))
+
                 list = list.slice((page - 1) * size, page * size)
 
                 return handleResponse(200, "success", {
                     list,
                     page: {
-                        count: list.length,
+                        count: filterList.length,
                         page,
                         size,
                     }
@@ -92,7 +94,14 @@ export default [
         method: "post",
         response: (config) =>
             handleMock(config, () => {
-               
+                let user = {...config.body};
+
+                user.sid = account.list[account.list.length - 1].sid + 1;
+                user.userId = Random.guid();
+                user.createdTime = Mock.mock('@now("yyyy-MM-dd hh:mm:ss")');
+
+                account.list.push(user);
+                return handleResponse(200, "success", user.userId);
             }),
     },
     {
@@ -100,7 +109,7 @@ export default [
         method: "post",
         response: (config) =>
             handleMock(config, () => {
-               
+
             }),
     },
     {
@@ -108,7 +117,7 @@ export default [
         method: "post",
         response: (config) =>
             handleMock(config, () => {
-               
+
             }),
     },
     {
@@ -116,7 +125,7 @@ export default [
         method: "post",
         response: (config) =>
             handleMock(config, () => {
-               
+
             }),
     },
 ];

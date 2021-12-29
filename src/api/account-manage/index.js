@@ -64,7 +64,7 @@ export default {
      */
     AddAccount: (data) => {
         return request({
-            url: `/api/account/list`,
+            url: `/api/account/add`,
             method: 'post',
             data
         })
@@ -93,24 +93,6 @@ export default {
             url: `/api/account/delete`,
             method: 'post',
             params: {
-                ids
-            }
-        })
-    },
-    /**
-     * 启用或禁用账户
-     *
-     * @param {*} enabledState 禁用状态
-     * @param {*} ids 需要操作的对象的objectId
-     */
-    EnableAcc: (enabledState, ids) => {
-        return request({
-            url: `/api/account/enabled`,
-            method: 'post',
-            params: {
-                enabledState
-            },
-            data: {
                 ids
             }
         })

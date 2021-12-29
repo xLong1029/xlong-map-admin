@@ -130,7 +130,7 @@ const props = defineProps({
     type: Object,
     default: () => ({
       objectId: null,
-      createdAt: null,
+      createdTime: null,
       realname: null,
       gender: null,
       mobile: null,
@@ -160,7 +160,7 @@ const storeForm = ref();
 
 const defaultData = reactive({
   realname: null,
-  createdAt: null,
+  createdTime: null,
   gender: "男",
   mobile: null,
   email: null,
@@ -171,7 +171,7 @@ const defaultData = reactive({
 
 const form = reactive({
   realname: null,
-  createdAt: null,
+  createdTime: null,
   gender: "男",
   mobile: null,
   email: null,
