@@ -190,7 +190,6 @@ const createView = (params, type) => {
   view.ui._removeComponents(["attribution"]);
 
   setViewMouseKeyEvent(view);
-  console.log(mapCameraAnimation.value);
   initCamera(view, mapCameraAnimation.value);
 
   return view;
