@@ -112,7 +112,7 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from "@vue/runtime-core";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 // 组件
 import DynamicTable from "components/common/Table/DynamicTable.vue";
 import StoreDialog from "./store.vue";
@@ -201,7 +201,6 @@ onMounted(() => {
 
 // 获取列表内容
 const getList = (pageNo, pageSize) => {
-  console.log(123);
   listLoading.value = true;
 
   Api.GetAccList(filterParamsForm, pageNo, pageSize)
@@ -259,7 +258,18 @@ const onEdit = (row, index) => {
 const onDelRow = (row, index) => {
   clearSelect();
   selectList.value.push(row);
-  onDel(false);
+
+  ElMessageBox.confirm(`确定删除用户【${row.realname}】吗？`,
+      "温馨提示",
+      {
+        confirmButtonText: "确定",
+        type: "warning"
+      }
+    )
+      .then(() => {
+        onDel(false);
+      })
+      .catch(err => console.log(err));
 };
 
 // 设置表格样式
