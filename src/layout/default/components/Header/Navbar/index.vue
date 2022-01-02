@@ -23,19 +23,16 @@
 </template>
 
 <script setup>
-import { getLocalS } from "utils";
 import { ref, computed } from "@vue/runtime-core";
 import common from "common";
 import NavItem from "./NavItem.vue";
 
 const { store, route } = common();
 
-const theme = computed(() => store.getters.theme)
-
 const variables = ref({
   menuBg: "transparent",
-  menuText: "#333333",
-  menuActiveText: theme
+  menuText: "#ffffff",
+  menuActiveText: "#ffffff"
 })
 
 const activeMenu = computed(() => {
@@ -60,12 +57,14 @@ const permissionRoutes = computed(() => store.getters.permissionRoutes);
 .navbar-container {
   background: transparent;
   // width: 100%;
+ 
   overflow: hidden;
 }
 
 // 导航设置
 .nav-list {
   &-container {
+    
     position: relative;
     min-width: 500px;
   }

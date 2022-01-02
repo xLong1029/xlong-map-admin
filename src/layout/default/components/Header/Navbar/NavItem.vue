@@ -14,7 +14,8 @@
         :index="resolvePath(onlyOneChild.path)"
         :class="{ 'submenu-title-noDropdown': !isNest }"
       >
-        <i v-if="onlyOneChild.meta.icon" :class="onlyOneChild.meta.icon"></i><span>{{ onlyOneChild.meta.title }}</span>
+        <i v-if="onlyOneChild.meta.icon" :class="onlyOneChild.meta.icon"></i
+        ><span>{{ onlyOneChild.meta.title }}</span>
       </el-menu-item>
     </div>
 
@@ -139,27 +140,46 @@ const handleLink = (item) => {
 </script>
 
 <style lang="scss">
+@mixin nav-list-item-hover {
+  color: #fff !important;
+  background: transparent !important;
+}
+
+@mixin nav-list-item-active {
+  color: #fff !important;
+  background: rgba(0, 0, 0, 0.1) !important;
+}
+
 .nav-list {
   &-container {
     .el-menu-item {
-      height: 40px !important;
-      line-height: 40px !important;
+      // height: 40px !important;
+      // line-height: 40px !important;
       font-size: 16px;
 
-      .iconfont{
+      .iconfont {
         font-size: 18px;
       }
 
-      // &.is-active{
-      //   font-weight: bold;
-      // }
+      &.is-active {
+        @include nav-list-item-active;
+
+        &:hover {
+          @include nav-list-item-active;
+        }
+      }
+
+      &:hover {
+        @include nav-list-item-hover;
+      }
     }
 
     .el-menu--horizontal {
       border-bottom: none;
     }
 
-    .el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover{
+    .el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+    .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
       background: transparent;
       color: $primary-color;
     }

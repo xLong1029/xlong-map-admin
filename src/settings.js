@@ -37,6 +37,12 @@ export default {
 
   /**
    * @type {boolean} true | false
+   * @description 是否开启地图摄像机初始动画
+   */
+   mapCameraAnimation: true,
+
+  /**
+   * @type {boolean} true | false
    * @description 是否显示地图信息面板
    */
   mapInfoPanel: true,
