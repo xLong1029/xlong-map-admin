@@ -109,7 +109,7 @@ export default [
                 data.userId = Random.guid();
                 data.createdTime = Mock.mock('@now("yyyy-MM-dd hh:mm:ss")');
 
-                account.list.push(data);
+                account.list.unshift(data);
                 return handleResponse(200, "success", data.userId);
             }),
     },
