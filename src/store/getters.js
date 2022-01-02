@@ -15,6 +15,7 @@ const getters = {
     theme: (state) => state.settings.theme,
     showSettings: (state) => state.settings.showSettings,
     fixedHeader: (state) => state.settings.fixedHeader,
+    mapCameraAnimation: (state) => state.settings.mapCameraAnimation,
     mapInfoPanel: (state) => state.settings.mapInfoPanel,
     mapUtilsPanel: (state) => state.settings.mapUtilsPanel,
     mapOperatePanel: (state) => state.settings.mapOperatePanel,

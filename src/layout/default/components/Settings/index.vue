@@ -19,6 +19,11 @@
       <h3 class="drawer-title mt-20">地图配置</h3>
 
       <div class="drawer-item">
+        <span>摄像机初始动画</span>
+        <el-switch v-model="mapCameraAnimation" class="drawer-switch" />
+      </div>
+
+      <div class="drawer-item">
         <span>地图信息</span>
         <el-switch v-model="mapInfoPanel" class="drawer-switch" />
       </div>
@@ -75,6 +80,15 @@ const fixedHeader = computed({
   },
   set(val) {
     changeSettings("fixedHeader", val);
+  },
+});
+
+const mapCameraAnimation = computed({
+  get() {
+    return store.getters.mapCameraAnimation;
+  },
+  set(val) {
+    changeSettings("mapCameraAnimation", val);
   },
 });
 

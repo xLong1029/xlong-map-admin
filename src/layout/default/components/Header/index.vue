@@ -99,10 +99,10 @@ const onFullExit = () => {
 <style lang="scss" scoped>
 .header-content {
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 0 20px;
   height: $header-height;
   align-items: center;
-  color: #333;
+  color: #fff;
   width: 100%;
 
   &-left {
@@ -122,14 +122,14 @@ const onFullExit = () => {
     .title {
       font-weight: 600;
       font-size: 18px;
-      color:$primary-color;
+      color:#fff;
       font-family: Avenir, "Helvetica Neue", Arial, Helvetica, sans-serif;
     }
 
     .sub-english {
       font-size: 12px;
       margin-top: 2px;
-      color: #999;
+      color: rgba(255,255,255,0.75);
       transform:scale(0.84);
       margin-left: -8%;
     }

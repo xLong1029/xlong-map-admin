@@ -34,6 +34,12 @@ export default {
    * @description 是否显示固定头部
    */
   fixedHeader: true,
+  
+  /**
+  * @type {boolean} true | false
+  * @description 是否开启地图摄像机初始动画
+  */
+  mapCameraAnimation: true,
 
   /**
    * @type {boolean} true | false

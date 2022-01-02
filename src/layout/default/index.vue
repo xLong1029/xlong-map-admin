@@ -30,9 +30,9 @@ const fixedHeader = computed(() => store.getters.fixedHeader);
 .header-container {
   width: 100%;
   height: $header-height;
-  background: #fff;
+  background: $primary-color;
   // box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-  border-bottom:1px solid #e4e7ed;
+  // border-bottom:1px solid #e4e7ed;
 
   &.fixed {
     position: fixed;

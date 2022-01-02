@@ -18,6 +18,7 @@ import {
   watch,
   inject,
   nextTick,
+  computed
 } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 import { useStore } from "vuex";
@@ -53,6 +54,8 @@ const cameraInfo = inject("getCameraInfo");
 const coordInfo = inject("getCoordInfo");
 // 是否显示系统固定头部
 const fixedHeader = inject("getFixedHeader");
+// 摄像机初始动画
+const mapCameraAnimation = computed(() => store.getters.mapCameraAnimation);
 
 let arcgisMap = null;
 
@@ -187,7 +190,7 @@ const createView = (params, type) => {
   view.ui._removeComponents(["attribution"]);
 
   setViewMouseKeyEvent(view);
-  initCamera(view);
+  initCamera(view, mapCameraAnimation.value);
 
   return view;
 };
