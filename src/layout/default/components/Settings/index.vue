@@ -19,7 +19,7 @@
       <h3 class="drawer-title mt-20">地图配置</h3>
 
       <div class="drawer-item">
-        <span>摄像机初始化效果</span>
+        <span>摄像机初始动画</span>
         <el-switch v-model="mapCameraAnimation" class="drawer-switch" />
       </div>
 
