@@ -13,7 +13,7 @@
             <el-input
               class="login__input"
               placeholder="请输入用户名"
-               prefix-icon="el-icon-user"
+              prefix-icon="el-icon-user"
               v-model="form.username"
               @keyup.enter="onSubmit()"
             ></el-input>
@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import Cookies from "js-cookie";
 // 通用模块
 import common from "common";
@@ -170,7 +170,15 @@ const onSubmit = async () => {
 
 // 忘记密码/重置密码
 const onResetPwd = () => {
-  showDevMessage();
+  ElMessageBox.alert(
+    `<p class="text-center">普通用户登录账号: 18888888888 密码: 666666</p>
+      <p class="text-center">管理员登录账号: 17777075292 密码: 123456</p>
+        <p class="text-center">超级管理员登录账号: 18376686974 密码: 123456</p>`,
+    "演示账号密码",
+    {
+      dangerouslyUseHTMLString: true,
+    }
+  );
 };
 
 // 切换密码可见性
@@ -232,7 +240,7 @@ const onSwitchPwdVisible = () => {
     max-width: 340px;
     margin: 0 auto;
 
-    :deep(.el-form-item__error){
+    :deep(.el-form-item__error) {
       background: $red;
       color: #fff;
       padding: 5px;
@@ -266,31 +274,31 @@ const onSwitchPwdVisible = () => {
     color: #fff;
   }
 
-  :deep(.el-checkbox){
+  :deep(.el-checkbox) {
     height: 30px;
   }
 
-  :deep(.el-checkbox__label){
+  :deep(.el-checkbox__label) {
     color: #fff;
   }
 
-  :deep(.el-checkbox__inner){
+  :deep(.el-checkbox__inner) {
     border-radius: 10px;
     height: 20px;
     width: 20px;
   }
 
-  :deep(.el-checkbox__input.is-checked){
-    .el-checkbox__inner{
+  :deep(.el-checkbox__input.is-checked) {
+    .el-checkbox__inner {
       background: #fff;
 
-      &::after{
-        color:$primary-color;
+      &::after {
+        color: $primary-color;
         border-color: $primary-color;
-        width:4px;
+        width: 4px;
         height: 10px;
         top: 2px;
-        left:6px;
+        left: 6px;
       }
     }
   }
@@ -307,6 +315,10 @@ const onSwitchPwdVisible = () => {
   .link {
     color: #ffffff;
   }
+}
+
+.demo {
+  color: #fff;
 }
 </style>
 <style lang="scss">
