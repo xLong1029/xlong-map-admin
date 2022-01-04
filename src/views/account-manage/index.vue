@@ -231,21 +231,29 @@ const onAdd = () => {
 // 删除
 const onDel = (showLoading = true) => {
   const ids = selectList.value.map((e) => e.objectId);
-
-  delLoading.value = true;
-  Api.DeleteAcc(ids)
-    .then((res) => {
-      const { code, msg } = res;
-      if (code === 200) {
-        ElMessage.success("删除成功");
-        getList(1, page.pageSize);
-        clearSelect();
-      } else {
-        ElMessage.error(msg);
-      }
+  const names = selectList.value.map((e) => e.realname);
+  
+  ElMessageBox.confirm(`确定删除用户【${names}】吗？`, "温馨提示", {
+    confirmButtonText: "确定",
+    type: "warning",
+  })
+    .then(() => {
+      delLoading.value = true;
+      Api.DeleteAcc(ids)
+        .then((res) => {
+          const { code, message } = res;
+          if (code === 200) {
+            ElMessage.success("删除成功");
+            getList(1, page.pageSize);
+            clearSelect();
+          } else {
+            ElMessage.error(message);
+          }
+        })
+        .catch((err) => console.log(err))
+        .finally(() => (delLoading.value = false));
     })
-    .catch((err) => console.log(err))
-    .finally(() => (delLoading.value = false));
+    .catch((err) => console.log(err));
 };
 
 // 编辑
@@ -258,18 +266,7 @@ const onEdit = (row, index) => {
 const onDelRow = (row, index) => {
   clearSelect();
   selectList.value.push(row);
-
-  ElMessageBox.confirm(`确定删除用户【${row.realname}】吗？`,
-      "温馨提示",
-      {
-        confirmButtonText: "确定",
-        type: "warning"
-      }
-    )
-      .then(() => {
-        onDel(false);
-      })
-      .catch(err => console.log(err));
+  onDel(false);
 };
 
 // 设置表格样式
