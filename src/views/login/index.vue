@@ -316,10 +316,6 @@ const onSwitchPwdVisible = () => {
     color: #ffffff;
   }
 }
-
-.demo {
-  color: #fff;
-}
 </style>
 <style lang="scss">
 .login__input {
