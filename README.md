@@ -66,6 +66,8 @@ xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单�
 │  │
 │  ├─mock // 模拟请求数据
 │  │  │  index.js
+│  │  │  mock-handle.js 数据处理
+│  │  │  mock-server.js 正式环境使用配置
 │  │  │
 │  │  └─modules
 │  │
