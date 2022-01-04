@@ -86,7 +86,7 @@ const title = computed(() => store.getters.sysTitle);
 const remeberPwd = ref(false);
 
 // copyright内容
-const year = "2021";
+const year = "2022";
 const companyName = computed(() => store.getters.companyName);
 
 // 表单
