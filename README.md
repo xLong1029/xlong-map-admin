@@ -2,7 +2,9 @@
 
 ## 介绍
 
-xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单页面客户端渲染的地图管理系统示例。
+xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单页面客户端渲染的地图管理系统示例。  
+GIS功能包含：量算、绘制、分屏、卷帘、定位、切换底图、自定义工具栏和放大缩小等基本操作。  
+系统配置功能包含：定制主题色、定制系统头部和地图的控件配置。  
 
 温馨提示：
 1. 使用Mock.js随机生成数据，拦截 Ajax 请求
@@ -37,6 +39,61 @@ xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单�
 3. 普通用户  
 仅可见“GIS地图”和“系统说明”菜单。  
 测试账户：18888888888，密码：666666
+
+## 部分项目运行截图
+gif文件稍微有点大，被压缩了，丢失了部分色彩：
+
+* 登录界面
+
+![Image text](static/images/1.png)
+
+* 个人资料
+
+![Image text](static/images/screen-2.gif)
+
+* GIS地图
+
+![Image text](static/images/2.png)
+
+* GIS地图-切换底图
+
+![Image text](static/images/screen-3.gif)
+
+* GIS地图-地图配置
+
+![Image text](static/images/3.png)
+
+* GIS地图-卷帘
+
+![Image text](static/images/4.png)
+
+* GIS地图-分屏
+
+![Image text](static/images/5.png)
+
+* GIS地图-量算、绘制
+
+![Image text](static/images/6.png)
+
+* GIS地图-自定义工具栏
+
+![Image text](static/images/screen-8.gif)
+
+<!-- * GIS地图-旋转、切换视图
+
+![Image text](static/images/screen-12.gif) -->
+
+* 用户管理-搜索
+
+![Image text](static/images/screen-9.gif)
+
+* 用户管理-新增、编辑
+
+![Image text](static/images/screen-10.gif)
+
+* 用户管理-删除
+
+![Image text](static/images/screen-11.gif)
 
 ## 目录结构
 
