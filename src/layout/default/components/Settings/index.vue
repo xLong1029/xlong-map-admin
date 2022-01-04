@@ -15,11 +15,31 @@
       <el-switch v-model="fixedHeader" class="drawer-switch" />
     </div>
 
+    <div class="drawer-item">
+      <span
+        ><span>开启KeepAlive</span><br /><span class="font-12"
+          >(不建议开启)</span
+        ></span
+      >
+      <el-switch v-model="keepAlive" class="drawer-switch" />
+    </div>
+
     <template v-if="showMapSetting">
       <h3 class="drawer-title mt-20">地图配置</h3>
 
+      <el-alert
+        title="摄像机初始动画配置将在下一次加载生效"
+        type="info"
+        show-icon
+      >
+      </el-alert>
+
       <div class="drawer-item">
-        <span>摄像机初始动画</span>
+        <span
+          ><span>摄像机初始动画</span><br /><span class="font-12"
+            >(禁用则不显示地球旋转)</span
+          ></span
+        >
         <el-switch v-model="mapCameraAnimation" class="drawer-switch" />
       </div>
 
@@ -88,6 +108,15 @@ const mapCameraAnimation = computed({
   },
   set(val) {
     changeSettings("mapCameraAnimation", val);
+  },
+});
+
+const keepAlive = computed({
+  get() {
+    return store.getters.keepAlive;
+  },
+  set(val) {
+    changeSettings("keepAlive", val);
   },
 });
 
@@ -180,6 +209,9 @@ const resetSetting = () => {
     color: rgba(0, 0, 0, 0.65);
     font-size: 14px;
     padding: 12px 0;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
   }
 
   &-switch {

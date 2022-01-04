@@ -40,6 +40,12 @@ export default {
    * @description 是否开启地图摄像机初始动画
    */
    mapCameraAnimation: true,
+   
+  /**
+   * @type {boolean} true | false
+   * @description 是否缓存GIS页面
+   */
+   mapKeepAlive: false,
 
   /**
    * @type {boolean} true | false

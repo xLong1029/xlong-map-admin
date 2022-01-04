@@ -8,6 +8,7 @@ let settings = getLocalS("settings")
 const {
   showSettings,
   fixedHeader,
+  keepAlive,
   mapCameraAnimation,
   mapInfoPanel,
   mapUtilsPanel,
@@ -22,7 +23,8 @@ const state = {
   // 直接读取getLocalS的值会监听不到变化导致主题色无法改变
   theme: defaultSettings.theme,
   showSettings,
-  fixedHeader,
+  fixedHeader,  
+  keepAlive,
   mapCameraAnimation,
   mapInfoPanel,
   mapUtilsPanel,

@@ -21,8 +21,13 @@
 .el-alert--info {
     // background: lighten(#{$primary-color}, 40%) !important;
     color: $primary-color !important;
+    align-items: flex-start;
     .el-alert__closebtn {
         color: $primary-color !important;
+    }
+
+    .el-alert__content{
+        padding-right: 10px;
     }
 }
 
