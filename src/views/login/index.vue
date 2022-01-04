@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import Cookies from "js-cookie";
 // 通用模块
 import common from "common";
@@ -86,7 +86,7 @@ const title = computed(() => store.getters.sysTitle);
 const remeberPwd = ref(false);
 
 // copyright内容
-const year = "2021";
+const year = "2022-2023";
 const companyName = computed(() => store.getters.companyName);
 
 // 表单
@@ -171,7 +171,15 @@ const onSubmit = async () => {
 
 // 忘记密码/重置密码
 const onResetPwd = () => {
-  showDevMessage();
+  ElMessageBox.alert(
+    `<p class="text-center">普通用户登录账号: 18888888888 密码: 666666</p>
+      <p class="text-center">管理员登录账号: 17777075292 密码: 123456</p>
+        <p class="text-center">超级管理员登录账号: 18376686974 密码: 123456</p>`,
+    "演示账号密码",
+    {
+      dangerouslyUseHTMLString: true,
+    }
+  );
 };
 
 // 切换密码可见性
