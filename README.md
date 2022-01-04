@@ -17,7 +17,7 @@ GIS功能包含：量算、绘制、分屏、卷帘、定位、切换底图、�
 
 ## 项目展示
 
-> DEMO地址：https://xlong1029.github.io/xlong-map-admin/#/login
+> DEMO地址：https://xlong1029.github.io/xlong-map-admin/
 
 ## 项目说明
 
