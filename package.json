@@ -1,6 +1,6 @@
 {
-    "name": "xlong-map-admin",
-    "version": "0.1.0",
+    "name": "xlong-map-admin-bmob",
+    "version": "1.1.0",
     "scripts": {
         "dev": "vite",
         "build": "vite build",
