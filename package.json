@@ -3,6 +3,7 @@
   "description": "a management system for study only, use bmob",
   "author": "xLong <381612175@qq.com>",
   "version": "1.1.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
