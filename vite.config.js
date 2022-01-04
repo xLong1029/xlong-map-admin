@@ -29,7 +29,7 @@ function getOutputDir() {
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
     return {
-        // base: mode === 'production' ? "/xlong-map-admin/" : "/",
+        base: mode === 'production' ? "./" : "/",
         build: {
             outDir: getOutputDir(),
             // 修改打包块限制大小
