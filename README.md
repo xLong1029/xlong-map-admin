@@ -12,6 +12,7 @@ GIS功能包含：量算、绘制、分屏、卷帘、定位、切换底图、�
 1. 使用Mock.js随机生成数据，拦截 Ajax 请求
 2. 项目启动成功后需要等待一段时间加载资源
 3. 定位功能，按ArcGis官方示例，获取当前定位总是定位到兰州附近
+3. Bmob版传送门：[develop-vite-bmob](https://github.com/xLong1029/xlong-map-admin/tree/develop-vite-bmob)（使用Bmob本地运行正常，打包发布后会报错，猜测是与Vite不兼容）
 
 * 该项目仅作学习参考，请勿商用
 
@@ -130,8 +131,8 @@ gif文件稍微有点大，被压缩了，丢失了部分色彩：
 │  │
 │  ├─mock // 模拟请求数据
 │  │  │  index.js
-│  │  │  mock-handle.js 数据处理
-│  │  │  mock-server.js 正式环境使用配置
+│  │  │  mock-handle.js // 数据处理
+│  │  │  mock-server.js // 正式环境使用配置
 │  │  │
 │  │  └─modules
 │  │
