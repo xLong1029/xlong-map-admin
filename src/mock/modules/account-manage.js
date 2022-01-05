@@ -54,7 +54,6 @@ export default [
 
                 if (keyword) {
                     list = list.filter(e => (e.userId == keyword || e.realname == keyword || e.mobile == keyword || e.email == keyword))
-                    console.log(list);
                 }
                 if (enabledState) {
                     list = list.filter(e => e.enabledState == enabledState);
@@ -130,10 +129,8 @@ export default [
         response: (config) =>
             handleMock(config, () => {
                 const data = {...config.body};
-
+                
                 const user = account.list.find(e => ((e.mobile == data.mobile || e.email == data.email) && e.userId != data.userId));
-
-                console.log(user);
 
                 if(user){
                     if(user.mobile == data.mobile){

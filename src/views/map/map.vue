@@ -94,8 +94,6 @@ watch(
 
         currentMapConfig = mapViewType.value === "2D" ? map2D : map3D;
 
-        console.log(currentMapConfig);
-
         mapEvents()[event](currentMapConfig.view, data, mapViewType.value);
 
         // 放大缩小

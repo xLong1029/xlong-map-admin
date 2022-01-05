@@ -22,7 +22,7 @@ const users = [{
 
 const infos = [{
     userId: "ozdUQQQe",
-    avatar: "http://xlongadmin.xlong.club/2020/11/30/5d14ade440fbf67980d98ff08672de8a.png",
+    avatar: "https://img1.baidu.com/it/u=2383052339,2925526515&fm=26&fmt=auto",
     gender: "女",
     username: 18376686974,
     realName: "小六子",
@@ -31,7 +31,7 @@ const infos = [{
 },
 {
     userId: "aDKHTTTk",
-    avatar: "http://xlongadmin.xlong.club/2020/01/08/61afcdfa40d8bb1a80e8c25ed65d8ba7.jpg",
+    avatar: "https://img0.baidu.com/it/u=977697838,3935105105&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
     gender: "男",
     username: 17777075292,
     realName: "Lio.Huang",
