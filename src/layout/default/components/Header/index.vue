@@ -190,10 +190,6 @@ const onFullExit = () => {
   .iconfont {
     font-size: 20px;
     cursor: pointer;
-
-    &:hover {
-      color: $primary-color;
-    }
   }
 }
 </style>
