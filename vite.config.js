@@ -27,9 +27,7 @@ const port = settings.webPort;
 // }
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-    const prodEnabled = mode === 'production' || mode ==='develop';
-    
+export default defineConfig(({ mode }) => {    
     return {
         base: mode === 'production' ? "./" : "/",
         build: {
@@ -55,7 +53,7 @@ export default defineConfig(({ mode }) => {
                 mockPath: "./src/mock", // mock地址
                 supportTs: false, // 如果使用 js发开，则需要配置 supportTs 为 false
                 watchFiles: true, // 监视文件更改
-                prodEnabled,
+                prodEnabled: process.env.USE_MOCK,
                 // mock生产环境配置
                 injectCode: `
                     import { setupProdMockServer } from "./mock/mock-server.js";
