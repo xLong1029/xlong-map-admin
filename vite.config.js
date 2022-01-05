@@ -11,27 +11,29 @@ import { viteMockServe } from "vite-plugin-mock"
 const port = settings.webPort;
 
 // 获取打包文件
-function getOutputDir() {
-    let dir = "xlongMapAdmin";
+// function getOutputDir() {
+//     let dir = "xlongMapAdmin";
 
-    switch (process.env.VITE_APP_ENV) {
-        case "test":
-            dir = "xlongMapAdminTest";
-            break;
-        case "release":
-            dir = "xlongMapAdminRelease";
-            break;
-    }
+//     switch (process.env.VITE_APP_ENV) {
+//         case "test":
+//             dir = "xlongMapAdminTest";
+//             break;
+//         case "release":
+//             dir = "xlongMapAdminRelease";
+//             break;
+//     }
 
-    return dir;
-}
+//     return dir;
+// }
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
+    const prodEnabled = mode === 'production' || mode ==='develop';
+    
     return {
         base: mode === 'production' ? "./" : "/",
         build: {
-            outDir: getOutputDir(),
+            outDir: "xlongMapAdmin",
             // 修改打包块限制大小
             chunkSizeWarningLimit: 10000
         },
@@ -53,7 +55,7 @@ export default defineConfig(({ mode }) => {
                 mockPath: "./src/mock", // mock地址
                 supportTs: false, // 如果使用 js发开，则需要配置 supportTs 为 false
                 watchFiles: true, // 监视文件更改
-                prodEnabled: process.env.VITE_USE_MOCK,
+                prodEnabled,
                 // mock生产环境配置
                 injectCode: `
                     import { setupProdMockServer } from "./mock/mock-server.js";
