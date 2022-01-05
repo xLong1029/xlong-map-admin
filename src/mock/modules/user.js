@@ -73,10 +73,8 @@ export default [
     {
         url: "/api/user/info",
         method: "get",
-        response: config => handleMock(config, ({ token }) => {
-            
+        response: config => handleMock(config, ({ token }) => {   
             const user = users.find(e => (e.token == token));
-            console.log(user);
 
             if(user){
                 const info = infos.find(e => e.userId === user.userId);
