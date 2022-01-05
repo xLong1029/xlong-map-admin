@@ -5,7 +5,7 @@
         <img class="logo" :src="logoImg" :title="title" />
         <div>
           <div class="title">{{ title }}</div>
-          <div class="sub-english">XLONG JILIDUN MAP MANAGEMENT SYSTEM</div>
+          <div class="sub-english">XLONG JIALIDUN MAP MANAGEMENT SYSTEM</div>
         </div>
       </div>
       <Navbar />

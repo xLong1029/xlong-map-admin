@@ -5,7 +5,7 @@
       <div class="login__header">
         <img :src="logoImg" class="logo" />
         <div class="title">{{ title }}</div>
-        <div class="sub-english">XLONG JILIDUN MAP MANAGEMENT SYSTEM</div>
+        <div class="sub-english">XLONG JIALIDUN MAP MANAGEMENT SYSTEM</div>
       </div>
       <div class="login__content">
         <el-form :model="form" :rules="rules" ref="lofinForm" label-width="0">
