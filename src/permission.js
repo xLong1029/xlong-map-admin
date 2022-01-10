@@ -10,21 +10,18 @@ router.beforeEach(async (to, from, next) => {
     // 页面标题
     document.title = getPageTitle(to.meta.title);
 
-    const hasRoles = store.getters.roles && store.getters.roles.length > 0;
-
-    if (hasRoles) {
-        next();
-    }
-    // 刷新页面或者首次打开系统
-    else {
-        try {
-            const hasToken = getToken();
-
-            if (hasToken) {
-                if (to.path === "/login") {
-                    store.dispatch("app/setSysLoading", false);
-                    next("/map");
-                } else {
+    const hasToken = getToken();
+    if (hasToken) {
+        if (to.path === "/login") {
+            store.dispatch("app/setSysLoading", false);
+            // 已登录跳转到首页
+            next({ path: "/map" });
+        } else {
+            const hasRoles = store.getters.roles && store.getters.roles.length > 0;
+            if (hasRoles) {
+                next();
+            } else {
+                try {
                     // 获取用户信息
                     const { roles } = await store.dispatch("user/getInfo");
 
@@ -39,20 +36,22 @@ router.beforeEach(async (to, from, next) => {
                     // hack方法以确保addroutes是完整的
                     // 设置replace:true，这样导航就不会留下历史记录
                     next({ ...to, replace: true });
-                }
-            } else {
-                store.dispatch("app/setSysLoading", false);
-                if (whiteList.indexOf(to.path) >= 0) {
-                    next();
-                } else {
-                    next("/login");
+                } catch (err) {
+                    // 重登录
+                    ElMessage.error("用户信息已失效，请重新登录");
+                    setTimeout(async () => {
+                        await store.dispatch("user/logout");
+                        next("/login");
+                    }, 500);
                 }
             }
-        } catch (err) {
-            // 重登录
-            ElMessage.error(err || "用户信息已失效，请重新登录");
-            await store.dispatch("user/logout");
-            store.dispatch("app/setSysLoading", false);
+        }
+    } else {
+        store.dispatch("app/setSysLoading", false);
+
+        if (whiteList.indexOf(to.path) >= 0) {
+            next();
+        } else {
             next("/login");
         }
     }
