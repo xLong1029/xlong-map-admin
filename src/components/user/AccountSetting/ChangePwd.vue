@@ -40,6 +40,7 @@
 
 <script setup>
 import { reactive, ref, toRaw, onMounted } from "@vue/runtime-core";
+import Cookies from "js-cookie";
 import { ElMessage } from "element-plus";
 // 表单
 import formJs from "common/form.js";
@@ -129,14 +130,16 @@ const onSubmit = async () => {
           try {
             await store.dispatch("user/logout");
             await store.dispatch("permission/generateRoutes", null);
+            // 清除记住的用户名和密码
+            Cookies.remove("username");
+            Cookies.remove("password");
             ElMessage.success("密码修改成功！请重新登录");
 
             toPage("/login");
           } catch (err) {
             console.log(err);
           }
-        }
-        else{
+        } else {
           ElMessage.error(message);
         }
       })
