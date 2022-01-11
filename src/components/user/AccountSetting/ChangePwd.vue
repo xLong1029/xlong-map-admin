@@ -41,6 +41,7 @@
 <script setup>
 import { reactive, ref, toRaw } from "@vue/reactivity";
 import { ElMessage } from "element-plus";
+import Cookies from "js-cookie";
 // 表单
 import formJs from "common/form.js";
 // 过滤器
@@ -131,6 +132,9 @@ const onSubmit = async () => {
             await store.dispatch("user/logout");
             await store.dispatch("permission/generateRoutes", null);
             ElMessage.success("密码修改成功！请重新登录");
+            // 清除记住的用户名和密码
+            Cookies.remove("username");
+            Cookies.remove("password");
 
             toPage("/login");
           } catch (err) {
