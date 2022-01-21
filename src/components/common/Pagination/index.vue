@@ -54,14 +54,14 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(["pagination", "selection-change", "update:pageNo", "update:limit"]);
+const emit = defineEmits(["pagination", "selection-change", "update:page", "update:limit"]);
 
 const currentPage = computed({
   get() {
-    return props.pageNo;
+    return props.page;
   },
   set(val) {
-    emit("update:pageNo", val);
+    emit("update:page", val);
   }
 });
 
