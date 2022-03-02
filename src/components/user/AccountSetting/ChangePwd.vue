@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, toRaw } from "@vue/reactivity";
+import { reactive, ref, toRaw, onMounted } from "@vue/reactivity";
 import { ElMessage } from "element-plus";
 import Cookies from "js-cookie";
 // 表单
@@ -62,7 +62,6 @@ const props = defineProps({
 
 const { store, toPage } = common();
 const { validForm } = formJs();
-const { isNull } = filter();
 
 // 表单
 const changePwdForm = ref();

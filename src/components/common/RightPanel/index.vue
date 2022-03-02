@@ -25,7 +25,6 @@ import {
   onBeforeUnmount,
   onMounted,
   watch,
-  defineProps,
 } from "@vue/runtime-core";
 
 const props = defineProps({
