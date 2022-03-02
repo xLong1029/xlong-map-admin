@@ -44,8 +44,6 @@ import { ElMessage } from "element-plus";
 import Cookies from "js-cookie";
 // 表单
 import formJs from "common/form.js";
-// 过滤器
-import filter from "common/filter";
 // 通用模块
 import common from "common";
 // 校验
