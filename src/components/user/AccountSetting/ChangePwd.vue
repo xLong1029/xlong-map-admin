@@ -53,13 +53,6 @@ import { validPassword, isEqual } from "utils/validate";
 // Api
 import Api from "api/user/index.js";
 
-const props = defineProps({
-  clickNotClose: {
-    default: false,
-    type: Boolean,
-  },
-});
-
 const { store, toPage } = common();
 const { validForm } = formJs();
 
