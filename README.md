@@ -7,7 +7,7 @@ xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单�
 温馨提示：
 
 1. 项目启动成功后需要等待一段时间加载资源
-2. 因我的 Bmob 用的是开发版套餐，所有查询只有全匹配查询，无模糊查询，请根据自行需求进行修改。
+2. 因我的 Bmob 用的是开发版套餐（2022 年 5 月 5 日起，Bomb已对开发版应用创建时间超过 12 个月的停止免费服务），所有查询只有全匹配查询，无模糊查询，请根据自行需求进行修改。
 3. 开发过程中发现Vite项目打包发布后因使用Bmob项目会报错“Uncaught TypeError: Cannot read property 'prototype' of undefined”，但本地运行无此问题，如果想使用可正常打包的版本，请移步[develop-vite-mock](https://github.com/xLong1029/xlong-map-admin/tree/develop-vite-mock)版本。
 4. 如果要测试删除功能，请自行添加再删除，请保留我原有的测试数据
 5. 定位功能，按ArcGis官方示例，获取当前定位总是定位到兰州附近
