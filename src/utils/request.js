@@ -31,10 +31,6 @@ export function handelRequestError(error) {
 }
 
 export function configSetting(config) {
-    const { url } = config;
-    if (url.indexOf("api.weixin.qq.com") >= 0) {
-        return config;
-    }
     config.headers["authorization"] = "bearer " + getToken();
     return config;
 }
