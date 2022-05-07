@@ -33,7 +33,6 @@ export default {
      * 修改个人资料
      *
      * @param {*} data 参数
-     * @param {*} id 用户id
      */
     EditProfile: (data) => {
         return request({
