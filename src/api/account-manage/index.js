@@ -84,7 +84,7 @@ export default {
     /**
      * 删除账户
      *
-     * @param {*} ids 需要删除的对象的objectId
+     * @param {*} ids 需要删除的对象的Id
      */
     DeleteAcc: (ids) => {
         return request({
