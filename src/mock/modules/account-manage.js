@@ -84,7 +84,7 @@ export default [
 
                 const user = account.list.find(e => e.userId == id);
 
-                return handleResponse(200, "success", user);
+                return user ? handleResponse(200, "success", user) : handleResponse(404, "找不该用户");;
             }),
     },
     {
