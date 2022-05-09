@@ -100,7 +100,7 @@ export default [
                         return handleResponse(400, "手机号码已存在");
                     }
                     if(user.email == data.email){
-                        return handleResponse(400, "电子邮箱");
+                        return handleResponse(400, "电子邮箱已存在");
                     }
                 }
 
@@ -137,7 +137,7 @@ export default [
                         return handleResponse(400, "手机号码已存在，请修改");
                     }
                     if(user.email == data.email){
-                        return handleResponse(400, "电子邮箱，请修改");
+                        return handleResponse(400, "电子邮箱已存在，请修改");
                     }
                 }
 
