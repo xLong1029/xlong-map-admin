@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-// 初始化ElementPlus
+// 初始化指令
 import initDirectives from "./directives";
 
 // 路由权限
