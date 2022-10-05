@@ -1,4 +1,4 @@
-# xlong-map-element-plus
+# xlong-map-admin
 
 xlong-map-admin是一套基于 Vite + Vue3 + Element Plus + ArcGis 开发的单页面客户端渲染的地图管理系统示例。  
 
