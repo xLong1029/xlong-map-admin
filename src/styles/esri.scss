@@ -62,7 +62,7 @@
 
 .esri-widget *:focus-visible, .esri-widget *:focus{
   outline: none;
-    border-color: var(--el-input-focus-border, var(--el-color-primary));
+  border-color: var(--el-input-focus-border, var(--el-color-primary));
 }
 
 .esri-select {

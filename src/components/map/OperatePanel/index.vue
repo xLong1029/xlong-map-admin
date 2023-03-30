@@ -1,9 +1,6 @@
 <template>
   <div class="operate-panel">
     <Compass v-if="showCompassBtn" />
-    <!-- <div v-if="showBookMarkBtn" class="map-bookmark">
-      <i class="iconfont icon-bookmark" @click="onOpenBookmarks()" title="书签"></i>
-    </div> -->
     <div
       v-if="showTransformBtn"
       class="map-transform"
@@ -104,11 +101,6 @@ const onZoomOut = () => {
 
   dispatchMapEvent("onZoomOut", null);
 };
-
-// // 显示书签工具
-// const onOpenBookmarks = () => {
-//   dispatchMapEvent("onOpenBookmarks", null);
-// };
 </script>
 
 <style lang="scss" scoped>
