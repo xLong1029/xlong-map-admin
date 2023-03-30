@@ -124,6 +124,16 @@ const utilList =[
         enable3D: true,
         fullScreen: true,
       },
+      {
+        component: "BookmarksPanel",
+        classStyles: "iconfont icon-bookmark",
+        utilName: "书签",
+        eventSuffix: "Bookmarks",
+        panelID: "bookmarksPanel",
+        enable2D: true,
+        enable3D: true,
+        fullScreen: false,
+      },
     ],
   },
 ]

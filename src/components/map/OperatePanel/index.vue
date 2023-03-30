@@ -1,7 +1,15 @@
 <template>
   <div class="operate-panel">
     <Compass v-if="showCompassBtn" />
-    <div v-if="showTransformBtn" class="map-transform" @click="onTransform()"  title="2/3D切换">
+    <!-- <div v-if="showBookMarkBtn" class="map-bookmark">
+      <i class="iconfont icon-bookmark" @click="onOpenBookmarks()" title="书签"></i>
+    </div> -->
+    <div
+      v-if="showTransformBtn"
+      class="map-transform"
+      @click="onTransform()"
+      title="2/3D切换"
+    >
       <span class="text">切换</span>
       <span>{{ mapViewType === "2D" ? "3D" : "2D" }}</span>
     </div>
@@ -53,10 +61,6 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
-  showZoomOutBtn: {
-    type: Boolean,
-    default: true,
-  },
 });
 
 const { dispatchMapEvent, showDevMessage } = common();
@@ -100,6 +104,11 @@ const onZoomOut = () => {
 
   dispatchMapEvent("onZoomOut", null);
 };
+
+// // 显示书签工具
+// const onOpenBookmarks = () => {
+//   dispatchMapEvent("onOpenBookmarks", null);
+// };
 </script>
 
 <style lang="scss" scoped>
@@ -115,7 +124,8 @@ const onZoomOut = () => {
   .map {
     &-transform,
     &-locate,
-    &-zoom {
+    &-zoom,
+    &-bookmark {
       margin-top: 8px;
       width: 36px;
       margin-left: 8px;
@@ -133,7 +143,8 @@ const onZoomOut = () => {
     }
 
     &-transform,
-    &-locate {
+    &-locate,
+    &-bookmark {
       padding: 5px;
       text-align: center;
       cursor: pointer;
