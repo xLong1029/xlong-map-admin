@@ -26,7 +26,7 @@ export default {
       panelID
     } = data;
 
-    console.log("展开日照分析面板");
+    console.log("打开书签工具");
 
     const panelContent = document.getElementById(panelID);
 
