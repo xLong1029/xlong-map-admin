@@ -1,0 +1,1 @@
+import{sz as o}from"./index.a33ecea7.js";function p(r){r&&r.writtenProperties&&r.writtenProperties.forEach(({target:t,propName:e,newOrigin:i})=>{o(t)&&i&&t.originOf(e)!==i&&t.updateOrigin(e,i)})}export{p as i};
