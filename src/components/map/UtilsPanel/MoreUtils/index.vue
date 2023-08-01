@@ -3,12 +3,13 @@
     :placement="placement"
     :width="268"
     :trigger="trigger"
-    v-model:visible="visible"
+    :visible="visible"
     popper-class="more-utils-container"
   >
     <template #reference>
       <slot></slot>
     </template>
+    <template #default>
     <div class="more-utils__title">
       <span class="title">工具箱</span>
       <span class="settings pointer" @click="onCustomUtil"
@@ -33,6 +34,7 @@
         </ul>
       </div>
     </div>
+    </template>
   </el-popover>
 </template>
 
@@ -78,7 +80,7 @@ const visible = ref(false);
  * @param panelID 工具应添加容器的ID
  */
 const onClickUtil = (panel, eventSuffix, panelID) => {
-  visible.value = false;
+  setVisible(false);
 
   const { enable2D, enable3D } = panel;
 
@@ -106,10 +108,17 @@ const setClassStyles = ({ enable2D, enable3D, component }) => {
 
 // 自定义工具栏
 const onCustomUtil = () => {
-  visible.value = false;
+  setVisible(false);
 
   emit("click-custom", true);
 };
+
+const setVisible = val => visible.value = val
+
+// 暴露方法给父组件调用
+defineExpose({
+  setVisible
+});
 </script>
 <style lang="scss" scoped>
 @import "@/styles/more-utils.scss";

@@ -32,18 +32,18 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" icon="el-icon-search" @click="onSearch()"
+            <el-button type="default" :icon="Search" @click="onSearch()"
               >搜索</el-button
             >
           </el-form-item>
         </el-form>
         <div v-if="roles.indexOf('admin') >= 0">
-          <el-button type="primary" icon="el-icon-plus" @click="onAdd()"
+          <el-button type="primary" :icon="Plus" @click="onAdd()"
             >新增账户</el-button
           >
           <el-button
             type="danger"
-            icon="el-icon-delete"
+            :icon="Delete"
             :disabled="!selectList.length"
             :loading="delLoading"
             @click="onDel()"
@@ -101,13 +101,13 @@
             align="center"
           >
             <template #default="{ row, $index }">
-              <el-button type="text" icon="el-icon-edit" @click="onEdit(row, $index)"
+              <el-button type="text" :icon="Edit" @click="onEdit(row, $index)"
                 >编辑</el-button
               >
               <el-button
                 class="delete-btn"
                 type="text"
-                icon="el-icon-delete"
+                :icon="Delete"
                 @click="onDelRow(row, $index)"
                 >删除</el-button
               >
@@ -131,6 +131,12 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from "@vue/runtime-core";
 import { ElMessage, ElMessageBox } from "element-plus";
+import {
+  Delete,
+  Edit,
+  Plus,
+  Search
+} from "@element-plus/icons-vue";
 // 组件
 import DynamicTable from "components/common/Table/DynamicTable.vue";
 import StoreDialog from "./store.vue";

@@ -1,11 +1,9 @@
 <template>
-  <div
-    :class="[
-      'max-screen-panel',
-      minimize ? 'minimize' : 'maximize',
-      fixedHeader ? 'show-header' : '',
-    ]"
-  >
+  <div :class="[
+    'max-screen-panel',
+    minimize ? 'minimize' : 'maximize',
+    fixedHeader ? 'show-header' : '',
+  ]">
     <!-- 头部 -->
     <div class="max-screen-panel__header">
       <div class="max-screen-panel__title">
@@ -13,12 +11,13 @@
         <span>{{ title }}</span>
       </div>
       <div class="max-screen-panel__btn">
-        <i
-          class="el-icon-minus mr-10"
-          title="窗口最小化"
-          @click="onMinimize"
-        ></i>
-        <i class="el-icon-close" title="关闭面板" @click="onClose"></i>
+        <el-icon class="el-icon-minus mr-10" title="窗口最小化" @click="onMinimize">
+          <Minus />
+        </el-icon>
+
+        <el-icon v-if="showCloseIcon" class="el-icon-close" title="关闭面板" @click="onClose">
+          <Close />
+        </el-icon>
       </div>
     </div>
     <!-- 内容 -->
@@ -29,6 +28,8 @@
 </template>
 
 <script setup>
+import { Minus, Close } from "@element-plus/icons-vue";
+
 const props = defineProps({
   // 标题
   title: {
@@ -73,8 +74,7 @@ $max-screen-pane-padding: 10px;
   width: 100vw;
   height: 100vh;
   background: #eceef3;
-  padding: 0 $max-screen-pane-padding $max-screen-pane-padding
-    $max-screen-pane-padding;
+  padding: 0 $max-screen-pane-padding $max-screen-pane-padding $max-screen-pane-padding;
   top: 0;
   left: 0;
   right: 0;
@@ -94,9 +94,7 @@ $max-screen-pane-padding: 10px;
     top: #{$header-height};
 
     .max-screen-panel__content {
-      height: calc(
-        100vh - #{$max-screen-pane-height} - #{$max-screen-pane-padding} - #{$header-height}
-      );
+      height: calc(100vh - #{$max-screen-pane-height} - #{$max-screen-pane-padding} - #{$header-height});
     }
   }
 
@@ -124,7 +122,6 @@ $max-screen-pane-padding: 10px;
     i {
       padding: 5px;
       cursor: pointer;
-      font-size: 20px;
 
       &:hover {
         color: $primary-color;

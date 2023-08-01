@@ -2,12 +2,11 @@
   <div ref="rightPanel" :class="{ show: show }" class="rightPanel-container">
     <div class="rightPanel-background" @click="show = !show" />
     <div class="rightPanel">
-      <div
-        class="handle-button"
-        :style="{ 'background-color': theme }"
-        @click="show = !show"
-      >
-        <i :class="show ? 'el-icon-close' : 'el-icon-s-tools'" />
+      <div class="handle-button" :style="{ 'background-color': theme }" @click="show = !show">
+        <el-icon>
+          <Close v-if="show" />
+          <Setting v-else />
+        </el-icon>
       </div>
       <div class="rightPanel-items">
         <slot />
@@ -26,6 +25,10 @@ import {
   onMounted,
   watch,
 } from "@vue/runtime-core";
+import {
+  Close,
+  Setting
+} from "@element-plus/icons-vue";
 
 const props = defineProps({
   clickNotClose: {

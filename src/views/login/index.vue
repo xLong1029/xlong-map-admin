@@ -13,7 +13,7 @@
             <el-input
               class="login__input"
               placeholder="请输入用户名"
-               prefix-icon="el-icon-user"
+              :prefix-icon="User"
               v-model="form.username"
               @keyup.enter="onSubmit()"
             ></el-input>
@@ -22,7 +22,7 @@
             <el-input
               class="login__input"
               placeholder="请输入密码"
-              prefix-icon="el-icon-key"
+              :prefix-icon="Key"
               :type="pwdVisible ? 'text' : 'password'"
               v-model="form.password"
               @keyup.enter="onSubmit()"
@@ -66,6 +66,10 @@
 <script setup>
 import { ElMessage, ElMessageBox } from "element-plus";
 import Cookies from "js-cookie";
+import {
+  User,
+  Key
+} from "@element-plus/icons-vue";
 // 通用模块
 import common from "common";
 // 表单

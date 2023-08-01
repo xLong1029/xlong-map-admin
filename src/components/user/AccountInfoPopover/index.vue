@@ -18,11 +18,11 @@
       </ul>
       <div class="user-info-operate">
         <span class="btn" @click="onAccountSetting(true)">
-          <i class="el-icon-user"></i>
+          <el-icon class="mr-5"><User /></el-icon>
           账户设置
         </span>
         <span class="btn" @click="onLogout">
-          <i class="el-icon-switch-button"></i>
+          <el-icon class="mr-5"><SwitchButton /></el-icon>
           退出登录
         </span>
       </div>
@@ -34,6 +34,10 @@
 import { computed } from "@vue/runtime-core";
 import { ElMessage } from "element-plus";
 import { ElMessageBox } from "element-plus";
+import {
+  User,
+  SwitchButton
+} from "@element-plus/icons-vue";
 // 通用模块
 import common from "common";
 // 过滤器
@@ -102,6 +106,8 @@ const onLogout = () => {
 
     .btn {
       cursor: pointer;
+      display: flex;
+      align-items: center;
 
       &:hover {
         color: $primary-color;

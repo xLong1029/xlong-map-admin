@@ -40,7 +40,10 @@
     <div class="setting-conatiner">
       <div class="drag-container" @click="onCustomUtil">
         <div v-if="!customUtils.length" class="mt-10">
-          <i class="el-icon-plus"></i>
+          <el-icon class="el-icon-plus" title="关闭窗口">
+            <Plus />
+          </el-icon>
+
           <span class="block mt-10">拖动工具到此处</span>
         </div>
 
@@ -53,7 +56,8 @@
         >
           <template #item="{ element }">
             <li class="more-util-list-item" @click="onRemoveCustomUtil(element)">
-              <i class="el-icon-error"></i>
+              <el-icon class="el-icon-error"><CircleCloseFilled /></el-icon>
+
               <div class="more-util-list-item__icon">
                 <i :class="element.classStyles"></i>
               </div>
@@ -77,6 +81,7 @@ import Draggable from "vuedraggable";
 import { reactive, ref, onMounted } from "@vue/runtime-core";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { setLocalS, getLocalS } from "utils";
+import { Plus, CircleCloseFilled } from "@element-plus/icons-vue";
 
 const props = defineProps({
   visible: {
@@ -230,9 +235,10 @@ const onSaveCustomUtils = () => {
   min-height: 100px;
 
   .el-icon-plus {
-    font-size: 40px;
     display: inline-block;
     color: #c0c4cc;
+    font-size: 20px;
+    margin-top: 10px;
   }
 }
 
@@ -247,6 +253,7 @@ const onSaveCustomUtils = () => {
 
   .more-util-list-item {
     cursor: pointer;
+    position: relative;
   }
 
   .el-icon-error {
@@ -254,7 +261,7 @@ const onSaveCustomUtils = () => {
     right: -5px;
     top: -5px;
     color: $pink;
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 </style>
