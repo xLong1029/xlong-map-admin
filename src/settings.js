@@ -15,7 +15,7 @@ export default {
    * @type {number} *
    * @description 开发环境下项目运行端口
    */
-  webPort: 6666,
+  webPort: 6006,
 
   /**
    * @type {string} *
