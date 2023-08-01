@@ -32,7 +32,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button type="default" :icon="Search" @click="onSearch()"
+            <el-button type="primary" :icon="Search" @click="onSearch()"
               >搜索</el-button
             >
           </el-form-item>
