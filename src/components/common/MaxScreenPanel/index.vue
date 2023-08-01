@@ -14,8 +14,7 @@
         <el-icon class="el-icon-minus mr-10" title="窗口最小化" @click="onMinimize">
           <Minus />
         </el-icon>
-
-        <el-icon v-if="showCloseIcon" class="el-icon-close" title="关闭面板" @click="onClose">
+        <el-icon class="el-icon-close" title="关闭面板" @click="onClose">
           <Close />
         </el-icon>
       </div>
