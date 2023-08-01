@@ -1,7 +1,12 @@
 <template>
   <div class="operate-panel">
     <Compass v-if="showCompassBtn" />
-    <div v-if="showTransformBtn" class="map-transform" @click="onTransform()"  title="2/3D切换">
+    <div
+      v-if="showTransformBtn"
+      class="map-transform"
+      @click="onTransform()"
+      title="2/3D切换"
+    >
       <span class="text">切换</span>
       <span>{{ mapViewType === "2D" ? "3D" : "2D" }}</span>
     </div>
@@ -50,10 +55,6 @@ const props = defineProps({
     default: true,
   },
   showZoomInBtn: {
-    type: Boolean,
-    default: true,
-  },
-  showZoomOutBtn: {
     type: Boolean,
     default: true,
   },
@@ -115,7 +116,8 @@ const onZoomOut = () => {
   .map {
     &-transform,
     &-locate,
-    &-zoom {
+    &-zoom,
+    &-bookmark {
       margin-top: 8px;
       width: 36px;
       margin-left: 8px;
@@ -133,7 +135,8 @@ const onZoomOut = () => {
     }
 
     &-transform,
-    &-locate {
+    &-locate,
+    &-bookmark {
       padding: 5px;
       text-align: center;
       cursor: pointer;

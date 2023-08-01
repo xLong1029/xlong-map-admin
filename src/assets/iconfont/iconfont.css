@@ -1,11 +1,11 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2659669 */
-  src: url('iconfont.eot?t=1640162109850'); /* IE9 */
-  src: url('iconfont.eot?t=1640162109850#iefix') format('embedded-opentype'), /* IE6-IE8 */
-       url('iconfont.woff2?t=1640162109850') format('woff2'),
-       url('iconfont.woff?t=1640162109850') format('woff'),
-       url('iconfont.ttf?t=1640162109850') format('truetype'),
-       url('iconfont.svg?t=1640162109850#iconfont') format('svg');
+  src: url('iconfont.eot?t=1680162402210'); /* IE9 */
+  src: url('iconfont.eot?t=1680162402210#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('iconfont.woff2?t=1680162402210') format('woff2'),
+       url('iconfont.woff?t=1680162402210') format('woff'),
+       url('iconfont.ttf?t=1680162402210') format('truetype'),
+       url('iconfont.svg?t=1680162402210#iconfont') format('svg');
 }
 
 .iconfont {
@@ -14,6 +14,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bookmark:before {
+  content: "\e632";
 }
 
 .icon-yidong:before {

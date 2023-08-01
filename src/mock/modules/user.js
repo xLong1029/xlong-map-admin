@@ -24,7 +24,7 @@ const users = [
 const infos = [
   {
     userId: "ozdUQQQe",
-    avatar: "https://img1.baidu.com/it/u=2383052339,2925526515&fm=26&fmt=auto",
+    avatar: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F202003%2F22%2F20200322092752_rtQNk.thumb.400_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1663925092&t=fd1735f7d0ba0e89fffbf5ef07ea60e2",
     gender: "女",
     username: 18376686974,
     realName: "小六子",

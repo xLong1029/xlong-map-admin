@@ -28,11 +28,9 @@ const mutations = {
     state.startGetLocateCoord = startGetLocateCoord
   },
   SET_LOCATE_DATA: (state, locateData) => {
-    console.log(locateData);
     state.locateData = locateData
   },
   SET_START_SCREENSHOT: (state, startScreenshot) => {
-    console.log(111, startScreenshot);
     state.startScreenshot = startScreenshot
   },
 };

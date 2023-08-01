@@ -34,10 +34,12 @@
   border-color: $primary-color;
   border-radius: $map-border-radius;
   min-height: 40px;
+  color:  #ffffff;
 
   &:hover {
     background: $primary-color;
     border-color: $primary-color;
+    color:  #ffffff;
   }
 
   &:focus {
@@ -47,6 +49,20 @@
     background: #fff;
     color: $primary-color;
   }
+}
+
+
+
+.esri-input{
+  border: var(--el-input-border, var(--el-border-base));
+  height: 40px;
+  line-height: 40px;
+  border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+}
+
+.esri-widget *:focus-visible, .esri-widget *:focus{
+  outline: none;
+  border-color: var(--el-input-focus-border, var(--el-color-primary));
 }
 
 .esri-select {
@@ -154,4 +170,14 @@
   .esri-swipe__container {
     outline: none;
   }
+}
+
+
+.esri-bookmarks__authoring-actions .esri-bookmarks__authoring-delete-button{
+  color: #ffffff;
+  padding: 0 20px;
+}
+
+.esri-button.esri-button--tertiary.esri-bookmarks__authoring-cancel-button{
+  margin-right: 10px;
 }

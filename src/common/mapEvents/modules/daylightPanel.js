@@ -27,7 +27,6 @@
 
     const daylightUtil = document.createElement("div");
     daylightUtil.id = "daylight";
-
     panelContent.appendChild(daylightUtil);
 
     widget = new Daylight({

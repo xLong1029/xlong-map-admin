@@ -6,3 +6,4 @@ export { default as ElevationProfilePanel } from "./ElevationProfilePanel/index.
 export { default as LineOfSightPanel } from "./LineOfSightPanel/index.vue";
 export { default as ScreenshotPanel } from "./ScreenshotPanel/index.vue";
 export { default as LocatePanel } from "./LocatePanel/index.vue";
+export { default as BookmarksPanel } from "./BookmarksPanel/index.vue";

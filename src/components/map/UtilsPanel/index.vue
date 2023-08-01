@@ -78,6 +78,7 @@ import {
   LineOfSightPanel,
   ScreenshotPanel,
   LocatePanel,
+  BookmarksPanel,
 } from "./Utils/index.js";
 // Api
 import Api from "api/map/index.js";
@@ -90,13 +91,13 @@ export default defineComponent({
     CustomUtilDialog,
     MeasurePanel,
     DrawPanel,
-    MeasurePanel,
     SlicePanel,
     DayLightPanel,
     ElevationProfilePanel,
     LineOfSightPanel,
     ScreenshotPanel,
     LocatePanel,
+    BookmarksPanel
   },
 });
 </script>
