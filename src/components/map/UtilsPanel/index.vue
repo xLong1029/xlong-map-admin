@@ -24,13 +24,14 @@
 
           <!-- 工具箱 -->
           <MoreUtils
+            ref="moreUtilsRef"
             :map-view-type="mapViewType"
             :highlight-panels="highlightPanels"
             :util-list="utilList"
             @click-util="onClickUtilBoxUtils"
             @click-custom="setCustomUtilDialogVisible(true)"
           >
-            <div class="util-list-item">
+            <div class="util-list-item" @click="showMoreUtils()">
               <i class="util-list-item__icon iconfont icon-gongjuxiang"></i>
               <span class="util-list-item__name">工具箱</span>
             </div>
@@ -152,6 +153,8 @@ const commonUtils = ref([
 ]);
 
 const panelListLoading = ref(false);
+
+const moreUtilsRef = ref(null);
 
 // 工具面板列表
 const panelList = ref([
@@ -375,6 +378,10 @@ const onClosePanel = ({ panel, index, active, eventSuffix, panelID }) => {
   setPanelVisble(panel, index, active);
   handleUtilPanelEvent(panelList.value[index].utilActive, eventSuffix, panelID);
 };
+
+const showMoreUtils = () => {
+  moreUtilsRef.value?.setVisible(true);
+}
 
 // 暴露方法给父组件调用
 defineExpose({ setPanelVisble });

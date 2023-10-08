@@ -29,7 +29,7 @@
     >
       <template #title>
         <span>{{ item.meta.title }}</span>
-        <i class="el-icon-caret-bottom"></i>
+        <el-icon class="el-icon-caret-bottom"><CaretBottom /></el-icon>
       </template>
       <nav-item
         v-for="child in item.children"
@@ -49,6 +49,9 @@ import path from "path-browserify";
 import { isExternal } from "@/utils/validate";
 import { ref } from "@vue/reactivity";
 import { useRouter } from "vue-router";
+import {
+  CaretBottom
+} from "@element-plus/icons-vue";
 
 const props = defineProps({
   item: {

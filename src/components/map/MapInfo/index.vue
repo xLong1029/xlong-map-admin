@@ -2,7 +2,7 @@
   <div :class="['map-info-panel', foldMapInfoPanel ? 'fold' : 'unfold']">
     <div class="map-info-panel__title" @click="setContentVisible(!foldMapInfoPanel)">
       <div><span>地图信息</span></div>
-      <i class="el-icon-caret-top"></i>
+      <el-icon class="el-icon-caret-top"><CaretTop /></el-icon>
     </div>
     <div
       v-if="!foldMapInfoPanel"
@@ -34,11 +34,11 @@
         >
       </div>
       <div class="content scale-content">
-        <el-button type="primary" size="mini" @click="onLocateToNanning()"
+        <el-button type="primary" size="small" @click="onLocateToNanning()"
           ><i class="iconfont icon-quanfuxianshi mr-5"></i
           ><span>南宁市全幅</span></el-button
         >
-        <el-button type="primary" size="mini" @click="setScale(bestScale)"
+        <el-button type="primary" size="small" @click="setScale(bestScale)"
           ><i class="iconfont icon-bili mr-5"></i
           ><span>最佳比例1:{{ bestScale }}</span></el-button
         >
@@ -49,6 +49,9 @@
 
 <script setup>
 import { ref, inject, watch } from "@vue/runtime-core";
+import {
+  CaretTop
+} from "@element-plus/icons-vue";
 // 通用模块
 import common from "common";
 // 地图

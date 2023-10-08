@@ -18,7 +18,7 @@
             <div class="swipe-panel-setting" style="margin-top: -10px">
               <el-form label-width="70px">
                 <el-form-item label="启用卷帘" class="mb-15">
-                  <el-switch v-model="openSwipe" size="mini"> </el-switch>
+                  <el-switch v-model="openSwipe" size="small"> </el-switch>
                 </el-form-item>
                 <el-form-item label="卷帘方向">
                   <el-radio-group v-model="swipeDirection" @change="onChangeSwipeType">

@@ -25,14 +25,14 @@
     <div class="transfer-operate">
       <el-button
         type="primary"
-        icon="el-icon-arrow-up"
+        :icon="ArrowUp"
         :title="`移动到${titles[0]}`"
         :disabled="!bottomDataChecked.length"
         @click="moveTo(1)"
       ></el-button>
       <el-button
         type="primary"
-        icon="el-icon-arrow-down"
+        :icon="ArrowDown"
         :title="`移动到${titles[1]}`"
         :disabled="!topDataChecked.length"
         @click="moveTo(-1)"
@@ -65,6 +65,10 @@
 </template>
 
 <script setup>
+import {
+  ArrowUp,
+  ArrowDown
+} from "@element-plus/icons-vue";
 import { ref, onMounted } from "@vue/runtime-core";
 import List from "./List.vue";
 // import Draggable from "vuedraggable";

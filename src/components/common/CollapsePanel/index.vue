@@ -1,36 +1,31 @@
 <template>
   <div class="collapse-panel">
     <!-- 右侧地图 -->
-    <div
-      class="collapse-panel__right"
-      :class="{ 'show-left': leftPanelVisible }"
-    >
+    <div class="collapse-panel__right" :class="{ 'show-left': leftPanelVisible }">
       <slot name="right"></slot>
     </div>
     <!-- 左侧面板 -->
-    <div
-      class="collapse-panel__left"
-      :class="{ 'hide-left': !leftPanelVisible }"
-    >
+    <div class="collapse-panel__left" :class="{ 'hide-left': !leftPanelVisible }">
       <div class="collapse-panel__left-content">
         <slot name="left"></slot>
       </div>
       <!-- 折叠按钮 -->
       <div class="fold-btn" @click="leftPanelVisible = !leftPanelVisible">
         <div v-html="leftPanelVisible ? '收<br/>起' : '展<br/>开'"></div>
-        <i
-          class="mt-5"
-          :class="
-            leftPanelVisible ? 'el-icon-d-arrow-left' : 'el-icon-d-arrow-right'
-          "
-        ></i>
+        <el-icon class="mt-5">
+          <ArrowLeft v-if="leftPanelVisible" />
+          <ArrowRight v-else />
+        </el-icon>
+        <el-icon></el-icon>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
 import { ref } from "@vue/runtime-core";
+
 const leftPanelVisible = ref(true);
 </script>
 
@@ -73,7 +68,7 @@ $left-panel-width: 400px;
     width: $left-panel-width;
     left: 0;
     // box-shadow: 2px 0px 4px 0px rgba(0, 0, 0, 0.08);
-    
+
     @extend .transition;
     @extend .fixed-div;
 

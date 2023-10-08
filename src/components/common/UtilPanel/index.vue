@@ -1,15 +1,17 @@
 <template>
   <div v-drag class="util-panel" :style="{ width, top, right }">
     <div class="util-panel__header drag-move">
-      <span
-        ><span>{{ title }}</span>
-        <i
+      <span>
+        <span>{{ title }}</span>
+        <el-icon
           v-if="showHelpIcon"
           class="el-icon-question ml-10"
           title="帮助说明"
           @click="onClickHelp"
-        ></i
-      ></span>
+        >
+          <QuestionFilled />
+        </el-icon>
+      </span>
       <span>
         <i
           v-if="showMaxIcon"
@@ -17,12 +19,15 @@
           title="窗口最大化"
           @click="onClickMax"
         ></i>
-        <i
+
+        <el-icon
           v-if="showCloseIcon"
           class="el-icon-close"
           title="关闭窗口"
           @click="onClickClose"
-        ></i>
+        >
+          <Close />
+        </el-icon>
       </span>
     </div>
     <div v-if="showContent" :id="panelId" class="util-panel__content">
@@ -32,6 +37,8 @@
 </template>
 
 <script setup>
+import { QuestionFilled, Close } from "@element-plus/icons-vue";
+
 const props = defineProps({
   title: {
     type: String,
@@ -125,13 +132,10 @@ const onClickMax = () => {
       }
     }
 
-    .el-icon-question {
-      font-size: 16px;
-      color: #555555;
-    }
-
+    .el-icon-question,
     .el-icon-close {
       font-size: 20px;
+      margin-top: 12px;
     }
   }
 
